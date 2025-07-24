@@ -1,6 +1,6 @@
-baseURL: 'https://example.org/'
+baseURL: '/' # This will be automatically set by Netlify
 languageCode: 'en-us'
-title: 'My New Hugo Site'
+title: 'Summer 2025 Undergraduate Research Abstract'
 theme: 'hextra'
 
 markup:
