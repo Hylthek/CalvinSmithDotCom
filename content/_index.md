@@ -5,18 +5,69 @@ title: 'Home Page'
 ---
 
 <!-- markdownlint-disable MD033 -->
-<span style="
+<style>
+@media (max-width: 974px) {
+    .content-row {
+        flex-direction: column !important;
+        gap: 2em !important;
+    }
+    .content-row img {
+        max-width: min(80vw, 15em) !important;
+        max-height: min(40vh, 15em) !important;
+    }
+    .cat-with-wings {
+        max-width: min(80vw, 15em) !important;
+        height: auto
+    }
+}
+@media (min-width: 975px) {
+    .content-row {
+        flex-wrap: nowrap !important;
+    }
+}
+</style>
+<div style="
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1em;
-    margin-left: -18em; margin-right: -10em;
+    gap: 1.5em;
+    text-align: center;
+    padding: 1em;
 ">
-    <img src="fig1.png" alt="Abstract Figure 1" style="height: 15em;">
-    <a href="./abstract" style="font-size: 1.5em;">Read the Research Abstract</a>
-    <img src="fig5.png" alt="Abstract Figure 5" style="height: 15em;">
-</span>
-
-<a href="https://safiyamhart.weebly.com/blog/frame-animation" target="_blank" rel="noopener noreferrer">
-    <img src="cat-w-wings_orig.gif" alt="Cat With Wings" style="height: 30em;">
-</a>
+    <div class="content-row" style="
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 1em;
+    ">
+        <img src="fig1.png" alt="Abstract Figure 1" style="
+            max-width:  min(50vw, 20em);
+            max-height: min(50vh, 20em);
+        ">
+        <a href="./abstract" style="
+            font-size: 1.3em;
+            text-decoration: underline;
+            color: white;
+            text-align: center;
+            white-space: nowrap;
+        ">Read the Research Abstract</a>
+        <img src="fig5.png" alt="Abstract Figure 5" style="
+            max-width:  min(50vw, 20em);
+            max-height: min(50vh, 20em);
+        ">
+    </div>
+    <a
+        href="https://safiyamhart.weebly.com/blog/frame-animation"
+        target="_blank" rel="noopener noreferrer"
+    >
+        <img src="cat-w-wings_orig.gif" alt="Cat With Wings"
+            style="
+                height: auto;
+                max-width: min(80vw, 30em);
+            "
+            class="cat-with-wings"
+        >
+    </a>
+</div>

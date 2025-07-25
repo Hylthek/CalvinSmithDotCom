@@ -1,13 +1,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Calvin Smith – Home Page</title>
-    <link>//localhost:1313/</link>
+    <link>/</link>
     <description>Recent content in Home Page on Calvin Smith</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 20 Jul 2025 00:16:08 -0400</lastBuildDate>
     
-	  <atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
       

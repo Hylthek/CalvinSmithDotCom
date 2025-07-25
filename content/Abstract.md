@@ -48,6 +48,7 @@ For toolpath generation, runtimes were recorded for two toolpath modes as well a
 <p style="font-style: italic; text-align: center; font-size: small;">
 Figure 4: Four toolpathed surfaces and their generation times in the Unity runtime profiler.
 </p>
+
 Separation measurements were sampled for concentric and rectilinear toolpaths. Two types of rectilinear toolpaths were sampled: “self-straightening” and “non-straightening”. The target separation was 0.004 units of length. Measurements were plotted on a binned histogram and a kernel density estimation plot (Fig. 5). Although concentric toolpaths outperform the others in stepover precision, they do not provide as much structural integrity compared to rectilinear toolpaths, with their much stronger, straight lines. This is in contrast to self-straightened toolpaths, which instead sacrifice precision for maximum structural integrity. Finally, non-straightened toolpaths demonstrate a compromise between concentric and straightened rectilinear toolpaths, boasting acceptable stepover precision, as well as suitably robust structure. All three toolpath modes can be used in combination to facilitate design and maximize safety.
 
 ![Fig 5](fig5.png)
