@@ -16,8 +16,12 @@ menu:
       weight: 1
     - identifier: abstract
       name: Abstract
-      pageRef: /abstract
+      pageRef: /Abstract
       weight: 2
+    - identifier: extras
+      name: Extras
+      pageRef: /Extras
+      weight: 3
 
 params:
   navbar:

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-	<meta name="generator" content="Hugo 0.148.1"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<html lang="en"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
   <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
@@ -10,20 +9,35 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>Calvin Smith</title>
-  <meta name="description" content="" /><link rel="canonical" href="//localhost:1313/" itemprop="url" />
+<title>Extras – Calvin Smith</title>
+  <meta name="description" content="This is the debug information output by FindStepoverPoints() (AKA, FSP), a function which I spent a very long time battling with.
+This is all the debug information rendered during a full toolpath generation. Every small step forward uses FSP. Clearly, FSP needs to run quickly. Does it? no.
+This is some more FSP debug information. It shows the valid band of vertices that should be distance-checked. Without this optimization, {insert_name_of_my_software} has no hope of breaking medical frontiers." /><link rel="canonical" href="//localhost:1313/extras/" itemprop="url" />
 
-<meta property="og:title" content="Home Page" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="//localhost:1313/" />
+<meta property="og:title" content="Extras" />
+<meta property="og:description" content="
 
-  <meta itemprop="name" content="Home Page">
-  <meta itemprop="description" content="Read the Research AbstractExtras">
-  <meta itemprop="wordCount" content="5">
+
+This is the debug information output by FindStepoverPoints() (AKA, FSP), a function which I spent a very long time battling with.
+
+This is all the debug information rendered during a full toolpath generation. Every small step forward uses FSP. Clearly, FSP needs to run quickly. Does it? no.
+
+This is some more FSP debug information. It shows the valid band of vertices that should be distance-checked. Without this optimization, {insert_name_of_my_software} has no hope of breaking medical frontiers." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/extras/" /><meta property="article:section" content="" />
+
+
+
+  <meta itemprop="name" content="Extras">
+  <meta itemprop="description" content="This is the debug information output by FindStepoverPoints() (AKA, FSP), a function which I spent a very long time battling with.
+This is all the debug information rendered during a full toolpath generation. Every small step forward uses FSP. Clearly, FSP needs to run quickly. Does it? no.
+This is some more FSP debug information. It shows the valid band of vertices that should be distance-checked. Without this optimization, {insert_name_of_my_software} has no hope of breaking medical frontiers.">
+  <meta itemprop="wordCount" content="232">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Home Page">
-  <meta name="twitter:description" content="Read the Research AbstractExtras">
+  <meta name="twitter:title" content="Extras">
+  <meta name="twitter:description" content="This is the debug information output by FindStepoverPoints() (AKA, FSP), a function which I spent a very long time battling with.
+This is all the debug information rendered during a full toolpath generation. Every small step forward uses FSP. Clearly, FSP needs to run quickly. Does it? no.
+This is some more FSP debug information. It shows the valid band of vertices that should be distance-checked. Without this optimization, {insert_name_of_my_software} has no hope of breaking medical frontiers.">
 <link href="/css/compiled/main.css" rel="stylesheet" />
     <link href="/css/variables.css" rel="stylesheet" />
     <link href="/css/custom.css" rel="stylesheet" />
@@ -127,13 +141,14 @@
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
       
       
-          <li class=""><a
+          <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
     href="/extras/"
     
   >Extras
-    </a></li>
+    </a>
+  </li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
@@ -173,68 +188,41 @@
 
     <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
       <main class="hx:w-full hx:min-w-0 hx:max-w-6xl hx:px-6 hx:pt-4 hx:md:px-12">
-        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">Home Page</h1>
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">Extras</h1>
+        <div class="hx:mb-16"></div>
         <div class="content">
           <!-- markdownlint-disable MD033 -->
-<div class="content-row" style="
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    justify-content: center;
-">
-    <img src="fig1.png" alt="Abstract Figure 1" style="
-        margin: 0 0;
-        max-width:  20em;
-        flex: 1 1 0;
-        min-width: 0;
-        object-fit: contain;
-    ">
-    <a href="./abstract" style="
-        font-size: 1.3em;
-        text-decoration: underline;
-        color: white;
-        white-space: nowrap;
-        margin-left: 1em; margin-right: 1em;
-        flex: 0 0 auto;
-    ">
-        Read the Research Abstract
-    </a>
-    <img src="fig5.png" alt="Abstract Figure 5" style="
-        margin: 0 0;
-        max-width:  20em;
-        flex: 1 1 0;
-        min-width: 0;
-        object-fit: contain;
-    ">
+<div style= "font-style: italic; text-align: center; font-size: small;">
+<p><img src="/Extras/image.png" alt="img"  loading="lazy" />
+This is the debug information output by FindStepoverPoints() (AKA, FSP), a function which I spent a very long time battling with.</p>
+<p><img src="/Extras/image%20%282%29.png" alt="img"  loading="lazy" />
+This is all the debug information rendered during a full toolpath generation. Every small step forward uses FSP. Clearly, FSP needs to run quickly. Does it? <em>no.</em></p>
+<p><img src="/Extras/image%20%283%29.png" alt="img"  loading="lazy" />
+This is some more FSP debug information. It shows the valid band of vertices that should be distance-checked. Without this optimization, {insert_name_of_my_software} has no hope of breaking medical frontiers.</p>
+<p><img src="/Extras/image%20%284%29.png" alt="img"  loading="lazy" />
+Here is an attempt at rectilinear toolpathing. Unfortunately, the procedural nature of the algorithm increases instability and creates these banana shapes.</p>
+<p><img src="/Extras/image%20%285%29.png" alt="img"  loading="lazy" />
+If I move from 3D space into UV space, it becomes a lot easier to simple squeeze each toolpath into a line. This would create a stabilizing affect. A algorithmic homeostatis, if you will. Anyway, thats what I did.</p>
+<p><img src="/Extras/image%20%286%29.png" alt="img"  loading="lazy" />
+Heres what it looks like in 3D space. A drawback of doing it this way is that &ldquo;straight&rdquo; can be non-straight given a warped surface. I try not to think about that.</p>
+<p><img src="/Extras/image%20%288%29.png" alt="img"  loading="lazy" />
+Heres a before&hellip;</p>
+<p><img src="/Extras/image%20%287%29.png" alt="img"  loading="lazy" />
+&hellip;and an after.</p>
+<p><img src="/Extras/image%20%289%29.png" alt="img"  loading="lazy" />
+And here&rsquo;s a cool combination of concentric and rectilinear toolpaths. Reminded me of the Black Mesa logo.</p>
+<p><img src="/Extras/image%20%2810%29.png" alt="img"  loading="lazy" />
+Another cool shape.</p>
+<p><img src="/Extras/image%20%2811%29.png" alt="img"  loading="lazy" />
+Heres what my plots looked like before I realized I&rsquo;m not a business major (Excel -&gt; MATLAB). This one in particular took me a couple of hours to format.</p>
+<p><img src="/Extras/Figure_Workflow%20%281%29.png" alt="img"  loading="lazy" />
+Heres a previous version of my flowchart. Yea&hellip;</p>
 </div>
-<a href="./extras" style="
-    font-size: 1.3em;
-    text-decoration: underline;
-    color: white;
-    display: block; text-align: center;
-    margin: 1em 0;
-">
-    Extras
-</a>
-<a
-    href="https://safiyamhart.weebly.com/blog/frame-animation"
-    target="_blank" rel="noopener noreferrer"
-    style="
-        display: block;
-        width: fit-content;
-        margin: 0 auto;
-    "
->
-    <img src="cat-w-wings_orig.gif" alt="Cat With Wings"
-        class="cat-with-wings"
-        style="
-            max-width: min(80vw, 30em);
-            height: fit-content;
-        "
-    >
-</a>
 
         </div>
+        <div class="hx:mt-16"></div>
+        
       </main>
     </article>
   </div>

@@ -1,6 +1,4 @@
 ---
-date: '2025-07-20T00:16:08-04:00'
-draft: false
 title: 'Summer 2025 Undergraduate Research Abstract'
 ---
 <!-- markdownlint-disable MD033 -->
