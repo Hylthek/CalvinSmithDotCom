@@ -16,3 +16,7 @@ title: 'Home Page'
     <a href="./abstract" style="font-size: 1.5em;">Read the Research Abstract</a>
     <img src="fig5.png" alt="Abstract Figure 5" style="height: 15em;">
 </span>
+
+<a href="https://safiyamhart.weebly.com/blog/frame-animation" target="_blank" rel="noopener noreferrer">
+    <img src="cat-w-wings_orig.gif" alt="Cat With Wings" style="height: 30em;">
+</a>
