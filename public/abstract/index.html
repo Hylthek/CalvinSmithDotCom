@@ -26,7 +26,7 @@ Minimally invasive in-situ bioprinting is a form of automated robotic surgery th
   <meta itemprop="description" content="IntroMinimally invasive in-situ bioprinting is a form of automated robotic surgery that allows for advanced organ repair. Traditionally, the organ is printed in-vitro and transplanted; however, there are drawbacks to this, one being that repair sites may drastically change in the time it takes between printing and transplanting. Existing solutions for robotic surgery include use of the Da Vinci Surgical System with its manual control. Unfortunately, procedures like bioprinting require many precise, repetitive movements, something difficult for a surgeon to perform manually. Additionally, automation would allow a surgeon to focus on the procedure as a whole, instead of on each task individually, increasing safety.">
   <meta itemprop="datePublished" content="2025-07-20T00:16:08-04:00">
   <meta itemprop="dateModified" content="2025-07-20T00:16:08-04:00">
-  <meta itemprop="wordCount" content="810">
+  <meta itemprop="wordCount" content="871">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Summer 2025 Undergraduate Research Abstract">
   <meta name="twitter:description" content="IntroMinimally invasive in-situ bioprinting is a form of automated robotic surgery that allows for advanced organ repair. Traditionally, the organ is printed in-vitro and transplanted; however, there are drawbacks to this, one being that repair sites may drastically change in the time it takes between printing and transplanting. Existing solutions for robotic surgery include use of the Da Vinci Surgical System with its manual control. Unfortunately, procedures like bioprinting require many precise, repetitive movements, something difficult for a surgeon to perform manually. Additionally, automation would allow a surgeon to focus on the procedure as a whole, instead of on each task individually, increasing safety.">
@@ -147,9 +147,9 @@ Minimally invasive in-situ bioprinting is a form of automated robotic surgery th
             </li>
           <li>
               <a
-                href="#results-conclusion-and-discussion"
+                href="#results-conclusions-and-discussions"
                 class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Results, Conclusion, and Discussion</a>
+              >Results, Conclusions, and Discussions</a>
             </li>
           </ul>
   </li>
@@ -180,7 +180,7 @@ Minimally invasive in-situ bioprinting is a form of automated robotic surgery th
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#results-conclusion-and-discussion">Results, Conclusion, and Discussion
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#results-conclusions-and-discussions">Results, Conclusions, and Discussions
         </a>
       </li></ul>
       <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
@@ -211,20 +211,35 @@ Minimally invasive in-situ bioprinting is a form of automated robotic surgery th
     <a href="#methods" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Before generating toolpaths, geometry needs to be created to contain those paths. Basis-surfaces (b-surfaces) were used because of their smoothness and interactive simplicity. B-surfaces are mathematically defined surfaces that maintain continuous curvature at every point. Any toolpath generated across a b-surface will, in turn, be smooth, reducing future algorithmic complexity. Moreover, a b-surface is defined by only a small grid of control points. This allows manipulation of the surface to be clutter-free and intuitive (Fig. 1). Manipulation of the surface was implemented through a virtual reality (VR) user interface (UI) because it is an intuitive way to visualize and modify 3D geometry.</p>
 <p>
     <img src="../fig1.png" alt="Fig 1"  loading="lazy" /></p>
+<p style="font-style: italic; text-align: center; font-size: small;">
+Figure 1: The basis-surface and its 6x6 grid of control points.
+</p>
 <p>To maintain workflow simplicity, automatic surface generation is implemented. If a surgeon needs to cover an organic defect quickly, it is desirable to only have to trace a loop around the defect and run an algorithm. Using least-squares optimization, paired with the mathematical nature of b-surfaces, we can instantaneously fit a surface to any closed loop. Additionally, surfaces can be changed and then refit to the loop while retaining their alterations (Fig. 2).</p>
 <p>
     <img src="../fig2.png" alt="Fig 2"  loading="lazy" /></p>
+<p style="font-style: italic; text-align: center; font-size: small;">
+Figure 2: Demonstration of loop-fitting and loop-refitting.
+</p>
 <p>To achieve constant toolpath separation, path generation will be done procedurally, point-by-point, rather than purely mathematically. This achieves our required constant separation, but sacrifices computational speed. To account for this, algorithmic optimizations such as caching and input filtering are used to reduce generation time.</p>
-<h2>Results, Conclusion, and Discussion<span class="hx:absolute hx:-mt-20" id="results-conclusion-and-discussion"></span>
-    <a href="#results-conclusion-and-discussion" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The created software demonstrates effortless workflow. Given a virtual tissue defect, a surgeon will only perform a few simple tasks in order to design a toolpath (Fig. 3). This is in contrast to most CAM software, where complex functionality is required to maximize precision, at the cost of simplicity and speed. Moreover, every algorithm except toolpath generation is executed in real-time. A benefit of this is that in the event of a design alteration, a task can be redone without additional delay.</p>
+<h2>Results, Conclusions, and Discussions<span class="hx:absolute hx:-mt-20" id="results-conclusions-and-discussions"></span>
+    <a href="#results-conclusions-and-discussions" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>The created software demonstrates effortless workflow. Given a virtual tissue defect, a surgeon will only perform a few simple tasks in order to design a toolpath (Fig. 3). This is in contrast to most CAM software, where complex functionality is required to maximize precision, at the cost of simplicity and speed. Moreover, every algorithm except toolpath generation is executed in real-time. A benefit of this is that in the event of a design alteration, a task can be redone without additional delay.</p>
 <p>
     <img src="../fig3.png" alt="Fig 3"  loading="lazy" /></p>
+<p style="font-style: italic; text-align: center; font-size: small;">
+Figure 3: Typical workflow performed by user.
+</p>
 <p>For toolpath generation, runtimes were recorded for two toolpath modes as well as two surface sizes. Four tests were conducted: the generation time for small concentric paths, small rectilinear paths, large concentric paths, and large rectilinear paths. Respective times were 18.5s, 13.5s, 151s, &amp; 106s (Fig. 4). These results show that toolpath generation is not only the slowest part of design, but that computation times grow rapidly as the surface size increases. Although this is not ideal, the process can be greatly optimized. The algorithm currently iterates over all vertices of the toolpath, but the surface could instead be split into chunks, meaning that only a fraction of the toolpath is run. Additionally, compute shaders, programs executed on the GPU instead of the CPU, could run multiple algorithms at the same time.</p>
 <p>
     <img src="../fig4.png" alt="Fig 4"  loading="lazy" /></p>
-<p>Separation measurements were sampled for concentric and rectilinear toolpaths. Two types of rectilinear toolpaths were sampled: “self-straightening” and “non-straightening”. The target separation was 0.004 units of length. Measurements were plotted on a binned histogram and a kernel density estimation plot (Fig. 5). Although concentric toolpaths outperform the others in stepover precision, they do not provide as much structural integrity compared to rectilinear toolpaths, with their much stronger, straight lines. This is in contrast to self-straightened toolpaths, which instead sacrifice precision for maximum structural integrity. Finally, non-straightened toolpaths demonstrate a compromise between concentric and straightened rectilinear toolpaths, boasting acceptable stepover precision, as well as suitably robust structure. All three toolpath modes can be used in combination to facilitate design and maximize safety.</p>
+<p style="font-style: italic; text-align: center; font-size: small;">
+Figure 4: Four toolpathed surfaces and their generation times in the Unity runtime profiler.
+</p>
+Separation measurements were sampled for concentric and rectilinear toolpaths. Two types of rectilinear toolpaths were sampled: “self-straightening” and “non-straightening”. The target separation was 0.004 units of length. Measurements were plotted on a binned histogram and a kernel density estimation plot (Fig. 5). Although concentric toolpaths outperform the others in stepover precision, they do not provide as much structural integrity compared to rectilinear toolpaths, with their much stronger, straight lines. This is in contrast to self-straightened toolpaths, which instead sacrifice precision for maximum structural integrity. Finally, non-straightened toolpaths demonstrate a compromise between concentric and straightened rectilinear toolpaths, boasting acceptable stepover precision, as well as suitably robust structure. All three toolpath modes can be used in combination to facilitate design and maximize safety.
 <p>
     <img src="../fig5.png" alt="Fig 5"  loading="lazy" /></p>
+<p style="font-style: italic; text-align: center; font-size: small;">
+Figure 5: Stepover samples plotted in binned-histograms and KDE curves. Notice the difference in the ploted domain between RectStraight and the others.
+</p>
 </div>
 
         </div>
