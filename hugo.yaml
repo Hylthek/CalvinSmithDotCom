@@ -1,9 +1,28 @@
 baseURL: '/' # This will be automatically set by Netlify
 languageCode: 'en-us'
-title: 'Summer 2025 Undergraduate Research Abstract'
+title: 'Calvin Smith'
 theme: 'hextra'
 
 markup:
   goldmark:
     renderer:
       unsafe: true
+
+menu:
+  main:
+    - identifier: home
+      name: Home
+      pageRef: /
+      weight: 1
+    - identifier: abstract
+      name: Abstract
+      pageRef: /abstract
+      weight: 2
+
+params:
+  navbar:
+    displayTitle: true
+    displayLogo: true
+    logo:
+      path: images/logo.svg
+      dark: images/logo-dark.svg
