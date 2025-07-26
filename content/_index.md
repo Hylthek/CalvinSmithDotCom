@@ -3,14 +3,13 @@ title: 'Home Page'
 ---
 <!-- markdownlint-disable MD033 -->
 
-<div class="content-row" style="
+<div style="
     display: flex;
     align-items: center;
     overflow: hidden;
     justify-content: center;
 ">
     <img src="fig1.png" alt="Abstract Figure 1" style="
-        margin: 0 0;
         max-width:  20em;
         flex: 1 1 0;
         min-width: 0;
@@ -27,21 +26,42 @@ title: 'Home Page'
         Read the Research Abstract
     </a>
     <img src="fig5.png" alt="Abstract Figure 5" style="
-        margin: 0 0;
         max-width:  20em;
         flex: 1 1 0;
         min-width: 0;
         object-fit: contain;
     ">
 </div>
-<a href="./extras" style="
-    font-size: 1.3em;
-    text-decoration: underline;
-    color: white;
-    display: block; text-align: center;
-    margin: 1em 0;
+
+<div style="
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    justify-content: center;
 ">
-    Extras
+    <img src="/Extras/image%20(2).png" alt="Abstract Figure 1" style="
+        max-width:  20em;
+        flex: 1 1 0;
+        min-width: 0;
+        object-fit: contain;
+    ">
+    <a href="./extras" style="
+        font-size: 1.3em;
+        text-decoration: underline;
+        color: white;
+        white-space: nowrap;
+        margin-left: 1em; margin-right: 1em;
+        flex: 0 0 auto;
+    ">
+        Extras
+    </a>
+    <img src="/Extras/image%20(9).png" alt="Abstract Figure 5" style="
+        max-width:  20em;
+        flex: 1 1 0;
+        min-width: 0;
+        object-fit: contain;
+    ">
+</div>
 </a>
 <a
     href="https://safiyamhart.weebly.com/blog/frame-animation"
