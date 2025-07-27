@@ -3,6 +3,7 @@ title: 'Home Page'
 ---
 <!-- markdownlint-disable MD033 -->
 
+<img class="logo-light" src="Logo.png" alt="SituCAM Logo" style="display: block;">
 <div style="
     display: flex;
     align-items: center;
@@ -32,7 +33,6 @@ title: 'Home Page'
         object-fit: contain;
     ">
 </div>
-
 <div style="
     display: flex;
     align-items: center;
@@ -62,7 +62,6 @@ title: 'Home Page'
         object-fit: contain;
     ">
 </div>
-</a>
 <a
     href="https://safiyamhart.weebly.com/blog/frame-animation"
     target="_blank" rel="noopener noreferrer"
