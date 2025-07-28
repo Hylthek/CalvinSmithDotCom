@@ -24,7 +24,7 @@ title: 'Home Page'
         margin-left: 1em; margin-right: 1em;
         flex: 0 0 auto;
     ">
-        Read the Research Abstract
+        - Read the Research Abstract -
     </a>
     <img src="fig5.png" alt="Abstract Figure 5" style="
         max-width:  20em;
@@ -53,7 +53,7 @@ title: 'Home Page'
         margin-left: 1em; margin-right: 1em;
         flex: 0 0 auto;
     ">
-        Extras
+        - Extras -
     </a>
     <img src="/Extras/image%20(9).png" alt="Abstract Figure 5" style="
         max-width:  20em;
