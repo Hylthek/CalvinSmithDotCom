@@ -1,1 +1,6 @@
 public/
+isable-fast-build/
+i18n/
+.hugo_build.lock
+archetypes/
+.vscode/
