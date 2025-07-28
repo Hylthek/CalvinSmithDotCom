@@ -1,5 +1,4 @@
 ---
-draft: true
 title: 'SituCamDocumentation'
 ---
 <!-- markdownlint-disable no-empty-links -->
