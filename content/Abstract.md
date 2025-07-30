@@ -1,4 +1,6 @@
 ---
+date: 0
+date: 0
 title: 'Summer 2025 Undergraduate Research Abstract'
 ---
 <!-- markdownlint-disable MD033 -->
@@ -51,7 +53,7 @@ Separation measurements were sampled for concentric and rectilinear toolpaths. T
 
 ![Fig 5](fig5.png)
 <p style="font-style: italic; text-align: center; font-size: small;">
-Figure 5: Stepover samples plotted in binned-histograms and KDE curves. Notice the difference in the ploted domain between RectStraight and the others.
+Figure 5: Stepover samples plotted in binned-histograms and KDE curves. Notice the difference in the plotted domain between RectStraight and the others.
 </p>
 
 </div>

@@ -1,80 +1,89 @@
 ---
+date: 0
 title: 'SituCamDocumentation'
 ---
 <!-- markdownlint-disable no-empty-links -->
 
-[BezierSurfaceRenderer.cs](./BezierSurfaceRenderer) - Unused.
+[Startup Instructions](./1_StartupInstructions)  
+Instructions for how to setup the Meta Quest 3 and run the Unity project.
 
-[BsplineManager.cs](./BsplineManager) - Stores control point locations and contains functions to calculate basis-surface points.
+[BsplineManager.cs](./BsplineManager)  
+Stores control point locations and contains functions to calculate basis-surface points.
 
-[BSurfaceGcodeGenerator.cs](./BSurfaceGcodeGenerator) - Defines functions that allow for procedural toolpathing along a basis-surface.
+[BSurfaceGcodeGenerator.cs](./BSurfaceGcodeGenerator)  
+Defines functions that allow for procedural toolpathing along a basis-surface.
 
-[BsurfaceGridLineManager.cs](./BsurfaceGridLineManager) - Unused.
+[BSurfaceMeshHandler.cs](./BSurfaceMeshHandler)  
+Creates the mesh of the basis surface.
 
-[BSurfaceMeshHandler.cs](./BSurfaceMeshHandler) - Creates the mesh of the basis surface.
+[CallFitSurfaceToDrawing.cs](./CallFitSurfaceToDrawing)  
+Turns a ray interaction into one of two function call.
 
-[CallFitSurfaceToDrawing.cs](./CallFitSurfaceToDrawing) - Turns a ray interaction into one of two function call.
+[CallLiveControlToggle.cs](./CallLiveControlToggle)  
+Turns a ray interaction into a function call.
 
-[CallGcodeGenerate.cs](./CallGcodeGenerate) - Unused.
+[CallToggleDrawingMode.cs](./CallToggleDrawingMode)  
+Turns a ray interaction into a function call.
 
-[CallGcodePerform.cs](./CallGcodePerform) - Unused.
+[CallToggleToolpathingMode.cs](./CallToggleToolpathingMode)  
+Turns a ray interaction into a function call.
 
-[CallLiveControlToggle.cs](./CallLiveControlToggle) - Turns a ray interaction into a function call.
+[ConformalToolpathingManager.cs](./ConformalToolpathingManager)  
+Handles main logic for toolpathing UI.
 
-[CallToggleDrawingMode.cs](./CallToggleDrawingMode) - Turns a ray interaction into a function call.
+[ConformalToolpathingModeManager.cs](./ConformalToolpathingModeManager)  
+Contains public function to toggle toolpathing UI active state.
 
-[CallToggleToolpathingMode.cs](./CallToggleToolpathingMode) - Turns a ray interaction into a function call.
+[ControlPolygonLineManager.cs](./ControlPolygonLineManager)  
+Renders control polygon for basis-surface.
 
-[ConformalToolpathingManager.cs](./ConformalToolpathingManager) - Handles main logic for toolpathing UI.
+[ControlPolygonLiquifyToolManager.cs](./ControlPolygonLiquifyToolManager)  
+Handles logic for basis-surface liquify tool.
 
-[ConformalToolpathingModeManager.cs](./ConformalToolpathingModeManager) - Contains public function to toggle toolpathing UI active state.
+[DeleteAtPoint.cs](./DeleteAtPoint)  
+Handles logic for deleting toolpath vertices.
 
-[ConnectToolpathNodes.cs](./ConnectToolpathNodes) - Unused.
+[DisableOnStart.cs](./DisableOnStart)  
+Self explanatory.
 
-[ControlPolygonLineManager.cs](./ControlPolygonLineManager) - Renders control polygon for basis-surface.
+[DrawingHandler.cs](./DrawingHandler)  
+Main logic for loop-drawing UI.
 
-[ControlPolygonLiquifyToolManager.cs](./ControlPolygonLiquifyToolManager) - Handles logic for basis-surface liquify tool.
+[DrawingModeHandler.cs](./DrawingModeHandler)  
+Contains public function to toggle loop-drawing UI active state.
 
-[DeleteAtPoint.cs](./DeleteAtPoint) - Handles logic for deleting toolpath vertices.
+[EnableOnButtonTimed.cs](./EnableOnButtonTimed)  
+Handles enabling of scripts for a duration after a button press.
 
-[DisableOnStart.cs](./DisableOnStart) - Self explanatory.
+[FollowClosestToolpath.cs](./FollowClosestToolpath)  
+Makes a GameObject move to a vertex on the toolpath that is the closest point to a target.
 
-[DisappearOnStart.cs](./DisappearOnStart) - Unused.
+[GenerateConcentricToolpath.cs](./GenerateConcentricToolpath)  
+Turns a ray interaction into a variable increment.
 
-[DrawingHandler.cs](./DrawingHandler) - Main logic for loop-drawing UI.
+[GenerateRectilinearToolpath.cs](./GenerateRectilinearToolpath)  
+Turns a ray interaction into a variable increment.
 
-[DrawingModeHandler.cs](./DrawingModeHandler) - Contains public function to toggle loop-drawing UI active state.
+[LiveControlGcodeSender.cs](./LiveControlGcodeSender)  
+Reads transform of virtual end-effector and makes calls to UnityTcpClient.
 
-[EnableOnButtonTimed.cs](./EnableOnButtonTimed) - Handles enabling of scripts for a duration after a button press.
+[LiveControlManipulationHandler.cs](./LiveControlManipulationHandler)  
+Handles movement of virtual end-effector via controller input.
 
-[Follow.cs](./Follow) - Unused.
+[MoveJaws.cs](./MoveJaws)  
+Handles movement of end-effector jaw visuals.
 
-[FollowClosestToolpath.cs](./FollowClosestToolpath) - Makes a GameObject move to a vertex on the toolpath that is the closest point to a target.
+[Pointer.cs](./Pointer)  
+Contains one reference to a GameObject.
 
-[GcodeGenerator.cs](./GcodeGenerator) - Unused.
+[PressedButtonMovement.cs](./PressedButtonMovement)  
+Moves a button when that button is pressed.
 
-[GcodePerformer.cs](./GcodePerformer) - Unused.
+[RayGrabbing.cs](./RayGrabbing)  
+Allows a GameObject to be grabbed and moved by a controller.
 
-[GenerateConcentricToolpath.cs](./GenerateConcentricToolpath) - Turns a ray interaction into a variable increment.
+[SurfaceFittingManager.cs](./SurfaceFittingManager)  
+Contains algorithms for fitting a basis-surface to a loop heuristically and with least-squares optimization.
 
-[GenerateRectilinearToolpath.cs](./GenerateRectilinearToolpath) - Turns a ray interaction into a variable increment.
-
-[LiveControlGcodeSender.cs](./LiveControlGcodeSender) - Reads transform of virtual end-effector and makes calls to UnityTcpClient.
-
-[LiveControlManipulationHandler.cs](./LiveControlManipulationHandler) - Handles movement of virtual end-effector via controller input.
-
-[MoveHandheldMenu.cs](./MoveHandheldMenu) - Unused.
-
-[MoveJaws.cs](./MoveJaws) - Handles movement of end-effector jaw visuals.
-
-[Pointer.cs](./Pointer) - Contains one reference to a GameObject.
-
-[PressedButtonMovement.cs](./PressedButtonMovement) - Moves a button when that button is pressed.
-
-[RayGrabbing.cs](./RayGrabbing) - Allows a GameObject to be grabbed and moved by a controller.
-
-[RenderBezierCurve.cs](./RenderBezierCurve) - Unused.
-
-[SurfaceFittingManager.cs](./SurfaceFittingManager) - Contains algorithms for fitting a basis-surface to a loop heuristically and with least-squares optimization.
-
-[UnityTcpClient.cs](./UnityTcpClient) - Establishes a TCP connection through an IP address and contains a function to send strings over the connection.
+[UnityTcpClient.cs](./UnityTcpClient)  
+Establishes a TCP connection through an IP address and contains a function to send strings over the connection.

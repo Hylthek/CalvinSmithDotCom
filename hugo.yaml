@@ -1,5 +1,8 @@
 baseURL: '/' # This will be automatically set by Netlify
 languageCode: 'en-us'
+date: 0
+date: 0
+date: 0
 title: 'Calvin Smith'
 theme: 'hextra'
 
@@ -22,6 +25,10 @@ menu:
       name: Extras
       pageRef: /Extras
       weight: 3
+    - identifier: situcam_documentation
+      name: SituCAM Documentation
+      pageRef: /SituCamDocumentation
+      weight: 4
 
 params:
   navbar:
