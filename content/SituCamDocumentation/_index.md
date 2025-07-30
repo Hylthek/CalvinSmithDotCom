@@ -4,6 +4,10 @@ title: 'SituCamDocumentation'
 ---
 <!-- markdownlint-disable no-empty-links -->
 
+{{< callout type="warning" >}}
+  SituCAM documentation is a work-in-progress.
+{{< /callout >}}
+
 [Startup Instructions](./1_StartupInstructions)  
 Instructions for how to setup the Meta Quest 3 and run the Unity project.
 
