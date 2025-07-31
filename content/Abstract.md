@@ -4,7 +4,7 @@ toc: false
 ---
 <!-- markdownlint-disable MD033 -->
 
-## Intro
+<h2 style="text-align: center;">Intro</h2>
 
 <div style="text-align: justify; margin: 0 0px;">
 
@@ -14,7 +14,7 @@ A key aspect of automated robotic surgery is the use of movement commands (toolp
 
 A computer application is proposed which will allow a surgeon to generate toolpaths in a timely manner, making automated robotic surgery safer. To achieve this, the program must be intuitive, and must run quickly. Additionally, a requirement specific to bioprinting must be met. In bioprinting, the toolpaths output by the application must maintain constant separation; if toolpaths are too far apart, they will not adhere to each other, and if they are too close together, they will overlap and create areas of unwanted material.
 
-## Methods
+<h2 style="text-align: center;">Methods</h2>
 
 Before generating toolpaths, geometry needs to be created to contain those paths. Basis-surfaces (b-surfaces) were used because of their smoothness and interactive simplicity. B-surfaces are mathematically defined surfaces that maintain continuous curvature at every point. Any toolpath generated across a b-surface will, in turn, be smooth, reducing future algorithmic complexity. Moreover, a b-surface is defined by only a small grid of control points. This allows manipulation of the surface to be clutter-free and intuitive (Fig. 1). Manipulation of the surface was implemented through a virtual reality (VR) user interface (UI) because it is an intuitive way to visualize and modify 3D geometry.
 
@@ -32,7 +32,7 @@ Figure 2: Demonstration of loop-fitting and loop-refitting.
 
 To achieve constant toolpath separation, path generation will be done procedurally, point-by-point, rather than purely mathematically. This achieves our required constant separation, but sacrifices computational speed. To account for this, algorithmic optimizations such as caching and input filtering are used to reduce generation time.
 
-## Results, Conclusions, and Discussions
+<h2 style="text-align: center;">Results, Conclusions, and Discussions</h2>
 
 The created software demonstrates effortless workflow. Given a virtual tissue defect, a surgeon will only perform a few simple tasks in order to design a toolpath (Fig. 3). This is in contrast to most CAM software, where complex functionality is required to maximize precision, at the cost of simplicity and speed. Moreover, every algorithm except toolpath generation is executed in real-time. A benefit of this is that in the event of a design alteration, a task can be redone without additional delay.
 

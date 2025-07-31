@@ -18,14 +18,13 @@ title: 'Home Page'
     ">
     <a href="./abstract" style="
         font-size: 1.3em;
-        text-decoration: underline;
         color: white;
         margin-left: 1em; margin-right: 1em;
         flex: 0 0 auto;
         text-align: center
     ">
-        Undergraduate Research Abstract<br>
-        <b>2025 Annual BMES Meeting</b>
+        <b>2025 Annual BMES Meeting</b><br>
+        Undergraduate Research Abstract
     </a>
     <img src="fig5.png" alt="Abstract Figure 5" style="
         max-width:  20em;
@@ -48,7 +47,6 @@ title: 'Home Page'
     ">
     <a href="./extras" style="
         font-size: 1.3em;
-        text-decoration: underline;
         color: white;
         white-space: nowrap;
         margin-left: 1em; margin-right: 1em;
@@ -78,7 +76,6 @@ title: 'Home Page'
     ">
     <a href="./situcamdocumentation" style="
         font-size: 1.3em;
-        text-decoration: underline;
         color: white;
         white-space: nowrap;
         margin-left: 1em; margin-right: 1em;
@@ -112,3 +109,5 @@ title: 'Home Page'
         "
     >
 </a>
+
+{{< carousel items="1" height="500" unit="px" duration="7000" >}}

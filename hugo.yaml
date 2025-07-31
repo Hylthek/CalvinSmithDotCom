@@ -13,22 +13,23 @@ markup:
 
 menu:
   main:
-    - identifier: home
-      name: Home
+    - name: Home
       pageRef: /
       weight: 1
-    - identifier: abstract
-      name: Abstract
+    - name: 2025 Summer REU
+      identifier: reu
+    - name: Abstract
       pageRef: /Abstract
-      weight: 2
-    - identifier: extras
-      name: Extras
+      parent: reu
+    - name: Extras
       pageRef: /Extras
-      weight: 3
-    - identifier: situcam_documentation
-      name: SituCAM Documentation
+      parent: reu
+    - name: SituCAM Documentation
       pageRef: /SituCamDocumentation
-      weight: 4
+      parent: reu
+    - name: Presentation
+      pageRef: /ReuPowerPoint
+      parent: reu
 
 params:
   navbar:
