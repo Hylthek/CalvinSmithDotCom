@@ -1,4 +1,4 @@
 ---
-date: 0
 title: 'GenerateConcentricToolpath'
+linktitle: 'GenerateConcentricToolpath.cs'
 ---

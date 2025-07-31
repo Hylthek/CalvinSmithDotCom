@@ -1,4 +1,4 @@
 ---
-date: 0
 title: 'BsplineManager'
+linktitle: 'BsplineManager.cs'
 ---

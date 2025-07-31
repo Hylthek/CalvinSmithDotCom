@@ -1,6 +1,6 @@
 ---
-date: 1
 title: 'Startup Instructions'
+weight: 1
 ---
 
 ## First-time Startup

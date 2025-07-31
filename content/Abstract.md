@@ -1,7 +1,6 @@
 ---
-date: 0
-date: 0
 title: 'Summer 2025 Undergraduate Research Abstract'
+toc: false
 ---
 <!-- markdownlint-disable MD033 -->
 

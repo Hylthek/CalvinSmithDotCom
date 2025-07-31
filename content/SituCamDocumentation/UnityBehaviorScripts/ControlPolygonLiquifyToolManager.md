@@ -1,4 +1,4 @@
 ---
-date: 0
 title: 'ControlPolygonLiquifyToolManager'
+linktitle: 'ControlPolygonLiquifyToolManager.cs'
 ---

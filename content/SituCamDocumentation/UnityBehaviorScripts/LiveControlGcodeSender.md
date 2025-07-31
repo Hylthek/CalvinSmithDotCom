@@ -1,4 +1,4 @@
 ---
-date: 0
 title: 'LiveControlGcodeSender'
+linktitle: 'LiveControlGcodeSender.cs'
 ---

@@ -1,5 +1,4 @@
 ---
-date: 0
 title: 'Extras'
 ---
 <!-- markdownlint-disable MD033 -->

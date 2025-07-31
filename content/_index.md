@@ -1,5 +1,4 @@
 ---
-date: 0
 title: 'Home Page'
 ---
 <!-- markdownlint-disable MD033 -->
@@ -21,11 +20,12 @@ title: 'Home Page'
         font-size: 1.3em;
         text-decoration: underline;
         color: white;
-        white-space: nowrap;
         margin-left: 1em; margin-right: 1em;
         flex: 0 0 auto;
+        text-align: center
     ">
-        Read the Research Abstract
+        Undergraduate Research Abstract<br>
+        <b>2025 Annual BMES Meeting</b>
     </a>
     <img src="fig5.png" alt="Abstract Figure 5" style="
         max-width:  20em;
@@ -84,7 +84,7 @@ title: 'Home Page'
         margin-left: 1em; margin-right: 1em;
         flex: 0 0 auto;
     ">
-        Documentation
+        Documentation (WIP)
     </a>
     <img src="Logo.png" alt="Stand-in" style="
         max-width:  20em;
@@ -95,9 +95,6 @@ title: 'Home Page'
         border: 1px solid white;
     ">
 </div>
-{{< callout type="warning" >}}
-  SituCAM documentation is a work-in-progress.
-{{< /callout >}}
 <a
     href="https://safiyamhart.weebly.com/blog/frame-animation"
     target="_blank" rel="noopener noreferrer"
