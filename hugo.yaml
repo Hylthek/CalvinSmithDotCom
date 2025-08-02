@@ -16,20 +16,38 @@ menu:
     - name: Home
       pageRef: /
       weight: 1
+
+    - name: Resume
+      pageRef: /Resume
+      weight: 2
+      
+      # Dropdown.
     - name: 2025 Summer REU
       identifier: reu
+      weight: 3
     - name: Abstract
       pageRef: /Abstract
       parent: reu
+      weight: 1
     - name: Extras
       pageRef: /Extras
       parent: reu
+      weight: 4
     - name: SituCAM Documentation
       pageRef: /SituCamDocumentation
       parent: reu
+      weight: 3
     - name: Presentation
       pageRef: /ReuPowerPoint
       parent: reu
+      weight: 2
+
+      # Dropdown.
+    - name: Projects
+      identifier: projects
+    - name: IMU Space Mouse
+      pageRef: /ImuSpaceMouse
+      parent: projects
 
 params:
   navbar:

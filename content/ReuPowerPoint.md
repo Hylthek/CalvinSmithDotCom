@@ -4,7 +4,7 @@ toc: false
 ---
 <!-- markdownlint-disable MD033 -->
 
-<div style="font-style: italic; text-align: center; font-size: small;">
+<div style="font-style: italic; text-align: center;">
 
 ![Slide 1](ReuPowerPoint/image001.png)
 My name is Calvin Smith and today I will be presenting a new software developed for in situ bioprinting.
