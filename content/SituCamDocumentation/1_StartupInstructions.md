@@ -1,6 +1,7 @@
 ---
 title: 'Startup Instructions'
 weight: 1
+draft: true
 ---
 
 ## First-time Startup
