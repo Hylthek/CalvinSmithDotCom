@@ -10,7 +10,8 @@ title: 'Home Page'
     overflow: hidden;
     justify-content: center;
 ">
-    <img src="fig1.png" alt="Abstract Figure 1" style="
+    <img src="abstract/fig1.png" alt="Abstract Figure 1" style="
+        border: 1px solid white;
         max-width:  20em;
         flex: 1 1 0;
         min-width: 0;
@@ -26,7 +27,8 @@ title: 'Home Page'
         <b>2025 Annual BMES Meeting</b><br>
         Undergraduate Research Abstract
     </a>
-    <img src="fig5.png" alt="Abstract Figure 5" style="
+    <img src="abstract/fig5.png" alt="Abstract Figure 5" style="
+        border: 1px solid white;
         max-width:  20em;
         flex: 1 1 0;
         min-width: 0;
@@ -39,22 +41,25 @@ title: 'Home Page'
     overflow: hidden;
     justify-content: center;
 ">
-    <img src="/Extras/image%20(2).png" alt="Abstract Figure 1" style="
+    <img src="/REU_PowerPoint_WebFormat_files/image011.png" style="
+        border: 1px solid white;
         max-width:  20em;
         flex: 1 1 0;
         min-width: 0;
         object-fit: contain;
     ">
-    <a href="./extras" style="
+    <a href="./reupowerpoint" style="
         font-size: 1.3em;
         color: white;
+        text-align:center;
         white-space: nowrap;
         margin-left: 1em; margin-right: 1em;
         flex: 0 0 auto;
     ">
-        Extras
+        End-of-Summer<br>Presentation
     </a>
-    <img src="/Extras/image%20(9).png" alt="Abstract Figure 5" style="
+    <img src="/REU_PowerPoint_WebFormat_files/image015.png" alt="Abstract Figure 5" style="
+        border: 1px solid white;
         max-width:  20em;
         flex: 1 1 0;
         min-width: 0;
@@ -92,6 +97,36 @@ title: 'Home Page'
         border: 1px solid white;
     ">
 </div>
+<div style="
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    justify-content: center;
+">
+    <img src="/Extras/image%20(2).png" alt="Abstract Figure 1" style="
+        max-width:  20em;
+        flex: 1 1 0;
+        min-width: 0;
+        border: 1px solid white;
+        object-fit: contain;
+    ">
+    <a href="./extras" style="
+        font-size: 1.3em;
+        color: white;
+        white-space: nowrap;
+        margin-left: 1em; margin-right: 1em;
+        flex: 0 0 auto;
+    ">
+        Extras
+    </a>
+    <img src="/Extras/image%20(9).png" alt="Abstract Figure 5" style="
+        border: 1px solid white;
+        max-width:  20em;
+        flex: 1 1 0;
+        min-width: 0;
+        object-fit: contain;
+    ">
+</div>
 <a
     href="https://safiyamhart.weebly.com/blog/frame-animation"
     target="_blank" rel="noopener noreferrer"
@@ -109,5 +144,3 @@ title: 'Home Page'
         "
     >
 </a>
-
-{{< carousel items="1" height="500" unit="px" duration="7000" >}}
