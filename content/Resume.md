@@ -1,3 +1,7 @@
+---
+toc: false
+---
+
 <!-- markdownlint-disable MD033 -->
 
 <style>
