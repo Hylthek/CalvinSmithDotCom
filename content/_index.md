@@ -1,5 +1,4 @@
 ---
-title: 'Home'
 toc: false
 ---
 <!-- markdownlint-disable MD033 -->
@@ -11,15 +10,14 @@ main {
 }
 .bio {
     flex: 1;
-    margin: 1em 1em;
     text-align: justify;
     font-weight: bold;
 }
 .portrait {
+    margin: 1em 1em;
     min-width:0;
     flex:1;
     align-self:center;
-    margin: 0;
     border-radius: 50%;
 }
 .BioResumeDiv {
@@ -39,10 +37,11 @@ main {
     <img src="/portrait.png" alt="portrait" class="portrait">
     </img>
     <div class="BioResumeDiv">
-        <p class="bio">
-            My name is Calvin Smith.<br><br>
+        <div class="bio">
+            <p style="text-align:center;font-size:1.7rem;">My name is Calvin Smith.</p>
+            <br>
             I’m an undergraduate computer engineer at Cal Poly Pomona, interested in engineering, math, and art. Throw any interesting subject my way, and I’ll be sure to learn everything there is to know.
-        </p>
+        </div>
         {{< cards >}}
             {{< card link="/resume" title="View My Resume" icon="document-text">}}
         {{< /cards >}}
@@ -57,7 +56,7 @@ main {
 <p class="subtitle">
     In the summer of 2025, I worked alongside Dr. Philip Brown and others to develop a novel VR application for the research and development of in situ laparoscopic bioprinting.
 </p>
-{{< cards >}}
+{{< cards cols="2">}}
   {{< card link="/Abstract" image="abstract/fig1.png" title="Undergraduate Research Abstract" subtitle="Submitted to 2025 BMES annual meeting." >}}
   {{< card link="/ReuPowerPoint" image="/ReuPowerPoint/image015.png" title="Research Presentation" subtitle="End-of-internship presentation." >}}
 {{< /cards >}}
@@ -67,7 +66,7 @@ main {
     Space Mouse Project
 </h2>
 <p class="subtitle">
-    During the fall semester of 2024, I created an open-source project researching a new approach to 6DoF space mice. I used the skills I had recently attained in my summer internship at Ti Point Inc. earlier that year.
+    During the fall semester of 2024, I created an open-source project researching a new approach to 6DoF space mice.
 </p>
 {{< cards cols="1">}}
     {{< card link="/imuspacemouse" image="" title="Space Mouse Project" subtitle="// description of card." >}}
