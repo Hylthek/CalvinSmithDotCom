@@ -1,53 +1,52 @@
-baseURL: '/' # This will be automatically set by Netlify
+baseURL: '/' # This will be automatically set by Netlify.
 languageCode: 'en-us'
-date: 0
-date: 0
-date: 0
 title: 'Calvin Smith'
 theme: 'hextra'
 
+# Boilerplate.
 markup:
   goldmark:
     renderer:
       unsafe: true
 
+# Main navigation.
 menu:
   main:
     - name: Home
       pageRef: /
       weight: 1
 
-    - name: Resume
-      pageRef: /Resume
-      weight: 2
+    # - name: Resume
+    #   pageRef: /Resume
+    #   weight: 2
       
-      # Dropdown.
-    - name: 2025 Summer REU
-      identifier: reu
-      weight: 3
-    - name: Abstract
-      pageRef: /Abstract
-      parent: reu
-      weight: 1
-    - name: Extras
-      pageRef: /Extras
-      parent: reu
-      weight: 4
-    - name: SituCAM Documentation
-      pageRef: /SituCamDocumentation
-      parent: reu
-      weight: 3
-    - name: Presentation
-      pageRef: /ReuPowerPoint
-      parent: reu
-      weight: 2
+    #   # Dropdown.
+    # - name: 2025 Summer REU
+    #   identifier: reu
+    #   weight: 3
+    # - name: Abstract
+    #   pageRef: /Abstract
+    #   parent: reu
+    #   weight: 1
+    # - name: Extras
+    #   pageRef: /Extras
+    #   parent: reu
+    #   weight: 4
+    # - name: SituCAM Documentation
+    #   pageRef: /SituCamDocumentation
+    #   parent: reu
+    #   weight: 3
+    # - name: Presentation
+    #   pageRef: /ReuPowerPoint
+    #   parent: reu
+    #   weight: 2
 
-      # Dropdown.
-    - name: Projects
-      identifier: projects
-    - name: IMU Space Mouse
-      pageRef: /ImuSpaceMouse
-      parent: projects
+    #   # Dropdown.
+    # - name: Projects
+    #   identifier: projects
+    # - name: IMU Space Mouse
+    #   pageRef: /ImuSpaceMouse
+    #   parent: projects
 
 params:
   navbar:

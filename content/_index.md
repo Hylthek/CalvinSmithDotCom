@@ -1,146 +1,88 @@
 ---
-title: 'Home Page'
+title: 'Home'
+toc: false
 ---
 <!-- markdownlint-disable MD033 -->
 
-<img class="logo-light" src="Logo.png" alt="_" style="display: block;">
-<div style="
-display: flex;
-align-items: center;
-overflow: hidden;
-justify-content: center;">
-    <img src="abstract/fig1.png" alt="_"
-    style="border: 1px solid white;
-    max-width:  20em;
-    flex: 1 1 0;
+<!-- CSS style classes. -->
+<style>
+main {
+    font: 1.2rem 'Garamond';
+}
+.bio {
+    flex: 1;
+    margin: 1em 1em;
+}
+.portrait {
+    min-width:0;
+    flex:1;
+    align-self:center;
+    margin: 1em 1em;
+    border-radius: 50%;
+}
+.BioResumeDiv {
     min-width: 0;
-    object-fit: contain;">
-    <p style="
-    margin: 0 0;
-    font-size: 1.3em;
-    margin-left: 1em; margin-right: 1em;
-    flex: 0 0 auto;
-    text-align: center">
-        <a href="./abstract">
-            <b>Abstract:</b><br>
-        </a>
-        Submitted to 2025<br>
-        Annual BMES Meeting
-    </p>
-    <img src="abstract/fig5.png" alt="_" style="
-    border: 1px solid white;
-    max-width:  20em;
-    flex: 1 1 0;
-    min-width: 0;
-    object-fit: contain;">
+    flex: 1;
+    margin: 1em 1em;
+}
+.subtitle {
+    text-align: center;
+}
+</style>
+
+<!-- Profile picture and bio div. -->
+<div style="display:flex;">
+    <img src="/portrait.png" alt="portrait" class="portrait">
     </img>
+    <div class="BioResumeDiv">
+        <p class="bio">
+            // 2-3 sentence biography.<br>
+            // Extra line.<br>
+            // Extra line.<br>
+            // Extra line.<br>
+            // Extra line.<br>
+            // Extra line.<br>
+            // Extra line.<br>
+            // Extra line.<br>
+        </p>
+        {{< cards >}}
+            {{< card link="/resume" title="View My Resume" icon="document-text">}}
+        {{< /cards >}}
+    </div>
 </div>
-<div style="
-display: flex;
-align-items: center;
-overflow: hidden;
-justify-content: center;">
-    <img src="/ReuPowerPoint/image011.png" alt="_"style="
-    border: 1px solid white;
-    max-width:  20em;
-    flex: 1 1 0;
-    min-width: 0;
-    object-fit: contain;">
-    </img>
-    <p style="
-    margin: 0 0;
-    font-size: 1.3em;
-    margin-left: 1em; margin-right: 1em;
-    flex: 0 0 auto;
-    text-align: center">
-        <a href="./reupowerpoint">
-            <b>Presentation:</b><br>
-        </a>
-        Wake Forest University<br>
-        Undergraduate Research
-    </p>
-    <img src="/ReuPowerPoint/image015.png" alt="_" style="
-    border: 1px solid white;
-    max-width:  20em;
-    flex: 1 1 0;
-    min-width: 0;
-    object-fit: contain;">
-    </img>
-</div>
-<div style="
-display: flex;
-align-items: center;
-overflow: hidden;
-justify-content: center;">
-    <img src="Logo.png" alt="_" style="
-        max-width:  20em;
-        flex: 1 1 0;
-        min-width: 0;
-        object-fit: contain;
-        border: 1px solid white;
-    ">
-    </img>
-    <p style="
-    margin: 0 0;
-    font-size: 1.3em;
-    margin-left: 1em; margin-right: 1em;
-    flex: 0 0 auto;
-    text-align: center">
-        <a href="./situcamdocumentation">
-            <b>Documentation:</b><br>
-        </a>
-        SituCAM
-    </p>
-    <img src="Logo.png" alt="_" style="
-    max-width:  20em;
-    flex: 1 1 0;
-    min-width: 0;
-    object-fit: contain;
-    transform: scaleX(-1);
-    border: 1px solid white;">
-    </img>
-</div>
-<div style="
-display: flex;
-align-items: center;
-overflow: hidden;
-justify-content: center;">
-    <img src="/Extras/image%20(2).png" alt="_" style="
-    max-width:  20em;
-    flex: 1 1 0;
-    min-width: 0;
-    border: 1px solid white;
-    object-fit: contain;">
-    </img>
-    <p style="
-    margin: 0 0;
-    font-size: 1.3em;
-    margin-left: 1em; margin-right: 1em;
-    flex: 0 0 auto;
-    text-align: center">
-        <a href="./extras">
-            <b>Extras:</b><br>
-        </a>
-        SituCAM Development
-    </p>
-    <img src="/Extras/image%20(9).png" alt="_" style="
-    border: 1px solid white;
-    max-width:  20em;
-    flex: 1 1 0;
-    min-width: 0;
-    object-fit: contain;">
-    </img>
-</div>
-<a href="https://safiyamhart.weebly.com/blog/frame-animation"
-target="_blank" rel="noopener noreferrer"
-style="
-display: block;
-width: fit-content;
-margin: 0 auto;">
-    <img src="cat-w-wings_orig.gif" alt="_"
-    class="cat-with-wings"
-    style="
-    max-width: min(80vw, 30em);
-    height: fit-content;">
-    </img>
-</a>
+
+<!-- WFU REU section. -->
+<h2 style="text-align:center;">
+    Wake Forest University<br>
+    Undergraduate Research Experience<br>
+    (Summer 2025)
+</h2>
+<p class="subtitle">
+    // Short description of section.
+</p>
+{{< cards >}}
+  {{< card link="/Abstract" image="abstract/fig1.png" title="Undergraduate Research Abstract" subtitle="Undergraduate research abstract.<br>Submitted to 2025 BMES annual meeting." >}}
+  {{< card link="/ReuPowerPoint" image="/ReuPowerPoint/image015.png" title="Research Presentation" subtitle="End-of-summer presentation<br>Wake Forest University Undergraduate Research." >}}
+{{< /cards >}}
+
+<!-- Mouse project section. -->
+<h2 style="text-align:center;">
+    Space Mouse Project
+</h2>
+<p class="subtitle">
+    // Short description of section.
+</p>
+{{< cards cols="1">}}
+    {{< card link="/imuspacemouse" image="" title="Space Mouse Project" subtitle="// description of card." >}}
+{{< /cards >}}
+
+<!-- Mouse project section. -->
+<h2 style="text-align:center;">
+    SSBC 2025
+</h2>
+<p class="subtitle">
+    // Short description of section.
+</p>
+{{< cards cols="1">}}
+    {{< card link="/steelbridgedesign" image="" title="Steel Bridge Design" subtitle="// description of card." >}}
+{{< /cards >}}

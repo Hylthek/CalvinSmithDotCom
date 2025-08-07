@@ -1,5 +1,5 @@
 ---
-title: 'Summer 2025 Undergraduate Research Abstract'
+title: "Undergraduate Research Abstract"
 toc: false
 ---
 <!-- markdownlint-disable MD033 -->

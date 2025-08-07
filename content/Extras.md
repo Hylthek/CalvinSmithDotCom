@@ -1,5 +1,6 @@
 ---
 title: 'Extras'
+draft: true
 ---
 <!-- markdownlint-disable MD033 -->
 
