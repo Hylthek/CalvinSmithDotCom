@@ -27,10 +27,20 @@ toc: false
     line-height: 1.5;
     margin: 1rem 0 1.5rem;
 }
+.flex-container {
+    display: flex;
+    align-items: flex-start;
+}
+@media (max-width: 768px) { /* hx:md is typically 768px */
+    .flex-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
 </style>
 
 <!-- Profile picture and bio div. -->
-<div style="display:flex;">
+<div class="flex-container">
     <img src="/portrait.png" alt="portrait" class="portrait">
     </img>
     <div class="BioResumeDiv">
@@ -39,7 +49,7 @@ toc: false
             <br>
             I’m an undergraduate computer engineer at Cal Poly Pomona, interested in engineering, math, and art. Throw any interesting subject my way, and I’ll be sure to learn everything there is to know.
         </div>
-        {{< cards >}}
+        {{< cards cols="1" >}}
             {{< card link="/resume" title="View My Resume" icon="document-text">}}
         {{< /cards >}}
     </div>
