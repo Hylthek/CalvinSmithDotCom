@@ -5,12 +5,9 @@ toc: false
 
 <!-- CSS style classes. -->
 <style>
-main {
-    font: 1.2rem 'Garamond';
-}
 .bio {
     flex: 1;
-    text-align: justify;
+    text-align: left;
     font-weight: bold;
 }
 .portrait {
@@ -38,7 +35,7 @@ main {
     </img>
     <div class="BioResumeDiv">
         <div class="bio">
-            <p style="text-align:center;font-size:1.7rem;">My name is Calvin Smith.</p>
+            <p style="text-align:center;font-size:1.5rem;">My name is Calvin Smith.</p>
             <br>
             I’m an undergraduate computer engineer at Cal Poly Pomona, interested in engineering, math, and art. Throw any interesting subject my way, and I’ll be sure to learn everything there is to know.
         </div>

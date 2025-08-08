@@ -1,6 +1,6 @@
 baseURL: '/' # This will be automatically set by Netlify.
 languageCode: 'en-us'
-title: 'Calvin Smith'
+title: 'CalvinSmith.org'
 theme: 'hextra'
 
 # Boilerplate.
@@ -16,42 +16,32 @@ menu:
       pageRef: /
       weight: 1
 
-    # - name: Resume
-    #   pageRef: /Resume
-    #   weight: 2
+    - name: Resume
+      pageRef: /Resume
+      weight: 2
       
-    #   # Dropdown.
-    # - name: 2025 Summer REU
-    #   identifier: reu
-    #   weight: 3
-    # - name: Abstract
-    #   pageRef: /Abstract
-    #   parent: reu
-    #   weight: 1
-    # - name: Extras
-    #   pageRef: /Extras
-    #   parent: reu
-    #   weight: 4
-    # - name: SituCAM Documentation
-    #   pageRef: /SituCamDocumentation
-    #   parent: reu
-    #   weight: 3
-    # - name: Presentation
-    #   pageRef: /ReuPowerPoint
-    #   parent: reu
-    #   weight: 2
+    # Dropdown.
+    - name: WFU REU
+      identifier: reu
+      weight: 3
+    - name: Abstract
+      pageRef: /Abstract
+      parent: reu
+      weight: 1
+    - name: Presentation
+      pageRef: /ReuPowerPoint
+      parent: reu
+      weight: 2
 
-    #   # Dropdown.
-    # - name: Projects
-    #   identifier: projects
-    # - name: IMU Space Mouse
-    #   pageRef: /ImuSpaceMouse
-    #   parent: projects
+    - name: Space Mouse
+      pageRef: /ImuSpaceMouse
+      weight: 4
+
+    - name: Steel Bridge
+      pageRef: /SteelBridgeDesign
+      weight: 5
 
 params:
   navbar:
     displayTitle: true
-    displayLogo: true
-    logo:
-      path: images/logo.svg
-      dark: images/logo-dark.svg
+    displayLogo: false
