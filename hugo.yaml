@@ -10,12 +10,8 @@ markup:
       unsafe: true
 
 # Main navigation.
-menu:
+menus:
   main:
-    - name: Home
-      pageRef: /
-      weight: 1
-
     - name: Resume
       pageRef: /Resume
       weight: 2
@@ -37,6 +33,23 @@ menu:
       pageRef: /ImuSpaceMouse
       weight: 4
 
+    - name: Steel Bridge
+      pageRef: /SteelBridgeDesign
+      weight: 5
+
+  sidebar:
+    - name: Resume
+      pageRef: /Resume
+      weight: 1
+    - name: Abstract
+      pageRef: /Abstract
+      weight: 2
+    - name: Presentation
+      pageRef: /ReuPowerPoint
+      weight: 3
+    - name: Space Mouse
+      pageRef: /ImuSpaceMouse
+      weight: 4
     - name: Steel Bridge
       pageRef: /SteelBridgeDesign
       weight: 5

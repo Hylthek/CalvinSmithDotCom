@@ -18,12 +18,12 @@
 <aside class="sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] {{ $sidebarClass }}">
   <!-- Search bar on small screen -->
   <div class="hx:px-4 hx:pt-4 hx:md:hidden">
-    {{ partial "search.html" }}
+    <!-- {{ partial "search.html" }} -->
   </div>
   <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
       <!-- Nav -->
-      {{ template "sidebar-main" (dict "context" site.Home "pageURL" $pageURL "page" $context "toc" true) -}}
+      <!-- {{ template "sidebar-main" (dict "context" site.Home "pageURL" $pageURL "page" $context "toc" true) -}} -->
       {{ template "sidebar-footer" }}
     </ul>
 
