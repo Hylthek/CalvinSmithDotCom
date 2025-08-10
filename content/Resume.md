@@ -89,12 +89,7 @@ Bachelor of Science in Computer Engineering (3.69 GPA)
 <hr>
 
 <p class="big">
-    Space Mouse<br>
-    (
-    <a>
-        https://github.com/Hylthek/MouseImuProject
-    </a>
-    )
+    Space Mouse
 </p>
 
 - Created an open-source project to explore a new kind of user input device for 3D CAD systems.

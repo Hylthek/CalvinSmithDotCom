@@ -76,7 +76,7 @@ toc: false
     During the fall semester of 2024, I created an open-source project researching a new approach to 6DoF space mice.
 </p>
 {{< cards cols="1">}}
-    {{< card link="/imuspacemouse" image="" title="Space Mouse Project" subtitle="// description of card." >}}
+    {{< card link="/imuspacemouse" image="/ImuMouse/MousePhotos.png" title="Space Mouse Project" subtitle="Overview, Purpose, and Approach">}}
 {{< /cards >}}
 
 <!-- Mouse project section. -->

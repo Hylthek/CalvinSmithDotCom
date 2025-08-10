@@ -12,6 +12,10 @@ markup:
 # Main navigation.
 menus:
   main:
+    - name: Home
+      pageRef: /
+      weight: 1
+      
     - name: Resume
       pageRef: /Resume
       weight: 2
