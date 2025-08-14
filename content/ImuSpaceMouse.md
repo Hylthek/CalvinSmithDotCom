@@ -7,7 +7,7 @@ toc: false
 <style>
 .model-viewer {
     margin: 0 auto;
-    width: 500px;
+    width: 100%;
     height: 500px;
     border: dashed 1px;
     flex: 1;
@@ -25,6 +25,18 @@ main {
 }
 h2 {
     text-align: center;
+}
+.model-viewer-flex-container {
+    display:flex;
+    margin: 0;
+}
+@media (max-width: 768px) {
+    /* Styles for screens smaller than medium (md) */
+    .model-viewer-flex-container {
+        flex-direction: column;
+        width: 100%;
+        height: 500px;
+    }
 }
 </style>
 
@@ -55,7 +67,7 @@ A major goal of the project was to have a 3D mouse that functions just as well a
 <p style="text-align:center;">
     LMB: Rotate&emsp;RMB: Pan&emsp;Scroll: Zoom
 </p>
-<div style="display:flex; margin: 0">
+<div class="model-viewer-flex-container">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <model-viewer class="model-viewer" src="/ImuMouse/Mouse.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" poster="/ImuMouse/Hourglass.png" shadow-intensity="1" exposure="0.3"> </model-viewer>
     <model-viewer class="model-viewer" src="/ImuMouse/ExplodedMouse.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" poster="/ImuMouse/Hourglass.png" shadow-intensity="1" exposure="0.3"> </model-viewer>
