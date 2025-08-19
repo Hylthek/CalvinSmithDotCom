@@ -16,6 +16,7 @@ toc: false
     flex:1;
     align-self:center;
     border-radius: 50%;
+    object-fit: contain;
 }
 .BioResumeDiv {
     min-width: 0;
