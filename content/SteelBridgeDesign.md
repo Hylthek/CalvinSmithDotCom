@@ -61,7 +61,7 @@ toc: false
 </p>
 <div class="model-viewer-flex-container">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <model-viewer class="model-viewer" src="/SteelBridge/Main (1).gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" poster="/ImuMouse/Hourglass.png" shadow-intensity="1" exposure="0.3"> </model-viewer>
+    <model-viewer class="model-viewer" src="/SteelBridge/BridgeModel.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" poster="/ImuMouse/Hourglass.png" shadow-intensity="1" exposure="0.3"> </model-viewer>
 </div>
 <a style="display: block; text-align: center;" target="_blank" href="https://cad.onshape.com/documents/676f52f8dab36ba779c7b326/w/3148f26d6cff73f5c8d6a1f6/e/e703fe933e12774a4e3951a1?renderMode=0&uiState=68a5079a21cc7963a95a295a">
     View in Onshape.
