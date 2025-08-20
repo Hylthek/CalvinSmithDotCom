@@ -88,5 +88,5 @@ toc: false
     During my third year at Cal Poly Pomona, I was chosen as design captain for our Steel Bridge Club. Over the course of the school year, I was tasked with designing and validating a 20ft steel bridge model for the purposes of competing at AISC’s 2025 Student Steel Bridge Competition (SSBC).
 </p>
 {{< cards cols="1">}}
-    {{< card link="/steelbridgedesign" image="" title="Steel Bridge Design" subtitle="// description of card." >}}
+    {{< card link="/steelbridgedesign" image="/SteelBridge/GroupPhoto.png" title="Steel Bridge Design" subtitle="Competition objective and design process." >}}
 {{< /cards >}}
