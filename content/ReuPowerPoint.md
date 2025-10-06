@@ -1,8 +1,15 @@
 ---
-title: ReuPowerPoint
+title: Summer Research Presentation
 toc: false
 ---
 <!-- markdownlint-disable MD033 -->
+
+<p style="text-align: center; margin: 2rem 0; color: lightgrey;">
+    This presentation was given at the end of the Wake Forest University<br>
+    Biomedical Engineering and Informatics Summer Research Internship Program.
+</p>
+
+<hr style="margin: 0 0 24px;">
 
 <div style="font-style: italic; text-align: center;">
 
