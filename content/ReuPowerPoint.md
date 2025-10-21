@@ -4,7 +4,7 @@ toc: false
 ---
 <!-- markdownlint-disable MD033 -->
 
-<p style="text-align: center; margin: 2rem 0; color: lightgrey;">
+<p style="text-align: center; margin: 2rem 0;">
     This presentation was given at the end of the Wake Forest University<br>
     Biomedical Engineering and Informatics Summer Research Internship Program.
 </p>

@@ -15,7 +15,7 @@ p {
 }
 </style>
 
-<p style="text-align: center; margin: 2rem 0; color: lightgrey;">
+<p style="text-align: center; margin: 2rem 0;">
     This research abstract was submitted to the 2025 BMES Annual Meeting.
 </p>
 

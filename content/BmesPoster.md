@@ -25,7 +25,7 @@ img {
 }
 </style>
 
-<p style="text-align: center; margin: 2rem 0; color: lightgrey;">
+<p style="text-align: center; margin: 2rem 0;">
     In early October of 2025, I went to the Biomedical Engineering Society's annual meeting at the San Diego Convention Center. I presented the work I had accomplished in the past summer at the Wake Forest University Research Experience for Undergraduates. Thank you to Wake Forest University for the financial support to attend the conference.
 </p>
 
