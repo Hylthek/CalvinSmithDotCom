@@ -66,6 +66,9 @@ toc: false
 </p>
 {{< cards cols="2">}}
   {{< card link="/Abstract" image="abstract/fig1.png" title="Undergraduate Research Abstract" subtitle="Submitted to 2025 BMES annual meeting." >}}
+  {{< card link="/BmesPoster" image="/Poster/PosterPointing.jpg" title="BMES Poster" subtitle="Poster session at BMES 2025 Annual Meeting." >}}
+{{< /cards >}}
+{{< cards cols="1">}}
   {{< card link="/ReuPowerPoint" image="/ReuPowerPoint/slide2.png" title="Research Presentation" subtitle="End-of-internship presentation." >}}
 {{< /cards >}}
 
