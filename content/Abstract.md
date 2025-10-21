@@ -15,7 +15,11 @@ p {
 }
 </style>
 
-<p style="text-align:center; font: 1.2rem sans-serif;">This research abstract was submitted to the 2025 BMES Annual Meeting.</p>
+<p style="text-align: center; margin: 2rem 0; color: lightgrey;">
+    This research abstract was submitted to the 2025 BMES Annual Meeting.
+</p>
+
+<hr style="margin: 0 0 24px;">
 
 <h2 style="text-align: center;">Intro</h2>
 
