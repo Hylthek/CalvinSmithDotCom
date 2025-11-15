@@ -1,0 +1,130 @@
+<style>
+    .insect-sprite {
+        width: 20px;
+        height: 20px;
+    }
+
+    #insect-id {
+        left: 50vw;
+        top: 50vh;
+    }
+</style>
+
+<title>My Hugo Page</title>
+<h1>Welcome to My <span style="font-family: chiller;">FLY</span> Page</h1>
+<p style="font-family: chiller;">there is no escape from the FLY...</p>
+
+<div id="insect-id">
+    <img src="portrait.png" class="insect-sprite" alt="insect">
+</div>
+
+
+<script>
+    const insect = document.getElementById('insect-id');
+    insect.style.position = 'absolute';
+
+    const kFlySpeed = 5;
+    const kStopTimeMin = 1000;
+    const kStopTimeMax = 4000;
+    const kWakeUpThreshold = 60;
+    const kFlyAwayMaxSpeed = 50;
+    const kFlyAwayThreshold = kWakeUpThreshold;
+    const kWallThreshold = 50;
+    const kWallSpeed = 10;
+
+    let state = "NULL";
+    let cursor_x = 0;
+    let cursor_y = 0;
+
+    // Listen for mousemove events
+    document.addEventListener('mousemove', (event) => {
+        cursor_x = event.clientX; // X-coordinate of the cursor
+        cursor_y = event.clientY; // Y-coordinate of the cursor
+    });
+
+    function InsectUpdate() {
+        if (state == "moving") {
+            // Get curr pos.
+            const curr_x = parseFloat(insect.style.left) || window.innerWidth / 2;
+            const curr_y = parseFloat(insect.style.top) || window.innerHeight / 2;
+
+            // Get vector from cursor to insect.
+            const dist_x = curr_x - cursor_x;
+            const dist_y = curr_y - cursor_y;
+            const dist_mag = Math.sqrt(dist_x * dist_x + dist_y * dist_y);
+            // Turn vector into away trajectory.
+            let away_x = 0;
+            let away_y = 0;
+            if (dist_mag < kFlyAwayThreshold) {
+                const x = dist_mag / kFlyAwayThreshold;
+                const speed = (2 * x * x * x - 3 * x * x + 1) * kFlyAwayMaxSpeed;
+                away_x = dist_x * speed / dist_mag
+                away_y = dist_y * speed / dist_mag
+            }
+
+            // Get distance from walls.
+            let wall_x = 0
+            let wall_y = 0
+            if (curr_x < kWallThreshold) {
+                wall_x = kWallSpeed;
+            }
+            if (curr_x > window.innerWidth - kWallThreshold) {
+                wall_x = -kWallSpeed;
+            }
+            if (curr_y < kWallThreshold) {
+                wall_y = kWallSpeed;
+            }
+            if (curr_y > window.innerHeight - kWallThreshold) {
+                wall_y = -kWallSpeed;
+            }
+
+            // Get random fly movements.
+            rand_x = (2 * Math.random() - 1) * kFlySpeed;
+            rand_y = (2 * Math.random() - 1) * kFlySpeed;
+
+            console.log(away_x, away_x)
+
+            // Get new pos.
+            const x = curr_x + rand_x + away_x + wall_x;
+            const y = curr_y + rand_y + away_y + wall_y;
+            insect.style.left = `${x}px`;
+            insect.style.top = `${y}px`;
+        }
+        if (state == "stopped") {
+            const curr_x = parseFloat(insect.style.left) || window.innerWidth / 2;
+            const curr_y = parseFloat(insect.style.top) || window.innerHeight / 2;
+            const dist_x = curr_x - cursor_x;
+            const dist_y = curr_y - cursor_y;
+            if (Math.sqrt(dist_x * dist_x + dist_y * dist_y) < kWakeUpThreshold) {
+                StartMoving();
+            }
+        }
+    }
+
+    function StartMoving() {
+        state = "moving";
+        const time_to_stop = Math.random() * (kStopTimeMax - kStopTimeMin) + kStopTimeMin
+        setTimeout(() => {
+            StopMoving();
+        }, time_to_stop);
+    }
+
+    function StopMoving() {
+        state = "stopped";
+    }
+
+    function Main() {
+        InsectUpdate();
+
+        console.log(state);
+
+        setTimeout(() => {
+            Main();
+        }, 50);
+    }
+
+    // Initial call.
+    StartMoving();
+    Main();
+
+</script>
