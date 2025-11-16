@@ -15,7 +15,7 @@
 <p style="font-family: chiller;">there is no escape from the FLY...</p>
 
 <div id="insect-id">
-    <img src="portrait.png" class="insect-sprite" alt="insect">
+    <img src="fly.png" class="insect-sprite" alt="insect">
 </div>
 
 
@@ -24,8 +24,8 @@
     insect.style.position = 'absolute';
 
     const kFlySpeed = 5;
-    const kStopTimeMin = 1000;
-    const kStopTimeMax = 4000;
+    const kStopTimeMin = 1000000;
+    const kStopTimeMax = 4000000;
     const kWakeUpThreshold = 60;
     const kFlyAwayMaxSpeed = 50;
     const kFlyAwayThreshold = kWakeUpThreshold;
@@ -35,6 +35,10 @@
     let state = "NULL";
     let cursor_x = 0;
     let cursor_y = 0;
+    let accel_x = 0;
+    let accel_y = 0;
+    let velo_x = 0;
+    let velo_y = 0;
 
     // Listen for mousemove events
     document.addEventListener('mousemove', (event) => {
@@ -62,33 +66,41 @@
                 away_y = dist_y * speed / dist_mag
             }
 
-            // Get distance from walls.
-            let wall_x = 0
-            let wall_y = 0
-            if (curr_x < kWallThreshold) {
-                wall_x = kWallSpeed;
+            // Bounce off walls.
+            if (curr_x < 0 && velo_x < 0) {
+                velo_x *= -1;
             }
-            if (curr_x > window.innerWidth - kWallThreshold) {
-                wall_x = -kWallSpeed;
+            if (curr_x > window.innerWidth && velo_x > 0) {
+                velo_x *= -1;
             }
-            if (curr_y < kWallThreshold) {
-                wall_y = kWallSpeed;
+            if (curr_y < 0 && velo_y < 0) {
+                velo_y *= -1;
             }
-            if (curr_y > window.innerHeight - kWallThreshold) {
-                wall_y = -kWallSpeed;
+            if (curr_y > window.innerHeight && velo_y > 0) {
+                velo_y *= -1;
             }
 
-            // Get random fly movements.
-            rand_x = (2 * Math.random() - 1) * kFlySpeed;
-            rand_y = (2 * Math.random() - 1) * kFlySpeed;
-
-            console.log(away_x, away_x)
-
-            // Get new pos.
-            const x = curr_x + rand_x + away_x + wall_x;
-            const y = curr_y + rand_y + away_y + wall_y;
+            // Update accel and velo and pos.
+            accel_x = (2 * Math.random() - 1) * 8;
+            accel_y = (2 * Math.random() - 1) * 8;
+            velo_x = velo_x + accel_x;
+            velo_y = velo_y + accel_y;
+            const x = curr_x + velo_x;
+            const y = curr_y + velo_y;
             insect.style.left = `${x}px`;
             insect.style.top = `${y}px`;
+
+            // Apply drag. TODO
+            const velo_mag = Math.sqrt(velo_x * velo_x + velo_y * velo_y);
+            const drag_x = 0.001 * velo_mag * velo_mag * -velo_x/velo_mag;
+            const drag_y = 0.001 * velo_mag * velo_mag * -velo_y/velo_mag;
+            console.log(drag_x/velo_x); // The percentage of reduction.
+            velo_x += drag_x;
+            velo_y += drag_y;
+            
+            // Rotate sprite.
+            const angle = Math.atan2(velo_y, velo_x) * 180 / Math.PI + 90;
+            insect.style.transform = `rotate(${angle}deg)`;
         }
         if (state == "stopped") {
             const curr_x = parseFloat(insect.style.left) || window.innerWidth / 2;
@@ -98,6 +110,10 @@
             if (Math.sqrt(dist_x * dist_x + dist_y * dist_y) < kWakeUpThreshold) {
                 StartMoving();
             }
+            accel_x = 0;
+            accel_y = 0;
+            velo_x = 0;
+            velo_y = 0;
         }
     }
 
