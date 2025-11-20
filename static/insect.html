@@ -24,8 +24,8 @@
     insect.style.position = 'absolute';
 
     const kFlySpeed = 5;
-    const kStopTimeMin = 1000000;
-    const kStopTimeMax = 4000000;
+    const kStopTimeMin = 1000;
+    const kStopTimeMax = 4000;
     const kWakeUpThreshold = 60;
     const kFlyAwayMaxSpeed = 50;
     const kFlyAwayThreshold = kWakeUpThreshold;
@@ -39,6 +39,8 @@
     let accel_y = 0;
     let velo_x = 0;
     let velo_y = 0;
+
+    let timeout_id;
 
     // Listen for mousemove events
     document.addEventListener('mousemove', (event) => {
@@ -57,14 +59,14 @@
             const dist_y = curr_y - cursor_y;
             const dist_mag = Math.sqrt(dist_x * dist_x + dist_y * dist_y);
             // Turn vector into away trajectory.
-            let away_x = 0;
-            let away_y = 0;
-            if (dist_mag < kFlyAwayThreshold) {
-                const x = dist_mag / kFlyAwayThreshold;
-                const speed = (2 * x * x * x - 3 * x * x + 1) * kFlyAwayMaxSpeed;
-                away_x = dist_x * speed / dist_mag
-                away_y = dist_y * speed / dist_mag
-            }
+            // let away_x = 0;
+            // let away_y = 0;
+            // if (dist_mag < kFlyAwayThreshold) {
+            //     const x = dist_mag / kFlyAwayThreshold;
+            //     const speed = (2 * x * x * x - 3 * x * x + 1) * kFlyAwayMaxSpeed;
+            //     away_x = dist_x * speed / dist_mag
+            //     away_y = dist_y * speed / dist_mag
+            // }
 
             // Bounce off walls.
             if (curr_x < 0 && velo_x < 0) {
@@ -90,17 +92,26 @@
             insect.style.left = `${x}px`;
             insect.style.top = `${y}px`;
 
-            // Apply drag. TODO
+            // Apply drag.
             const velo_mag = Math.sqrt(velo_x * velo_x + velo_y * velo_y);
-            const drag_x = 0.001 * velo_mag * velo_mag * -velo_x/velo_mag;
-            const drag_y = 0.001 * velo_mag * velo_mag * -velo_y/velo_mag;
-            console.log(drag_x/velo_x); // The percentage of reduction.
+            const drag_x = 0.001 * velo_mag * velo_mag * -velo_x / velo_mag;
+            const drag_y = 0.001 * velo_mag * velo_mag * -velo_y / velo_mag;
             velo_x += drag_x;
             velo_y += drag_y;
-            
+
             // Rotate sprite.
             const angle = Math.atan2(velo_y, velo_x) * 180 / Math.PI + 90;
             insect.style.transform = `rotate(${angle}deg)`;
+
+            // Check mouse position if reset timeout.
+            if (dist_mag < kWakeUpThreshold) {
+                clearTimeout(timeout_id);
+                const time_to_stop = Math.random() * (kStopTimeMax - kStopTimeMin) + kStopTimeMin
+                timeout_id = setTimeout(() => {
+                    StopMoving();
+                }, time_to_stop);
+            }
+
         }
         if (state == "stopped") {
             const curr_x = parseFloat(insect.style.left) || window.innerWidth / 2;
@@ -120,20 +131,20 @@
     function StartMoving() {
         state = "moving";
         const time_to_stop = Math.random() * (kStopTimeMax - kStopTimeMin) + kStopTimeMin
-        setTimeout(() => {
+        timeout_id = setTimeout(() => {
             StopMoving();
         }, time_to_stop);
+
+        console.log("start moving");
     }
 
     function StopMoving() {
+        console.log("stop moving");
         state = "stopped";
     }
 
     function Main() {
         InsectUpdate();
-
-        console.log(state);
-
         setTimeout(() => {
             Main();
         }, 50);
