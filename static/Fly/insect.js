@@ -219,19 +219,50 @@ class Fly {
 }
 
 // Update function for fly swatter object.
-let fly_swatter_timeout_id = null;
+let gFlySwatterTimeoutId = null;
 function FlySwatterUpdate() {
     // Poll for a mouse click interrupt.
     if (gMouseClicked == false)
         return;
     gMouseClicked = false;
 
+    PlayRandFlySwatterSfx();
+
     fly_swatter.style.display = "inline";
     fly_swatter.style.top = `${gCursorY}px`;
     fly_swatter.style.left = `${gCursorX}px`;
-    clearTimeout(fly_swatter_timeout_id);
-    fly_swatter_timeout_id = setTimeout(() => {
+    clearTimeout(gFlySwatterTimeoutId);
+    gFlySwatterTimeoutId = setTimeout(() => {
         fly_swatter.style.display = "none";
+    }, 300);
+}
+
+let fly_swatter_sfx_timeout_id = null;
+function PlayRandFlySwatterSfx() {
+    buzzing_sfx.play();
+    
+    const rand_num = Math.floor(4.99 * Math.random()); // i.e. {0,1,2,3,4}.
+
+    switch (rand_num) {
+        case 0:
+            fly_swatter_sfx.currentTime = 0.43; break;
+        case 1:
+            fly_swatter_sfx.currentTime = 1.83; break;
+        case 2:
+            fly_swatter_sfx.currentTime = 2.76; break;
+        case 3:
+            fly_swatter_sfx.currentTime = 5.37; break;
+        case 4:
+            fly_swatter_sfx.currentTime = 7.928; break;
+        default:
+            console.error("WHAT?"); break;
+    }
+
+    fly_swatter_sfx.play()
+    clearTimeout(fly_swatter_sfx_timeout_id);
+    fly_swatter_sfx_timeout_id = setTimeout(() => {
+        fly_swatter_sfx.pause();
+        fly_swatter_sfx.currentTime = 0;
     }, 300);
 }
 
@@ -243,7 +274,17 @@ function MainLoop() {
     }, 50);
 }
 
-// Initial call.
+// Instantiate Fly object.
 const gFly = new Fly();
 gFly.ChangeState("moving");
+
+// Initialize fly buzzing sfx.
+const buzzing_sfx = new Audio("Fly/buzzing.mp3");
+buzzing_sfx.loop = true;
+buzzing_sfx.play();
+
+// Initialize fly swatter sfx.
+const fly_swatter_sfx = new Audio("Fly/fly_swatter_sfx.mp3");
+
+// Initial call.
 MainLoop();
