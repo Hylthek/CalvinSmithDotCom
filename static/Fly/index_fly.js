@@ -24,12 +24,21 @@ function MainLoop() {
         const prevTransform = fly_obj.style.transform;
         const newTransform = prevTransform.replace(/rotate\([^)]+\)/, "").trim();
         fly_obj.style.transform = `${newTransform} rotate(${curr_angle_deg}deg)`;
+
+        const currTop = parseFloat(getComputedStyle(fly_obj).top);
+        const currLeft = parseFloat(fly_obj.style.left);
+
+        const randTop = Math.random() * 1 - 0.5;
+        const randLeft = Math.random() * 1 - 0.5;
+
+        fly_obj.style.top = `${currTop + randTop}px`;
+        fly_obj.style.left = `${currLeft + randLeft}px`;
     }
 }
 
 function StopMoving() {
     state = "stopped";
-    setTimeout(StartMoving, 3000 * Math.random() + 3000);
+    setTimeout(StartMoving, 500 * Math.random() + 300);
 }
 function StartMoving() {
     state = "moving";

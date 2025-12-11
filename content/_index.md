@@ -97,14 +97,12 @@ toc: false
 <style>
     #fly-id {
         position: absolute;
-        top: 10rem;
-        left: 40px;
         transform: translate(-50%,-50%) scale(0.15) rotate(30deg);
     }
 </style>
 
 <!-- Inline styles are used here so that js can access them. -->
-<a href="/insect.html" id="fly-id" style="transform: translate(-50%,-50%) scale(0.15) rotate(30deg);">
+<a href="/insect.html" id="fly-id" style="top: 10rem; left: 40px; transform: translate(-50%,-50%) scale(0.06) rotate(30deg);">
     <img src="Fly/fly.png" alt="fly">
 </a>
 
