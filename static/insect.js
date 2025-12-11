@@ -1,268 +1,249 @@
-const insect = document.getElementById('insect-id');
+// Get html objects.
 const fly_swatter = document.getElementById('fly-swatter-id');
-insect.style.position = 'absolute';
 
-const kFlySpeed = 5;
-const kStopTimeMin = 10000;
-const kStopTimeMax = 20000;
-const kWakeUpThreshold = 60;
-const kFlyAwayMaxSpeed = 50;
-const kFlyAwayThreshold = kWakeUpThreshold;
-const kWallThreshold = 50;
-const kWallSpeed = 10;
-const kWallBuffer = 200;
+// Globals.
+let gCursorX = 0;
+let gCursorY = 0;
+let gMouseClicked = false;
 
-let state = "NULL";
-let cursor_x = 0;
-let cursor_y = 0;
-let accel_x = 0;
-let accel_y = 0;
-let velo_x = 0;
-let velo_y = 0;
-
-let state_timeout_id;
-
-let mouse_clicked = false;
-
-const kCrawlingMaxAngle = 10;
-
-// Listen for mousemove events
+// Listen for events.
 document.addEventListener('mousemove', (event) => {
-    cursor_x = event.clientX; // X-coordinate of the cursor
-    cursor_y = event.clientY; // Y-coordinate of the cursor
+    gCursorX = event.clientX; // X-coordinate of the cursor
+    gCursorY = event.clientY; // Y-coordinate of the cursor
 });
-
-// Listen for mouse click events
 document.addEventListener('mousedown', (event) => {
-    mouse_clicked = true;
-    cursor_x = event.clientX;
-    cursor_y = event.clientY;
+    gMouseClicked = true;
+    gCursorX = event.clientX;
+    gCursorY = event.clientY;
 });
 
-function InsectUpdate() {
-    if (state == "moving") {
-        // Get curr pos.
-        const curr_x = parseFloat(insect.style.left) || window.innerWidth / 2;
-        const curr_y = parseFloat(insect.style.top) || window.innerHeight / 2;
+// Fly class.
+class Fly {
+    static kFlySpeed = 5;
+    static kStopTimeMin = 10000;
+    static kStopTimeMax = 20000;
+    static kWakeUpThreshold = 60;
+    static kFlyAwayMaxSpeed = 50;
+    static kFlyAwayThreshold = 60;
+    static kWallThreshold = 50;
+    static kWallSpeed = 10;
+    static kWallBuffer = 200;
+    static kCrawlingMaxAngle = 10;
 
-        // Get vector from cursor to insect.
-        const dist_x = curr_x - cursor_x;
-        const dist_y = curr_y - cursor_y;
-        const dist_mag = Math.sqrt(dist_x * dist_x + dist_y * dist_y);
+    constructor() {
+        this.html_element = document.getElementById('insect-id');
+        this.state = "NULL";
+        this.stateTimeoutId = null;
+        this.velo_x = 0;
+        this.velo_y = 0;
+    }
 
-        // Vector from insect to center.
-        // const bulb_x = window.innerWidth / 2;
-        // const bulb_y = window.innerHeight / 4;
-        // const dist_bulb_x = bulb_x - curr_x;
-        // const dist_bulb_y = bulb_y - curr_y;
-        // const dist_bulb_mag = Math.sqrt(dist_bulb_x * dist_bulb_x + dist_bulb_y * dist_bulb_y);
+    // This is where the control flow of the fly automaton is defined.
+    ChangeState(state) {
+        // Update state immediately.
+        this.state = state;
+        console.log("FlyState: ", state);
 
-        // Accelerate toward lightbulb center.
-        // accel_toward_bulb_x = (dist_bulb_x / dist_bulb_mag) * 30;
-        // accel_toward_bulb_y = (dist_bulb_y / dist_bulb_mag) * 30;
-        accel_toward_bulb_x = 0;
-        accel_toward_bulb_y = 0;
-
-        // Bounce off light bulb
-        // if (dist_bulb_mag < 100 && ((velo_x * dist_bulb_x + velo_y * dist_bulb_y) > 0)) {
-        //     velo_x *= -1;
-        //     velo_y *= -1;
-        // }
-
-        // Update accel and velo and pos.
-        accel_x = (2 * Math.random() - 1) * 30 + accel_toward_bulb_x;
-        accel_y = (2 * Math.random() - 1) * 30 + accel_toward_bulb_y;
-        velo_x = velo_x + accel_x;
-        velo_y = velo_y + accel_y;
-
-        // Bounce off walls.
-        let x = curr_x + velo_x;
-        let y = curr_y + velo_y;
-        if (x < kWallBuffer) {
-            velo_x *= -1;
-            x = kWallBuffer;
-        }
-        if (y < kWallBuffer) {
-            y = kWallBuffer;
-            velo_y *= -1;
-        }
-        if (x > window.innerWidth - kWallBuffer - 40) {
-            x = window.innerWidth - kWallBuffer - 40;
-            velo_x *= -1;
-        }
-        if (y > window.innerHeight - kWallBuffer - 40) {
-            y = window.innerHeight - kWallBuffer - 40;
-            velo_y *= -1;
+        // Find string and timeout for the next state.
+        let state_later = null;
+        let timeout_ms = null;
+        switch (state) {
+            case "moving": // Moving -> Stopped.
+                state_later = "stopped";
+                timeout_ms = Math.random() * 3000 + 1000;
+                break;
+            case "stopped": // Stopped -> Crawling.
+                state_later = "crawling";
+                timeout_ms = Math.random() * 1000 + 300;
+                break;
+            case "crawling": // Crawling -> Stopped.
+                state_later = "stopped";
+                timeout_ms = Math.random() * 1000 + 100;
+                // There is also an additional requirement for entering crawling state.
+                this.html_element.style.transform = `rotate(${Math.random() * 360}deg)`;
+                break;
+            default:
+                console.error("Unknown state:", state);
+                return;
         }
 
-        // Update pos.
-        insect.style.left = `${x}px`;
-        insect.style.top = `${y}px`;
+        clearTimeout(this.stateTimeoutId);
+        this.stateTimeoutId = setTimeout(() => {
+            this.ChangeState(state_later);
+        }, timeout_ms);
+    }
+
+    // Update function called per-frame.
+    InsectUpdate() {
+        switch (this.state) {
+            case "moving": {
+                // Get curr pos.
+                const curr_x = parseFloat(gFly.html_element.style.left) || window.innerWidth / 2;
+                const curr_y = parseFloat(gFly.html_element.style.top) || window.innerHeight / 2;
+
+                // Get vector from cursor to insect.
+                const dist_x = curr_x - gCursorX;
+                const dist_y = curr_y - gCursorY;
+                const dist_mag = Math.sqrt(dist_x * dist_x + dist_y * dist_y);
+
+                // Update accel and velo and pos.
+                const accel_x = (2 * Math.random() - 1) * 30;
+                const accel_y = (2 * Math.random() - 1) * 30;
+                this.velo_x = this.velo_x + accel_x;
+                this.velo_y = this.velo_y + accel_y;
+
+                // Bounce off walls.
+                let x = curr_x + this.velo_x;
+                let y = curr_y + this.velo_y;
+                if (x < Fly.kWallBuffer) {
+                    x = Fly.kWallBuffer;
+                    this.velo_x *= -1;
+                }
+                if (y < Fly.kWallBuffer) {
+                    y = Fly.kWallBuffer;
+                    this.velo_y *= -1;
+                }
+                if (x > window.innerWidth - Fly.kWallBuffer - 40) {
+                    x = window.innerWidth - Fly.kWallBuffer - 40;
+                    this.velo_x *= -1;
+                }
+                if (y > window.innerHeight - Fly.kWallBuffer - 40) {
+                    y = window.innerHeight - Fly.kWallBuffer - 40;
+                    this.velo_y *= -1;
+                }
+
+                // Update pos.
+                gFly.html_element.style.left = `${x}px`;
+                gFly.html_element.style.top = `${y}px`;
 
 
-        // Apply drag.
-        const velo_mag = Math.sqrt(velo_x * velo_x + velo_y * velo_y);
-        const drag_x = 0.001 * velo_mag * velo_mag * -velo_x / velo_mag;
-        const drag_y = 0.001 * velo_mag * velo_mag * -velo_y / velo_mag;
-        velo_x += drag_x;
-        velo_y += drag_y;
+                // Apply drag.
+                const velo_mag = Math.sqrt(this.velo_x * this.velo_x + this.velo_y * this.velo_y);
+                const drag_x = 0.001 * velo_mag * velo_mag * -this.velo_x / velo_mag;
+                const drag_y = 0.001 * velo_mag * velo_mag * -this.velo_y / velo_mag;
+                this.velo_x += drag_x;
+                this.velo_y += drag_y;
 
-        // Rotate sprite.
-        const angle = Math.atan2(velo_y, velo_x) * 180 / Math.PI + 90;
-        insect.style.transform = `rotate(${angle}deg)`;
+                // Rotate sprite.
+                const angle = Math.atan2(this.velo_y, this.velo_x) * 180 / Math.PI + 90;
+                gFly.html_element.style.transform = `rotate(${angle}deg)`;
 
-        // Check mouse position if reset timeout.
-        if (dist_mag < kWakeUpThreshold) {
-            StartMoving();
+                // Check mouse position if reset timeout.
+                if (dist_mag < Fly.kWakeUpThreshold) {
+                    this.ChangeState("moving");
+                }
+
+                break;
+            }
+            case "stopped": {
+                // Stop fly.
+                this.velo_x = 0;
+                this.velo_y = 0;
+
+                // Check if cursor is close.
+                const curr_x = parseFloat(gFly.html_element.style.left) || window.innerWidth / 2;
+                const curr_y = parseFloat(gFly.html_element.style.top) || window.innerHeight / 2;
+                const dist_x = curr_x - gCursorX;
+                const dist_y = curr_y - gCursorY;
+                if (Math.sqrt(dist_x * dist_x + dist_y * dist_y) < Fly.kWakeUpThreshold) {
+                    this.ChangeState("moving");
+                    return;
+                }
+
+                // Check if fly is outside window.
+                if (curr_x < 0 || curr_x > window.innerWidth || curr_y < 0 || curr_y > window.innerHeight) {
+                    this.ChangeState("moving");
+                    return;
+                }
+
+                break;
+            }
+            case "crawling": {
+                // Get current angle. CW=positive, North=0.
+                let curr_angle_deg;
+                const match = gFly.html_element.style.transform.match(/rotate\((.+)\)/);
+                if (match && match[1]) {
+                    curr_angle_deg = parseFloat(match[1]);
+                }
+                else {
+                    gFly.html_element.style.transform = `rotate(0deg)`
+                }
+
+                // Turn angle into radians in standard orientation.
+                const curr_angle_rad = (90 - curr_angle_deg) * Math.PI / 180;
+                const rand_angle_rad = curr_angle_rad + Fly.kCrawlingMaxAngle * Math.PI / 180 * (2 * Math.random() - 1)
+
+                // Turn angle into velocity.
+                const kCrawlingVelocity = 20;
+                let velo_x = kCrawlingVelocity * Math.cos(rand_angle_rad);
+                let velo_y = -kCrawlingVelocity * Math.sin(rand_angle_rad);
+
+                // If out of bounds, reflect velocity.
+                const curr_x = parseFloat(gFly.html_element.style.left) || window.innerWidth / 2;
+                const curr_y = parseFloat(gFly.html_element.style.top) || window.innerHeight / 2;
+                if (curr_x < Fly.kWallBuffer && velo_x < 0)
+                    velo_x *= -1;
+                if (curr_x + 40 > window.innerWidth - Fly.kWallBuffer && velo_x > 0)
+                    velo_x *= -1;
+                if (curr_y < Fly.kWallBuffer && velo_y < 0)
+                    velo_y *= -1;
+                if (curr_y + 40 > window.innerHeight - Fly.kWallBuffer && velo_y > 0)
+                    velo_y *= -1;
+
+                // Update position.
+                const x = curr_x + velo_x;
+                const y = curr_y + velo_y;
+                gFly.html_element.style.left = `${x}px`;
+                gFly.html_element.style.top = `${y}px`;
+
+                // Update rotation.
+                const angle = Math.atan2(velo_y, velo_x) * 180 / Math.PI + 90;
+                gFly.html_element.style.transform = `rotate(${angle}deg)`;
+
+                // Check if cursor is close.
+                const dist_x = curr_x - gCursorX;
+                const dist_y = curr_y - gCursorY;
+                if (Math.sqrt(dist_x * dist_x + dist_y * dist_y) < Fly.kWakeUpThreshold) {
+                    this.ChangeState("moving");
+                    return;
+                }
+
+                break;
+            }
+            default: {
+                console.error("Unknown state:", this.state);
+                break;
+            }
         }
     }
-    else if (state == "stopped") {
-        // Stop fly.
-        accel_x = 0;
-        accel_y = 0;
-        velo_x = 0;
-        velo_y = 0;
-
-        // Check if cursor is close.
-        const curr_x = parseFloat(insect.style.left) || window.innerWidth / 2;
-        const curr_y = parseFloat(insect.style.top) || window.innerHeight / 2;
-        const dist_x = curr_x - cursor_x;
-        const dist_y = curr_y - cursor_y;
-        if (Math.sqrt(dist_x * dist_x + dist_y * dist_y) < kWakeUpThreshold) {
-            StartMoving();
-            return;
-        }
-
-        // Check if fly is outside window.
-        if (curr_x < 0 || curr_x > window.innerWidth || curr_y < 0 || curr_y > window.innerHeight) {
-            StartMoving();
-            return;
-        }
-    }
-    else if (state == "crawling") {
-        // Get current angle. CW=positive, North=0.
-        let curr_angle_deg;
-        const match = insect.style.transform.match(/rotate\((.+)\)/);
-        if (match && match[1]) {
-            curr_angle_deg = parseFloat(match[1]);
-        }
-        else {
-            insect.style.transform = `rotate(0deg)`
-        }
-
-        // Turn angle into radians in standard orientation.
-        const curr_angle_rad = (90 - curr_angle_deg) * Math.PI / 180;
-        const rand_angle_rad = curr_angle_rad + kCrawlingMaxAngle * Math.PI / 180 * (2 * Math.random() - 1)
-
-        // Turn angle into velocity.
-        const kCrawlingVelocity = 20;
-        let velo_x = kCrawlingVelocity * Math.cos(rand_angle_rad);
-        let velo_y = -kCrawlingVelocity * Math.sin(rand_angle_rad);
-
-        // If out of bounds, reflect velocity.
-        const curr_x = parseFloat(insect.style.left) || window.innerWidth / 2;
-        const curr_y = parseFloat(insect.style.top) || window.innerHeight / 2;
-        if (curr_x < kWallBuffer && velo_x < 0)
-            velo_x *= -1;
-        if (curr_x + 40 > window.innerWidth - kWallBuffer && velo_x > 0)
-            velo_x *= -1;
-        if (curr_y < kWallBuffer && velo_y < 0)
-            velo_y *= -1;
-        if (curr_y + 40 > window.innerHeight - kWallBuffer && velo_y > 0)
-            velo_y *= -1;
-
-        // Update position.
-        const x = curr_x + velo_x;
-        const y = curr_y + velo_y;
-        insect.style.left = `${x}px`;
-        insect.style.top = `${y}px`;
-
-        // Update rotation.
-        const angle = Math.atan2(velo_y, velo_x) * 180 / Math.PI + 90;
-        insect.style.transform = `rotate(${angle}deg)`;
-
-        // Check if cursor is close.
-        const dist_x = curr_x - cursor_x;
-        const dist_y = curr_y - cursor_y;
-        if (Math.sqrt(dist_x * dist_x + dist_y * dist_y) < kWakeUpThreshold) {
-            StartMoving();
-            return;
-        }
-    }
-    else {
-        console.error("Unknown state:", state);
-    }
-}
-
-// State change functions that reset timeout to next state accordingly.
-function StartMoving() {
-    // Set state.
-    state = "moving";
-
-    // Clear and re-set state timeout
-    const time_to_stop = Math.random() * 3000 + 1000;
-    clearTimeout(state_timeout_id);
-    state_timeout_id = setTimeout(() => {
-        StopMoving();
-    }, time_to_stop);
-
-    console.log("start moving");
-}
-function StopMoving() {
-    // Set state.
-    state = "stopped";
-
-    // Clear and re-set state timeout
-    clearTimeout(state_timeout_id);
-    const time_to_stop = Math.random() * 1000 + 300;
-    state_timeout_id = setTimeout(() => {
-        StartCrawling();
-    }, time_to_stop);
-
-    console.log("stop moving");
-}
-function StartCrawling() {
-    state = "crawling";
-
-    // Randomize rotation.
-    const random_angle = Math.random() * 360;
-    insect.style.transform = `rotate(${random_angle}deg)`;
-
-    // Clear and re-set state timeout
-    clearTimeout(state_timeout_id);
-    const time_to_stop = Math.random() * 1000 + 100;
-    state_timeout_id = setTimeout(() => {
-        StopMoving();
-    }, time_to_stop);
-
-    console.log("start crawling");
 }
 
 // Update function for fly swatter object.
 let fly_swatter_timeout_id = null;
 function FlySwatterUpdate() {
     // Poll for a mouse click interrupt.
-    if (mouse_clicked == false)
+    if (gMouseClicked == false)
         return;
-    mouse_clicked = false;
+    gMouseClicked = false;
 
     fly_swatter.style.display = "inline";
-    fly_swatter.style.top = `${cursor_y}px`;
-    fly_swatter.style.left = `${cursor_x}px`;
+    fly_swatter.style.top = `${gCursorY}px`;
+    fly_swatter.style.left = `${gCursorX}px`;
     clearTimeout(fly_swatter_timeout_id);
     fly_swatter_timeout_id = setTimeout(() => {
         fly_swatter.style.display = "none";
     }, 300);
 }
 
-function Main() {
-    InsectUpdate();
+function MainLoop() {
+    gFly.InsectUpdate();
     FlySwatterUpdate();
     setTimeout(() => {
-        Main();
+        MainLoop();
     }, 50);
 }
 
 // Initial call.
-StartMoving();
-Main();
+const gFly = new Fly();
+gFly.ChangeState("moving");
+MainLoop();
