@@ -93,3 +93,19 @@ toc: false
 {{< cards cols="1">}}
     {{< card link="/steelbridgedesign" image="/SteelBridge/GroupPhoto.png" title="Steel Bridge Design" subtitle="Competition objective and design process." >}}
 {{< /cards >}}
+
+<style>
+    #fly-id {
+        position: absolute;
+        top: 10rem;
+        left: 40px;
+        transform: translate(-50%,-50%) scale(0.15) rotate(30deg);
+    }
+</style>
+
+<!-- Inline styles are used here so that js can access them. -->
+<a href="/insect.html" id="fly-id" style="transform: translate(-50%,-50%) scale(0.15) rotate(30deg);">
+    <img src="Fly/fly.png" alt="fly">
+</a>
+
+<script src="Fly/index_fly.js">
