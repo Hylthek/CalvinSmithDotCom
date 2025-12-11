@@ -101,9 +101,10 @@ toc: false
     }
 </style>
 
-<script src="Fly/index_fly.js"></script>
 
 <!-- Inline styles are used here so that js can access them. -->
 <a href="/insect.html" id="fly-id" style="top: 10rem; left: 40px; transform: translate(-50%,-50%) scale(0.06) rotate(30deg);">
     <img src="Fly/fly.png" alt="fly">
 </a>
+
+<script src="Fly/index_fly.js"></script>
