@@ -5,6 +5,22 @@
         overflow: hidden;
     }
 
+    /* Make images and text unselectable and undraggable */
+    img {
+        user-select: none; /* Prevent text/image selection */
+        -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
+        -webkit-user-select: none; /* Prevent selection in WebKit browsers */
+        -moz-user-select: none; /* Prevent selection in Firefox */
+        -ms-user-select: none; /* Prevent selection in Internet Explorer/Edge */
+    }
+    body {
+        user-select: none; /* Prevent text/image selection */
+        -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
+        -webkit-user-select: none; /* Prevent selection in WebKit browsers */
+        -moz-user-select: none; /* Prevent selection in Firefox */
+        -ms-user-select: none; /* Prevent selection in Internet Explorer/Edge */
+    }
+
     .insect-sprite {
         width: 40px;
         height: 40px;
