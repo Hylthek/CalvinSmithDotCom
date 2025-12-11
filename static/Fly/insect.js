@@ -234,13 +234,13 @@ function FlySwatterUpdate() {
     clearTimeout(gFlySwatterTimeoutId);
     gFlySwatterTimeoutId = setTimeout(() => {
         fly_swatter.style.display = "none";
-    }, 300);
+    }, 100);
 }
 
 let fly_swatter_sfx_timeout_id = null;
 function PlayRandFlySwatterSfx() {
     buzzing_sfx.play();
-    
+
     const rand_num = Math.floor(4.99 * Math.random()); // i.e. {0,1,2,3,4}.
 
     switch (rand_num) {
@@ -288,3 +288,38 @@ const fly_swatter_sfx = new Audio("Fly/fly_swatter_sfx.mp3");
 
 // Initial call.
 MainLoop();
+
+// Make the object with id "kill-him" bob up and down.
+const kill_him = document.getElementById("kill-him");
+function BobbingAnimation() {
+    const bobbing_offset = Math.sin(Date.now() / 500) * 10;
+    const pulsating_factor = Math.sin(Date.now() / 785) * 0.1;
+
+    kill_him.style.transform = `translateX(-50%) translateY(calc(${bobbing_offset}px - 50%)) scale(${pulsating_factor + 1})`;
+
+    requestAnimationFrame(BobbingAnimation);
+}
+// Start the bobbing animation.
+BobbingAnimation();
+
+// Make the object with id "fly-container" lerp sinusoidally between two outline styles.
+const fly_container = document.getElementById("fly-container");
+// Initialize new audio objects.
+const demon_breathe_in = new Audio("Fly/demon_breathe_in.mp3");
+const demon_breathe_out = new Audio("Fly/demon_breathe_out.mp3");
+function OutlineAnimation() {
+    const lerp_factor = (Math.sin(Date.now() / 2500) + 1) / 2; // Normalized between 0 and 1.
+    const outline_width = 20 + lerp_factor * 10;
+    const outline_color = `rgb(${241 + lerp_factor * (220 - 241)}, ${245 + lerp_factor * (20 - 245)}, ${249 + lerp_factor * (9 - 249)})`; // Lerp between #F1F5F9 and crimson.
+
+    fly_container.style.outline = `${outline_width}px solid ${outline_color}`;
+
+    if (lerp_factor > 0.99)
+        demon_breathe_out.play();
+    if (lerp_factor < 0.01)
+        demon_breathe_in.play();
+
+    requestAnimationFrame(OutlineAnimation);
+}
+// Start the outline animation.
+OutlineAnimation();

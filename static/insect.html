@@ -5,20 +5,40 @@
         overflow: hidden;
     }
 
+    h1,
+    p {
+        margin: 0.25rem;
+    }
+
     /* Make images and text unselectable and undraggable */
     img {
-        user-select: none; /* Prevent text/image selection */
-        -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
-        -webkit-user-select: none; /* Prevent selection in WebKit browsers */
-        -moz-user-select: none; /* Prevent selection in Firefox */
-        -ms-user-select: none; /* Prevent selection in Internet Explorer/Edge */
+        user-select: none;
+        /* Prevent text/image selection */
+        -webkit-user-drag: none;
+        /* Prevent dragging in WebKit browsers */
+        -webkit-user-select: none;
+        /* Prevent selection in WebKit browsers */
+        -moz-user-select: none;
+        /* Prevent selection in Firefox */
+        -ms-user-select: none;
+        /* Prevent selection in Internet Explorer/Edge */
     }
+
     body {
-        user-select: none; /* Prevent text/image selection */
-        -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
-        -webkit-user-select: none; /* Prevent selection in WebKit browsers */
-        -moz-user-select: none; /* Prevent selection in Firefox */
-        -ms-user-select: none; /* Prevent selection in Internet Explorer/Edge */
+        user-select: none;
+        /* Prevent text/image selection */
+        -webkit-user-drag: none;
+        /* Prevent dragging in WebKit browsers */
+        -webkit-user-select: none;
+        /* Prevent selection in WebKit browsers */
+        -moz-user-select: none;
+        /* Prevent selection in Firefox */
+        -ms-user-select: none;
+        /* Prevent selection in Internet Explorer/Edge */
+
+        background-color: rgb(17, 17, 17);
+        color: #F1F5F9;
+        text-align: center;
     }
 
     .insect-sprite {
@@ -41,10 +61,13 @@
     }
 </style>
 
+<!-- Disable mobile zooming. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <!-- Main text. -->
 <title>My Hugo Page</title>
-<h1>Welcome to My <span style="font-family: chiller;">FLY</span> Page</h1>
-<p style="font-family: chiller;">there is no escape from the FLY...</p>
+<h1>Welcome to My <span style="font-family: papyrus;">FLY</span> Page</h1>
+<p style="font-family: papyrus;">there is no escape from the FLY...</p>
 
 <!-- Insect object. -->
 <div id="insect-id">
@@ -57,11 +80,29 @@
     left: 200px;
    right: 200px;
   bottom: 200px;
-    border: 2px solid black; pointer-events: none;">
+    outline: 10px solid #F1F5F9;
+    pointer-events: none;"
+    id="fly-container">
 </div>
 
 <!-- Fly swatter. -->
-<img id = "fly-swatter-id" src="Fly/flyswatter.png" alt="fly-swatter">
+<img id="fly-swatter-id" src="Fly/flyswatter.png" alt="fly-swatter">
+
+
+<!-- Kill him text. -->
+<p id="kill-him">KILL HIM</p>
+<style>
+    #kill-him {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50vw;
+        bottom: 0;
+        margin: 0;
+        font-family: papyrus;
+        font-size: 2rem;
+        color: crimson;
+    }
+</style>
 
 <!-- Script. -->
 <script src="Fly/insect.js"></script>
