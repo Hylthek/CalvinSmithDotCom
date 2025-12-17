@@ -248,8 +248,6 @@ function FlySwatterUpdate() {
 
 let fly_swatter_sfx_timeout_id = null;
 function PlayRandFlySwatterSfx() {
-    buzzing_sfx.play();
-
     const rand_num = Math.floor(4.99 * Math.random()); // i.e. {0,1,2,3,4}.
 
     switch (rand_num) {
@@ -346,9 +344,14 @@ function Initial(event) {
     if (click_start_screen) {
         click_start_screen.style.display = "none";
     }
+    else {
+        console.error("StartScreen not found");
+    }
 
     // Initial call.
     gFly.ChangeState("moving");
-    buzzing_sfx.play();
+    setTimeout(() => {
+        buzzing_sfx.play();
+    }, 50); // Delay to make sure browser knows web has been interacted with.
     MainLoop();
 }
