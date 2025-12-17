@@ -23,7 +23,7 @@ document.addEventListener('touchstart', (event) => {
     gCursorY = touch.clientY;
     if (device_type == "touchstart")
         gMouseClicked = true;
-});
+}, {passive: false});
 
 // Fly class.
 class Fly {
@@ -294,7 +294,7 @@ buzzing_sfx.loop = true;
 const fly_swatter_sfx = new Audio("Fly/fly_swatter_sfx.mp3");
 
 document.addEventListener('mousedown', Initial, { once: true });
-document.addEventListener('touchstart', Initial, { once: true });
+document.addEventListener('touchstart', Initial, { once: true, passive: false});
 
 // Click to start.
 let device_type = null;
