@@ -66,8 +66,8 @@
 
 <!-- Main text. -->
 <title>My Hugo Page</title>
-<h1>Welcome to My <span style="font-family: papyrus;">FLY</span> Page</h1>
-<p style="font-family: papyrus;">there is no escape from the FLY...</p>
+<h1>Welcome to My <span style="font-family: papyrus, 'Comic Sans MS', cursive, sans-serif;">FLY</span> Page</h1>
+<p style="font-family: papyrus, 'Comic Sans MS', cursive, sans-serif;">there is no escape from the FLY...</p>
 
 <!-- Insect object. -->
 <div id="insect-id">
@@ -90,7 +90,7 @@
 
 
 <!-- Kill him text. -->
-<p id="kill-him">KILL HIM</p>
+<p id="kill-him">SWAT HIM</p>
 <style>
     #kill-him {
         will-change: transform;
@@ -99,7 +99,7 @@
         left: 50vw;
         bottom: 0;
         margin: 0;
-        font-family: papyrus;
+        font-family: papyrus, "Comic Sans MS", cursive, sans-serif;
         font-size: 2rem;
         color: crimson;
     }
@@ -107,7 +107,21 @@
     #fly-container {
         will-change: outline;
     }
+
+    #click-start-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+        z-index: 9998;
+    }
 </style>
+
+<div id="click-start-screen">
+    <p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 200%;">Click to Start</p>
+</div>
 
 <!-- Script. -->
 <script src="Fly/insect.js"></script>
