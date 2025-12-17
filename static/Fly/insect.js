@@ -12,9 +12,17 @@ document.addEventListener('mousemove', (event) => {
     gCursorY = event.clientY; // Y-coordinate of the cursor
 });
 document.addEventListener('mousedown', (event) => {
-    gMouseClicked = true;
     gCursorX = event.clientX;
     gCursorY = event.clientY;
+    if (device_type == "mousedown")
+        gMouseClicked = true;
+});
+document.addEventListener('touchstart', (event) => {
+    const touch = event.touches[0];
+    gCursorX = touch.clientX;
+    gCursorY = touch.clientY;
+    if (device_type == "touchstart")
+        gMouseClicked = true;
 });
 
 // Fly class.
@@ -27,7 +35,8 @@ class Fly {
     static kFlyAwayThreshold = 60;
     static kWallThreshold = 50;
     static kWallSpeed = 10;
-    static kWallBuffer = 200;
+    static kWallBufferLeftRight = 100;
+    static kWallBufferUpDown = 250;
     static kCrawlingMaxAngle = 10;
 
     constructor() {
@@ -95,20 +104,20 @@ class Fly {
                 // Bounce off walls.
                 let x = curr_x + this.velo_x;
                 let y = curr_y + this.velo_y;
-                if (x < Fly.kWallBuffer) {
-                    x = Fly.kWallBuffer;
+                if (x < Fly.kWallBufferLeftRight) {
+                    x = Fly.kWallBufferLeftRight;
                     this.velo_x *= -1;
                 }
-                if (y < Fly.kWallBuffer) {
-                    y = Fly.kWallBuffer;
+                if (y < Fly.kWallBufferUpDown) {
+                    y = Fly.kWallBufferUpDown;
                     this.velo_y *= -1;
                 }
-                if (x > window.innerWidth - Fly.kWallBuffer - 40) {
-                    x = window.innerWidth - Fly.kWallBuffer - 40;
+                if (x > window.innerWidth - Fly.kWallBufferLeftRight - 40) {
+                    x = window.innerWidth - Fly.kWallBufferLeftRight - 40;
                     this.velo_x *= -1;
                 }
-                if (y > window.innerHeight - Fly.kWallBuffer - 40) {
-                    y = window.innerHeight - Fly.kWallBuffer - 40;
+                if (y > window.innerHeight - Fly.kWallBufferUpDown - 40) {
+                    y = window.innerHeight - Fly.kWallBufferUpDown - 40;
                     this.velo_y *= -1;
                 }
 
@@ -181,13 +190,13 @@ class Fly {
                 // If out of bounds, reflect velocity.
                 const curr_x = parseFloat(gFly.html_element.style.left) || window.innerWidth / 2;
                 const curr_y = parseFloat(gFly.html_element.style.top) || window.innerHeight / 2;
-                if (curr_x < Fly.kWallBuffer && velo_x < 0)
+                if (curr_x < Fly.kWallBufferLeftRight && velo_x < 0)
                     velo_x *= -1;
-                if (curr_x + 40 > window.innerWidth - Fly.kWallBuffer && velo_x > 0)
+                if (curr_x + 40 > window.innerWidth - Fly.kWallBufferLeftRight && velo_x > 0)
                     velo_x *= -1;
-                if (curr_y < Fly.kWallBuffer && velo_y < 0)
+                if (curr_y < Fly.kWallBufferUpDown && velo_y < 0)
                     velo_y *= -1;
-                if (curr_y + 40 > window.innerHeight - Fly.kWallBuffer && velo_y > 0)
+                if (curr_y + 40 > window.innerHeight - Fly.kWallBufferUpDown && velo_y > 0)
                     velo_y *= -1;
 
                 // Update position.
@@ -284,21 +293,30 @@ buzzing_sfx.loop = true;
 // Initialize fly swatter sfx.
 const fly_swatter_sfx = new Audio("Fly/fly_swatter_sfx.mp3");
 
+document.addEventListener('mousedown', Initial, { once: true });
+document.addEventListener('touchstart', Initial, { once: true });
+
 // Click to start.
-document.addEventListener('mousedown', () => {
+let device_type = null;
+function Initial(event) {
+    if (device_type != null)
+        return;
+    device_type = event.type;
+    console.log(device_type)
+
     // Make the object with id "kill-him" bob up and down.
     const kill_him = document.getElementById("kill-him");
     function BobbingAnimation() {
         const bobbing_offset = Math.sin(Date.now() / 500) * 10;
         const pulsating_factor = Math.sin(Date.now() / 785) * 0.1;
-        
+
         kill_him.style.transform = `translateX(-50%) translateY(calc(${bobbing_offset}px - 50%)) scale(${pulsating_factor + 1})`;
-        
+
         requestAnimationFrame(BobbingAnimation);
     }
     // Start the bobbing animation.
     BobbingAnimation();
-    
+
     // Make the object with id "fly-container" lerp sinusoidally between two outline styles.
     const fly_container = document.getElementById("fly-container");
     // Initialize new audio objects.
@@ -310,22 +328,21 @@ document.addEventListener('mousedown', () => {
         const lerp_factor = (Math.sin(Date.now() / 1500) + 1) / 2; // Normalized between 0 and 1.
         const outline_width = 20 + lerp_factor * 10;
         const outline_color = `rgb(${241 + lerp_factor * (220 - 241)}, ${245 + lerp_factor * (20 - 245)}, ${249 + lerp_factor * (9 - 249)})`; // Lerp between #F1F5F9 and crimson.
-        
+
         fly_container.style.outline = `${outline_width}px solid ${outline_color}`;
-        
+
         if (lerp_factor > 0.99)
             demon_breathe_out.play();
         if (lerp_factor < 0.01)
             demon_breathe_in.play();
-        
+
         requestAnimationFrame(OutlineAnimation);
     }
     // Start the outline animation.
     OutlineAnimation();
-    
+
     // Hide start screen.
     const click_start_screen = document.getElementById("click-start-screen");
-    console.log("checking")
     if (click_start_screen) {
         click_start_screen.style.display = "none";
     }
@@ -334,4 +351,4 @@ document.addEventListener('mousedown', () => {
     gFly.ChangeState("moving");
     buzzing_sfx.play();
     MainLoop();
-}, { once: true });
+}
