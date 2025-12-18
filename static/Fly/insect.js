@@ -291,8 +291,10 @@ buzzing_sfx.loop = true;
 // Initialize fly swatter sfx.
 const fly_swatter_sfx = new Audio("Fly/fly_swatter_sfx.mp3");
 
-document.addEventListener('mousedown', Initial, { once: true });
-document.addEventListener('touchstart', Initial, { once: true, passive: false});
+setTimeout(() => {
+    document.addEventListener('mousedown', Initial, { once: true });
+    document.addEventListener('touchstart', Initial, { once: true, passive: false});
+}, 200);
 
 // Click to start.
 let device_type = null;
