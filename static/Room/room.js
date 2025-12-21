@@ -1,13 +1,7 @@
-console.log("Booting...")
-
+// Canvas boilerplate.
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
-
-// Get size of the canvas
-let canvas_rect = canvas.getBoundingClientRect()
-canvas.width = canvas_rect.width
-canvas.height = canvas_rect.height
-console.log("Canvas resolution is: ", canvas_rect.width.toFixed(1), canvas_rect.height.toFixed(1))
+ResizeCanvas()
 
 //     $$$$$$\  $$\           $$\                 $$\           
 //    $$  __$$\ $$ |          $$ |                $$ |          
@@ -32,7 +26,7 @@ canvas.addEventListener("mousemove", (event) => {
 
 canvas.addEventListener("mousedown", (event) => {
     gMb1State = true
-    gMb1StateChanged = true
+    gMb1StateChanged = true // Value is reset by GetMouseData()
 })
 
 canvas.addEventListener("mouseup", () => {
@@ -75,6 +69,11 @@ class Draggable {
     Pickup() {
         this.picked_up = true
         this.curr_image = 1;
+
+        // Make last on draw order.
+        const idx = gDraggables.indexOf(this)
+        gDraggables.splice(idx, 1)
+        gDraggables.push(this)
     }
 
     Drop() {
@@ -100,7 +99,10 @@ const goobert2 = new Image();
 goobert.src = "/room/goobert.png";
 goobert2.src = "/room/goobert2.png";
 
-gDraggables.push(new Draggable(400, 400, 100, 50, [goobert, goobert2]))
+for (let i = 0; i < 10; i++) {
+    const element = gDraggables[i];
+    gDraggables.push(new Draggable(250 + 500 * Math.random(), 200 + 300 * Math.random(), 100, 50, [goobert, goobert2]))
+}
 
 //    $$\      $$\           $$\           
 //    $$$\    $$$ |          \__|          
@@ -233,7 +235,8 @@ function GetMouseData() {
 }
 
 function GetHoveredObject() {
-    for (let i = 0; i < gDraggables.length; i++) {
+    // Iterate in reverse to prioritize front-most draggables.
+    for (let i = gDraggables.length - 1; i >= 0; i--) {
         const element = gDraggables[i];
         if (gMouseX > element.x && gMouseX < element.x + element.w &&
             gMouseY > element.y && gMouseY < element.y + element.h)
