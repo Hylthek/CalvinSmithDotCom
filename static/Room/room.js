@@ -46,7 +46,9 @@ canvas.addEventListener("mouseup", () => {
 //                                                                    
 //                                                                    
 class Draggable {
+    /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images) {
+        // This function is.
         this.x = x;
         this.y = y;
         this.w = w;
@@ -80,6 +82,26 @@ class Draggable {
         this.picked_up = false
         this.curr_image = 0;
     }
+
+    Delete() {
+        gDraggables.splice(gDraggables.indexOf(this), 1)
+    }
+}
+
+class Container {
+    /** images is an array of HTML Image objects. */
+    constructor(x, y, w, h, images) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.images = images
+        this.curr_image = 0;
+    }
+
+    EatDraggable() {
+        console.log("Loot Get!")
+    }
 }
 
 //    $$$$$$\           $$\   $$\     $$\           $$\ 
@@ -94,15 +116,19 @@ class Draggable {
 //                                                      
 //                                                      
 let gDraggables = []
-const goobert = new Image();
-const goobert2 = new Image();
+let gContainers = []
+const goobert = new Image()
+const goobert2 = new Image()
+const goobhole = new Image()
 goobert.src = "/room/goobert.png";
 goobert2.src = "/room/goobert2.png";
+goobhole.src = "/room/goobhole.png";
 
 for (let i = 0; i < 10; i++) {
     const element = gDraggables[i];
     gDraggables.push(new Draggable(250 + 500 * Math.random(), 200 + 300 * Math.random(), 100, 50, [goobert, goobert2]))
 }
+gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [goobhole]))
 
 //    $$\      $$\           $$\           
 //    $$$\    $$$ |          \__|          
@@ -115,7 +141,7 @@ for (let i = 0; i < 10; i++) {
 //                                         
 //                                         
 //                                         
-window.main = () => {
+main = () => {
     window.requestAnimationFrame(main);
 
     // Present screen. (draw objects)
@@ -134,18 +160,22 @@ window.main = () => {
     const state_changed = _[3]
 
     // Calculate next screen. (mutate objects)
-    const hovered_obj = GetHoveredObject()
-    if (hovered_obj && mb1_state && state_changed) {
-        hovered_obj.Pickup()
+    const hovered_draggable = GetHoveredDraggable()
+    const hovered_container = GetHoveredContainer()
+    if (hovered_draggable && mb1_state && state_changed) {
+        hovered_draggable.Pickup()
     }
-    if (hovered_obj && !mb1_state) {
-        hovered_obj.Drop()
+    if (hovered_draggable && !mb1_state) {
+        hovered_draggable.Drop()
+        if (hovered_container && state_changed) {
+            hovered_draggable.Delete()
+            hovered_container.EatDraggable()
+        }
     }
 
     UpdateDraggables([x, y], [mb1_state, state_changed])
 }
 main();
-console.log("Main called...")
 
 //    $$$$$$$$\                              $$\     $$\                               
 //    $$  _____|                             $$ |    \__|                              
@@ -199,17 +229,13 @@ function GetTime() {
 function DrawDraggables() {
     gDraggables.forEach(element => {
         element.Draw()
-    });
+    })
 }
 
 function DrawContainers() {
-    ctx.save()
-
-    ctx.translate(0.2 * canvas.width, 0.5 * canvas.height)
-    ctx.fillStyle = "red";
-    ctx.fillRect(-25, -50, 50, 100);
-
-    ctx.restore()
+    gContainers.forEach(element => {
+        ctx.drawImage(element.images[element.curr_image], element.x, element.y, element.w, element.h);
+    })
 }
 
 function DrawDecorations() {
@@ -234,10 +260,21 @@ function GetMouseData() {
         return [gMouseX, gMouseY, gMb1State, false]
 }
 
-function GetHoveredObject() {
+function GetHoveredDraggable() {
     // Iterate in reverse to prioritize front-most draggables.
     for (let i = gDraggables.length - 1; i >= 0; i--) {
         const element = gDraggables[i];
+        if (gMouseX > element.x && gMouseX < element.x + element.w &&
+            gMouseY > element.y && gMouseY < element.y + element.h)
+            return element
+    }
+    return null
+}
+
+function GetHoveredContainer() {
+    // Iterate in reverse to prioritize front-most draggables.
+    for (let i = gContainers.length - 1; i >= 0; i--) {
+        const element = gContainers[i];
         if (gMouseX > element.x && gMouseX < element.x + element.w &&
             gMouseY > element.y && gMouseY < element.y + element.h)
             return element
