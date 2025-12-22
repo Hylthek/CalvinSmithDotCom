@@ -73,6 +73,8 @@ class Draggable {
         this.picked_up = false
         this.curr_image = 0;
         this.description = "Drag me!"
+        this.compatibilities = []
+        this.pickup_location = [null, null]
     }
 
     Draw() {
@@ -93,15 +95,13 @@ class Draggable {
         const idx = gDraggables.indexOf(this)
         gDraggables.splice(idx, 1)
         gDraggables.push(this)
+
+        this.pickup_location = [this.x, this.y]
     }
 
     Drop() {
         this.picked_up = false
         this.curr_image = 0;
-    }
-
-    Delete() {
-        gDraggables.splice(gDraggables.indexOf(this), 1)
     }
 
     DrawHoverText() {
@@ -114,6 +114,11 @@ class Draggable {
         ctx.fillText(this.description, this.x + this.w, this.y + this.h / 2);
 
         ctx.restore()
+    }
+
+    Reject() {
+        this.x = this.pickup_location[0];
+        this.y = this.pickup_location[1];
     }
 }
 
@@ -128,13 +133,27 @@ class Container {
         this.curr_image = 0;
         this.eaten_counter = 0;
         this.description = "Drop here!"
+        this.compatibilities = []
     }
 
-    EatDraggable() {
-        this.eaten_counter++
-        if (this.eaten_counter == 10) {
-            gDialogues[0].Start()
+    EatDraggable(draggable) {
+        // Scan compatibility lists for a match.
+        let compatible = false
+        for (let i = 0; i < draggable.compatibilities.length; i++) {
+            const type = draggable.compatibilities[i]
+            if (this.compatibilities.indexOf(type) != -1) {
+                compatible = true
+                break
+            }
         }
+        if (compatible == false) {
+            draggable.Reject()
+            return;
+        }
+
+        // Process successful eat.
+        this.eaten_counter++
+        gDraggables.splice(gDraggables.indexOf(draggable), 1)
     }
 
     DrawHoverText() {
@@ -142,9 +161,9 @@ class Container {
 
         ctx.font = "16px Arial";
         ctx.fillStyle = "black";
-        ctx.textAlign = "left";
+        ctx.textAlign = "right";
         ctx.textBaseline = "middle"
-        ctx.fillText(this.description, this.x + this.w, this.y + this.h / 2);
+        ctx.fillText(this.description, this.x, this.y + this.h / 2);
 
         ctx.restore()
     }
@@ -160,7 +179,7 @@ class Decoration {
         this.h = h;
         this.images = images
         this.curr_image = 0;
-        this.visible = true;
+        this.visible = false;
     }
 }
 
@@ -176,6 +195,7 @@ class Dialogue {
         this.curr_text = 0;
         this.w = 800
         this.h = 200
+        this.can_start = true
     }
 
     Start() {
@@ -201,19 +221,36 @@ let gDecorations = []
 let gDialogues = []
 const goobert = new Image()
 const goobert2 = new Image()
-const goobhole = new Image()
+const trashcan = new Image()
 const horse = new Image()
 goobert.src = "/room/goobert.png";
 goobert2.src = "/room/goobert2.png";
-goobhole.src = "/room/goobhole.png";
+trashcan.src = "/room/goobhole.png";
 horse.src = "/room/horsejean.png";
 
+// Add draggables
 for (let i = 0; i < 10; i++) {
     const element = gDraggables[i];
     gDraggables.push(new Draggable(250 + 500 * Math.random(), 200 + 300 * Math.random(), 100, 50, [goobert, goobert2]))
+    gDraggables[gDraggables.length - 1].description = "Goob #" + (i + 1);
+    if (i % 2 == 0)
+        gDraggables[gDraggables.length - 1].compatibilities = ["odd-trash"]
+    else
+        gDraggables[gDraggables.length - 1].compatibilities = ["even-trash"]
 }
-gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [goobhole]))
+
+// Add containers.
+gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan]))
+gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan]))
+gContainers[0].description = "Odd Goobs here!"
+gContainers[0].compatibilities = ["odd-trash"]
+gContainers[1].description = "Even Goobs here!"
+gContainers[1].compatibilities = ["even-trash"]
+
+// Add decorations.
 gDecorations.push(new Decoration(50, 50, 200, 150, [horse]))
+
+// Add dialogues.
 gDialogues.push(new Dialogue([ // Note: newlines in the IDE are part of the string literal.
     "O, ever, do the crepances of the small, four-legged mite dote me unnerved.",
     "For I too once possessed such an abhorration of the mind.",
@@ -262,23 +299,19 @@ function main() {
     // Calculate next screen. (mutate objects)
     const hovered_draggable = GetHoveredDraggable()
     const hovered_container = GetHoveredContainer()
-    if (hovered_draggable && mb1_state && state_changed) {
+    if (hovered_draggable && mb1_state && state_changed)
         hovered_draggable.Pickup()
-    }
-    if (hovered_draggable && !mb1_state) {
+    if (hovered_draggable && !mb1_state)
         hovered_draggable.Drop()
-        if (hovered_container && state_changed) {
-            hovered_draggable.Delete()
-            hovered_container.EatDraggable()
-        }
-    }
-    if (hovered_draggable) {
+    if (hovered_container && hovered_draggable && !mb1_state && state_changed)
+        hovered_container.EatDraggable(hovered_draggable)
+    if (hovered_draggable)
         hovered_draggable.DrawHoverText()
-    }
-    if (hovered_container && !hovered_draggable) {
+    if (hovered_container)
         hovered_container.DrawHoverText()
-    }
 
+    UpdateDecorations()
+    UpdateDialogue()
     UpdateDraggables([x, y], [mb1_state, state_changed])
 }
 main();
@@ -347,7 +380,8 @@ function DrawContainers() {
 
 function DrawDecorations() {
     gDecorations.forEach(element => {
-        ctx.drawImage(element.images[element.curr_image], element.x, element.y, element.w, element.h);
+        if (element.visible)
+            ctx.drawImage(element.images[element.curr_image], element.x, element.y, element.w, element.h);
     })
 }
 
@@ -428,5 +462,32 @@ function UpdateDraggables() {
         }
         if (gMb1State == false)
             element.Drop()
+    }
+}
+
+function TotalContainerScore() {
+    let score = 0;
+    for (let i = 0; i < gContainers.length; i++) {
+        const element = gContainers[i];
+        score += element.eaten_counter;
+    }
+    return score;
+}
+
+function UpdateDecorations() {
+    for (let i = 0; i < gDecorations.length; i++) {
+        const element = gDecorations[i];
+        if (TotalContainerScore() == 10 && element.can_appear) 
+            element.visible = true
+    }
+}
+
+function UpdateDialogue() {
+    for (let i = 0; i < gDialogues.length; i++) {
+        const element = gDialogues[i];
+        if (TotalContainerScore() == 10 && element.can_start) {
+            element.can_start = false
+            element.Start()
+        }
     }
 }
