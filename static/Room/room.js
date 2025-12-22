@@ -36,6 +36,20 @@ canvas.addEventListener("mouseup", () => {
     gMb1StateChanged = true
 })
 
+document.addEventListener("keydown", (event) => {
+    if (event.code === "Space") {
+        gDialogues.forEach(dialogue => {
+            if (dialogue.started) {
+                dialogue.curr_text++;
+                if (dialogue.curr_text >= dialogue.text.length) {
+                    dialogue.curr_text = 0;
+                    dialogue.started = false;
+                }
+            }
+        });
+    }
+})
+
 //     $$$$$$\  $$\                                                   
 //    $$  __$$\ $$ |                                                  
 //    $$ /  \__|$$ | $$$$$$\   $$$$$$$\  $$$$$$$\  $$$$$$\   $$$$$$$\ 
@@ -104,7 +118,7 @@ class Container {
 
     EatDraggable() {
         this.eaten_counter++
-        if (this.eaten_counter == 1) {
+        if (this.eaten_counter == 10) {
             gDialogues[0].Start()
         }
     }
@@ -184,7 +198,7 @@ Alas, the four-legged mite perseveres, taunting me with subjugations of the psyc
 Will I ever escape this body?
 Will I ever defy my bones?
 My untimely death would bring no more to you than a breath.`,
-"Its time for a bath.", ":)"]))
+    "Its time for a bath.", ":)"]))
 
 //    $$\      $$\           $$\           
 //    $$$\    $$$ |          \__|          
@@ -332,7 +346,7 @@ function DrawDialogues() {
             })
 
             // Draw instruction text.
-            ctx.fillText("Press space to continue.", x + w / 2, y + h + Dialogue.line_spacing/2 + Dialogue.outer_margin/2)
+            ctx.fillText("Press space to continue.", x + w / 2, y + h + Dialogue.line_spacing / 2 + Dialogue.outer_margin / 2)
         }
     })
 
