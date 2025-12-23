@@ -1,11 +1,14 @@
 'use strict';
 
+// Constants
+const kPixelationFactor = 2 // Must be defined before ResizeCanvas()
+
 // Canvas boilerplate.
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
-let gW = undefined
+let gW = undefined // Can't read non-existent inline value as we are using a media query.
 let gH = undefined
-ResizeCanvas()
+ResizeCanvas() // Must be called here to set gW and gH to proper values.
 
 //     $$$$$$\  $$\           $$\                 $$\           
 //    $$  __$$\ $$ |          $$ |                $$ |          
@@ -24,8 +27,8 @@ let gMb1State = false
 let gMb1StateChanged = false
 
 canvas.addEventListener("mousemove", (event) => {
-    gMouseX = event.clientX - ResizeCanvas().left
-    gMouseY = event.clientY - ResizeCanvas().top
+    gMouseX = (event.clientX - canvas.getBoundingClientRect().left) / kPixelationFactor
+    gMouseY = (event.clientY - canvas.getBoundingClientRect().top) / kPixelationFactor
 })
 
 canvas.addEventListener("mousedown", (event) => {
@@ -453,6 +456,8 @@ main();
 
 function ResizeCanvas() {
     const canvas_rect = canvas.getBoundingClientRect()
+    canvas_rect.width /= kPixelationFactor
+    canvas_rect.height /= kPixelationFactor
     canvas.width = canvas_rect.width
     canvas.height = canvas_rect.height
     gW = canvas.width
