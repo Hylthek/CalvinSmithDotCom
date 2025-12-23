@@ -429,7 +429,6 @@ function main() {
     DrawContainers()
     DrawDraggables()
     DrawDecorations()
-    DrawDialogues()
 
     // Accept input. (get raw input)
     const _ = GetMouseData()
@@ -452,6 +451,9 @@ function main() {
         hovered_draggable.DrawHoverText()
     if (hovered_container)
         hovered_container.DrawHoverText()
+
+    // Draw dialogue on top of hover text.
+    DrawDialogues()
 
     UpdateGameEvents()
     UpdateDraggables([x, y], [mb1_state, state_changed])
@@ -542,19 +544,26 @@ function DrawDialogues() {
             const lines = game_event.dialogue.text[game_event.dialogue.curr_text].split("\n")
             const dialogue_height = lines.length * Dialogue.line_spacing
 
+            // Find maximum text width in lines.
+            ctx.font = `${gW * 0.02}px Arial`; // Must be called before ctx.measureText().
+            let max_text_width = 0;
+            lines.forEach(line => {
+                if (ctx.measureText(line).width > max_text_width)
+                    max_text_width = ctx.measureText(line).width;
+            });
+
             // Draw box
             ctx.strokeStyle = "black";
             ctx.lineWidth = gW * 0.002;
-            ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-            const x = Dialogue.outer_margin
+            ctx.fillStyle = "#bbbbbb";
+            const x = (gW - (max_text_width + 2 * Dialogue.inner_margin)) / 2
             const y = gH - (Dialogue.outer_margin + dialogue_height + 2 * Dialogue.inner_margin)
-            const w = gW - (2 * Dialogue.outer_margin)
+            const w = max_text_width + 2 * Dialogue.inner_margin
             const h = dialogue_height + 2 * Dialogue.inner_margin
             ctx.strokeRect(x, y, w, h)
             ctx.fillRect(x, y, w, h)
 
             // Draw text.
-            ctx.font = `${gW * 0.02}px Arial`;
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
             ctx.textBaseline = "bottom";
