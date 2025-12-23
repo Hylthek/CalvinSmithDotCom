@@ -254,11 +254,13 @@ let gContainers = []
 let gGameEvents = []
 const goobert_img = new Image()
 const goobert2_img = new Image()
-const trashcan_img = new Image()
+const trashcan_even_img = new Image()
+const trashcan_odd_img = new Image()
 const horse_img = new Image()
 goobert_img.src = "/room/goobert.png";
 goobert2_img.src = "/room/goobert2.png";
-trashcan_img.src = "/room/goobhole.png";
+trashcan_odd_img.src = "/room/trash_odd.png";
+trashcan_even_img.src = "/room/trash_even.png";
 horse_img.src = "/room/horsejean.png";
 
 // Add draggables
@@ -277,8 +279,8 @@ for (let i = 0; i < 10; i++) {
 }
 
 // Add containers.
-gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan_img]))
-gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan_img]))
+gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan_odd_img]))
+gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan_even_img]))
 gContainers[0].description = "Odd Goobs here!"
 gContainers[0].compatibilities = ["odd-trash"]
 gContainers[1].description = "Even Goobs here!"
