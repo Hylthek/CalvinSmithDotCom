@@ -38,29 +38,28 @@ canvas.addEventListener("mouseup", () => {
 
 document.addEventListener("keydown", (event) => {
     if (event.code === "Space") {
-        gDialogues.forEach(dialogue => {
-            if (dialogue.started) {
-                dialogue.curr_text++;
-                if (dialogue.curr_text >= dialogue.text.length) {
-                    dialogue.curr_text = 0;
-                    dialogue.started = false;
-                }
+        gGameEvents.forEach(event => {
+            if (event.curr_stage != -1) {
+                event.curr_stage++
+                if (event.curr_stage >= event.dialogue.text.length)
+                    event.curr_stage = -1;
+                event.program(event)
             }
         });
     }
 })
 
-//     $$$$$$\  $$\                                                   
-//    $$  __$$\ $$ |                                                  
-//    $$ /  \__|$$ | $$$$$$\   $$$$$$$\  $$$$$$$\  $$$$$$\   $$$$$$$\ 
-//    $$ |      $$ | \____$$\ $$  _____|$$  _____|$$  __$$\ $$  _____|
-//    $$ |      $$ | $$$$$$$ |\$$$$$$\  \$$$$$$\  $$$$$$$$ |\$$$$$$\  
-//    $$ |  $$\ $$ |$$  __$$ | \____$$\  \____$$\ $$   ____| \____$$\ 
-//    \$$$$$$  |$$ |\$$$$$$$ |$$$$$$$  |$$$$$$$  |\$$$$$$$\ $$$$$$$  |
-//     \______/ \__| \_______|\_______/ \_______/  \_______|\_______/ 
-//                                                                    
-//                                                                    
-//                                                                    
+//    $$$$$$$\                                                   $$\       $$\           
+//    $$  __$$\                                                  $$ |      $$ |          
+//    $$ |  $$ | $$$$$$\  $$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\  $$$$$$$\  $$ | $$$$$$\  
+//    $$ |  $$ |$$  __$$\ \____$$\ $$  __$$\ $$  __$$\  \____$$\ $$  __$$\ $$ |$$  __$$\ 
+//    $$ |  $$ |$$ |  \__|$$$$$$$ |$$ /  $$ |$$ /  $$ | $$$$$$$ |$$ |  $$ |$$ |$$$$$$$$ |
+//    $$ |  $$ |$$ |     $$  __$$ |$$ |  $$ |$$ |  $$ |$$  __$$ |$$ |  $$ |$$ |$$   ____|
+//    $$$$$$$  |$$ |     \$$$$$$$ |\$$$$$$$ |\$$$$$$$ |\$$$$$$$ |$$$$$$$  |$$ |\$$$$$$$\ 
+//    \_______/ \__|      \_______| \____$$ | \____$$ | \_______|\_______/ \__| \_______|
+//                                 $$\   $$ |$$\   $$ |                                  
+//                                 \$$$$$$  |\$$$$$$  |                                  
+//                                  \______/  \______/                                   
 class Draggable {
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images) {
@@ -122,6 +121,17 @@ class Draggable {
     }
 }
 
+//     $$$$$$\                       $$\               $$\                               
+//    $$  __$$\                      $$ |              \__|                              
+//    $$ /  \__| $$$$$$\  $$$$$$$\ $$$$$$\    $$$$$$\  $$\ $$$$$$$\   $$$$$$\   $$$$$$\  
+//    $$ |      $$  __$$\ $$  __$$\\_$$  _|   \____$$\ $$ |$$  __$$\ $$  __$$\ $$  __$$\ 
+//    $$ |      $$ /  $$ |$$ |  $$ | $$ |     $$$$$$$ |$$ |$$ |  $$ |$$$$$$$$ |$$ |  \__|
+//    $$ |  $$\ $$ |  $$ |$$ |  $$ | $$ |$$\ $$  __$$ |$$ |$$ |  $$ |$$   ____|$$ |      
+//    \$$$$$$  |\$$$$$$  |$$ |  $$ | \$$$$  |\$$$$$$$ |$$ |$$ |  $$ |\$$$$$$$\ $$ |      
+//     \______/  \______/ \__|  \__|  \____/  \_______|\__|\__|  \__| \_______|\__|      
+//                                                                                       
+//                                                                                       
+//                                                                                       
 class Container {
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images) {
@@ -189,18 +199,42 @@ class Dialogue {
     static inner_margin = 5
     static line_spacing = 20
 
+    /**@param text An array of dialogue strings. */
     constructor(text) {
-        this.text = text
-        this.started = false
-        this.curr_text = 0;
-        this.w = 800
-        this.h = 200
-        this.can_start = true
+        this.text = text // Array of dialogue strings.
+        this.visible = false // Visibility.
+        this.curr_text = -1; // Current index of this.text
+    }
+}
+
+//     $$$$$$\                                    $$$$$$$$\                             $$\     
+//    $$  __$$\                                   $$  _____|                            $$ |    
+//    $$ /  \__| $$$$$$\  $$$$$$\$$$$\   $$$$$$\  $$ |  $$\    $$\  $$$$$$\  $$$$$$$\ $$$$$$\   
+//    $$ |$$$$\  \____$$\ $$  _$$  _$$\ $$  __$$\ $$$$$\\$$\  $$  |$$  __$$\ $$  __$$\\_$$  _|  
+//    $$ |\_$$ | $$$$$$$ |$$ / $$ / $$ |$$$$$$$$ |$$  __|\$$\$$  / $$$$$$$$ |$$ |  $$ | $$ |    
+//    $$ |  $$ |$$  __$$ |$$ | $$ | $$ |$$   ____|$$ |    \$$$  /  $$   ____|$$ |  $$ | $$ |$$\ 
+//    \$$$$$$  |\$$$$$$$ |$$ | $$ | $$ |\$$$$$$$\ $$$$$$$$\\$  /   \$$$$$$$\ $$ |  $$ | \$$$$  |
+//     \______/  \_______|\__| \__| \__| \_______|\________|\_/     \_______|\__|  \__|  \____/ 
+//                                                                                              
+//                                                                                              
+//                                                                                              
+class GameEvent {
+    /**
+     * @param {Dialogue} dialogue The dialogue to play for the event.
+     * @param {Decoration[]} decorations An array of the characters involved in the event.
+     * @param {function} program An anonymous function with the prototype <_(GameObject): void>. 
+     */
+    constructor(dialogue, decorations, program) {
+        this.dialogue = dialogue
+        this.decorations = decorations
+        this.program = program
+        this.can_start = true // Ensures GameEvent can only run once.
+        this.curr_stage = -1 // The current stage of this.program
     }
 
-    Start() {
-        this.started = true
-        this.curr_text = 0
+    Run() {
+        this.curr_stage = 0;
+        this.program(this)
     }
 }
 
@@ -217,41 +251,41 @@ class Dialogue {
 //                                                      
 let gDraggables = []
 let gContainers = []
-let gDecorations = []
-let gDialogues = []
-const goobert = new Image()
-const goobert2 = new Image()
-const trashcan = new Image()
-const horse = new Image()
-goobert.src = "/room/goobert.png";
-goobert2.src = "/room/goobert2.png";
-trashcan.src = "/room/goobhole.png";
-horse.src = "/room/horsejean.png";
+let gGameEvents = []
+const goobert_img = new Image()
+const goobert2_img = new Image()
+const trashcan_img = new Image()
+const horse_img = new Image()
+goobert_img.src = "/room/goobert.png";
+goobert2_img.src = "/room/goobert2.png";
+trashcan_img.src = "/room/goobhole.png";
+horse_img.src = "/room/horsejean.png";
 
 // Add draggables
 for (let i = 0; i < 10; i++) {
-    const element = gDraggables[i];
-    gDraggables.push(new Draggable(250 + 500 * Math.random(), 200 + 300 * Math.random(), 100, 50, [goobert, goobert2]))
-    gDraggables[gDraggables.length - 1].description = "Goob #" + (i + 1);
+    gDraggables.push(new Draggable(
+        (0.2 + 0.6 * Math.random()) * canvas.width, (0.2 + 0.6 * Math.random()) * canvas.height,
+        100, 100, [goobert_img, goobert2_img]
+    ))
+    
+    const new_draggable = gDraggables[gDraggables.length - 1];
+    new_draggable.description = "Goob #" + (i + 1);
     if (i % 2 == 0)
-        gDraggables[gDraggables.length - 1].compatibilities = ["odd-trash"]
+        new_draggable.compatibilities = ["odd-trash"]
     else
-        gDraggables[gDraggables.length - 1].compatibilities = ["even-trash"]
+        new_draggable.compatibilities = ["even-trash"]
 }
 
 // Add containers.
-gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan]))
-gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan]))
+gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan_img]))
+gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan_img]))
 gContainers[0].description = "Odd Goobs here!"
 gContainers[0].compatibilities = ["odd-trash"]
 gContainers[1].description = "Even Goobs here!"
 gContainers[1].compatibilities = ["even-trash"]
 
-// Add decorations.
-gDecorations.push(new Decoration(50, 50, 200, 150, [horse]))
-
-// Add dialogues.
-gDialogues.push(new Dialogue([ // Note: newlines in the IDE are part of the string literal.
+// Add game event.
+const foo_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
     "O, ever, do the crepances of the small, four-legged mite dote me unnerved.",
     "For I too once possessed such an abhorration of the mind.",
     "To live without the slight whisper of a morality is to be consumed by night, losing that which binds us to the body,",
@@ -263,8 +297,65 @@ gDialogues.push(new Dialogue([ // Note: newlines in the IDE are part of the stri
     "Will I ever defy my bones?",
     "My untimely death would bring no more to you than a breath.",
     "Its time for a bath.",
-    ":)"
-]))
+    "Goodbye."
+])
+const horse = new Decoration(100, 100, 100, 100, [horse_img])
+const foo_program = (game_object) => {
+    let horse = game_object.decorations[0]
+    let poem = game_object.dialogue
+    const curr_stage = game_object.curr_stage
+    if (curr_stage != -1) {
+        horse.visible = true
+        poem.visible = true
+        poem.curr_text = curr_stage
+    }
+    switch (curr_stage) {
+        case -1:
+            horse.visible = false
+            poem.visible = false
+            break;
+        case 0:
+            horse.x = 200
+            break;
+        case 1:
+            horse.x = 100
+            break;
+        case 2:
+            horse.x = 200
+            break;
+        case 3:
+            horse.x = 100
+            break;
+        case 4:
+            horse.x = 200
+            break;
+        case 5:
+            horse.x = 100
+            break;
+        case 6:
+            horse.x = 200
+            break;
+        case 7:
+            horse.x = 100
+            break;
+        case 8:
+            horse.x = 200
+            break;
+        case 9:
+            horse.x = 100
+            break;
+        case 10:
+            horse.x = 200
+            break;
+        case 11:
+            horse.x = 100
+            break;
+        default:
+            console.error("Invalid curr_stage.", curr_stage)
+            break;
+    }
+};
+gGameEvents.push(new GameEvent(foo_dialogue, [horse], foo_program))
 
 //    $$\      $$\           $$\           
 //    $$$\    $$$ |          \__|          
@@ -311,7 +402,7 @@ function main() {
         hovered_container.DrawHoverText()
 
     UpdateDecorations()
-    UpdateDialogue()
+    UpdateGameEvents()
     UpdateDraggables([x, y], [mb1_state, state_changed])
 }
 main();
@@ -344,10 +435,10 @@ function DrawBackground() {
     const time_thing = GetTime() * 100 % gridSize
     ctx.strokeStyle = "#000"
     ctx.lineWidth = 1
-    for (let x = time_thing; x <= canvas.width; x += gridSize) {
+    for (let t = time_thing; t <= canvas.width; t += gridSize) {
         ctx.beginPath()
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, canvas.height)
+        ctx.moveTo(t, 0)
+        ctx.lineTo(t, canvas.height)
         ctx.stroke()
     }
     for (let y = time_thing; y <= canvas.height; y += gridSize) {
@@ -379,19 +470,21 @@ function DrawContainers() {
 }
 
 function DrawDecorations() {
-    gDecorations.forEach(element => {
-        if (element.visible)
-            ctx.drawImage(element.images[element.curr_image], element.x, element.y, element.w, element.h);
+    gGameEvents.forEach(game_event => {
+        game_event.decorations.forEach(decoration => {
+            if (decoration.visible)
+                ctx.drawImage(decoration.images[decoration.curr_image], decoration.x, decoration.y, decoration.w, decoration.h);
+        })
     })
 }
 
 function DrawDialogues() {
     ctx.save()
 
-    gDialogues.forEach(element => {
-        if (element.started) {
+    gGameEvents.forEach(game_event => {
+        if (game_event.dialogue.visible) {
             // Process text.
-            const lines = element.text[element.curr_text].split("\n")
+            const lines = game_event.dialogue.text[game_event.dialogue.curr_text].split("\n")
             const dialogue_height = lines.length * Dialogue.line_spacing
 
             // Draw box
@@ -434,10 +527,10 @@ function GetMouseData() {
 function GetHoveredDraggable() {
     // Iterate in reverse to prioritize front-most draggables.
     for (let i = gDraggables.length - 1; i >= 0; i--) {
-        const element = gDraggables[i];
-        if (gMouseX > element.x && gMouseX < element.x + element.w &&
-            gMouseY > element.y && gMouseY < element.y + element.h)
-            return element
+        const draggable = gDraggables[i];
+        if (gMouseX > draggable.x && gMouseX < draggable.x + draggable.w &&
+            gMouseY > draggable.y && gMouseY < draggable.y + draggable.h)
+            return draggable
     }
     return null
 }
@@ -445,23 +538,23 @@ function GetHoveredDraggable() {
 function GetHoveredContainer() {
     // Iterate in reverse to prioritize front-most draggables.
     for (let i = gContainers.length - 1; i >= 0; i--) {
-        const element = gContainers[i];
-        if (gMouseX > element.x && gMouseX < element.x + element.w &&
-            gMouseY > element.y && gMouseY < element.y + element.h)
-            return element
+        const container = gContainers[i];
+        if (gMouseX > container.x && gMouseX < container.x + container.w &&
+            gMouseY > container.y && gMouseY < container.y + container.h)
+            return container
     }
     return null
 }
 
 function UpdateDraggables() {
     for (let i = 0; i < gDraggables.length; i++) {
-        const element = gDraggables[i];
-        if (element.picked_up) {
-            element.x = gMouseX - element.w / 2
-            element.y = gMouseY - element.h / 2
+        const draggable = gDraggables[i];
+        if (draggable.picked_up) {
+            draggable.x = gMouseX - draggable.w / 2
+            draggable.y = gMouseY - draggable.h / 2
         }
         if (gMb1State == false)
-            element.Drop()
+            draggable.Drop()
     }
 }
 
@@ -475,10 +568,16 @@ function TotalContainerScore() {
 }
 
 function UpdateDecorations() {
-    for (let i = 0; i < gDecorations.length; i++) {
-        const element = gDecorations[i];
-        if (TotalContainerScore() == 10 && element.can_appear) 
-            element.visible = true
+    // Placeholder.
+}
+
+function UpdateGameEvents() {
+    for (let i = 0; i < gGameEvents.length; i++) {
+        const game_event = gGameEvents[i];
+        if (TotalContainerScore() == 10 && game_event.can_start) {
+            game_event.can_start = false
+            game_event.Run()
+        }
     }
 }
 
