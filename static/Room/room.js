@@ -101,7 +101,15 @@ class Draggable {
     DrawHoverText() {
         ctx.save()
 
+        //Set font.
         ctx.font = `${gW * 0.016}px Arial`;
+
+        // Draw background.
+        ctx.fillStyle = "white"
+        const text_size = ctx.measureText(this.description)
+        ctx.fillRect(this.x + this.w / 2, this.y - gW * 0.008, text_size.width, gW * 0.016)
+
+        // Draw text.
         ctx.fillStyle = "black";
         ctx.textAlign = "left";
         ctx.textBaseline = "middle"
@@ -164,7 +172,15 @@ class Container {
     DrawHoverText() {
         ctx.save()
 
+        //Set font.
         ctx.font = `${gW * 0.016}px Arial`;
+
+        // Draw background.
+        ctx.fillStyle = "white"
+        const text_size = ctx.measureText(this.description)
+        ctx.fillRect(this.x - this.w / 2 - text_size.width, this.y - gW * 0.008, text_size.width, gW * 0.016)
+
+        // Draw text.
         ctx.fillStyle = "black";
         ctx.textAlign = "right";
         ctx.textBaseline = "middle"
