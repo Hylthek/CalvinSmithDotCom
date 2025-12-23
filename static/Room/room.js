@@ -78,16 +78,6 @@ class Draggable {
         this.pickup_location = [null, null]
     }
 
-    Draw() {
-        ctx.save()
-
-        if (this.images) {
-            ctx.drawImage(this.images[this.curr_image], this.x, this.y, this.w, this.h);
-        }
-
-        ctx.restore()
-    }
-
     Pickup() {
         this.picked_up = true
         this.curr_image = 1;
@@ -112,7 +102,7 @@ class Draggable {
         ctx.fillStyle = "black";
         ctx.textAlign = "left";
         ctx.textBaseline = "middle"
-        ctx.fillText(this.description, this.x + this.w, this.y + this.h / 2);
+        ctx.fillText(this.description, this.x + this.w / 2, this.y);
 
         ctx.restore()
     }
@@ -175,7 +165,7 @@ class Container {
         ctx.fillStyle = "black";
         ctx.textAlign = "right";
         ctx.textBaseline = "middle"
-        ctx.fillText(this.description, this.x, this.y + this.h / 2);
+        ctx.fillText(this.description, this.x - this.w / 2, this.y);
 
         ctx.restore()
     }
@@ -238,6 +228,8 @@ class GameEvent {
         this.curr_stage = 0;
         this.program(this)
     }
+
+    StartCriterion() { return TotalContainerScore() == 9 && this.can_start; }
 }
 
 //    $$$$$$\           $$\   $$\     $$\           $$\ 
@@ -309,9 +301,9 @@ for (let i = 0; i < 3; i++) {
 }
 
 // Add containers.
-gContainers.push(new Container(gW*0.2, gH*0.3, gW/10, gH/10, [closet_img]))
-gContainers.push(new Container(gW*0.9, gH*0.5, gW/10, gH/10, [trashcan_img]))
-gContainers.push(new Container(gW*0.8, gH*0.2, gW/10, gH/10, [cabinet_img]))
+gContainers.push(new Container(gW * 0.2, gH * 0.3, gW / 10, gH / 10, [closet_img]))
+gContainers.push(new Container(gW * 0.9, gH * 0.5, gW / 10, gH / 10, [trashcan_img]))
+gContainers.push(new Container(gW * 0.8, gH * 0.2, gW / 10, gH / 10, [cabinet_img]))
 gContainers[0].description = "The Closet"
 gContainers[0].compatibilities = ["clothes"]
 gContainers[1].description = "The Trashcan"
@@ -431,12 +423,12 @@ function main() {
         hovered_draggable.Drop()
     if (hovered_container && hovered_draggable && !mb1_state && state_changed)
         hovered_container.EatDraggable(hovered_draggable)
+
     if (hovered_draggable)
         hovered_draggable.DrawHoverText()
     if (hovered_container)
         hovered_container.DrawHoverText()
 
-    UpdateDecorations()
     UpdateGameEvents()
     UpdateDraggables([x, y], [mb1_state, state_changed])
 }
@@ -495,14 +487,14 @@ function GetTime() {
 }
 
 function DrawDraggables() {
-    gDraggables.forEach(element => {
-        element.Draw()
+    gDraggables.forEach(draggable => {
+        ctx.drawImage(draggable.images[draggable.curr_image], draggable.x - draggable.w / 2, draggable.y - draggable.h / 2, draggable.w, draggable.h);
     })
 }
 
 function DrawContainers() {
-    gContainers.forEach(element => {
-        ctx.drawImage(element.images[element.curr_image], element.x, element.y, element.w, element.h);
+    gContainers.forEach(container => {
+        ctx.drawImage(container.images[container.curr_image], container.x - container.w / 2, container.y - container.h / 2, container.w, container.h);
     })
 }
 
@@ -510,7 +502,7 @@ function DrawDecorations() {
     gGameEvents.forEach(game_event => {
         game_event.decorations.forEach(decoration => {
             if (decoration.visible)
-                ctx.drawImage(decoration.images[decoration.curr_image], decoration.x, decoration.y, decoration.w, decoration.h);
+                ctx.drawImage(decoration.images[decoration.curr_image], decoration.x - decoration.w / 2, decoration.y - decoration.h / 2, decoration.w, decoration.h);
         })
     })
 }
@@ -565,8 +557,10 @@ function GetHoveredDraggable() {
     // Iterate in reverse to prioritize front-most draggables.
     for (let i = gDraggables.length - 1; i >= 0; i--) {
         const draggable = gDraggables[i];
-        if (gMouseX > draggable.x && gMouseX < draggable.x + draggable.w &&
-            gMouseY > draggable.y && gMouseY < draggable.y + draggable.h)
+        const w2 = draggable.w / 2
+        const h2 = draggable.h / 2
+        if (gMouseX > draggable.x - w2 && gMouseX < draggable.x + w2 &&
+            gMouseY > draggable.y - h2 && gMouseY < draggable.y + h2)
             return draggable
     }
     return null
@@ -576,8 +570,10 @@ function GetHoveredContainer() {
     // Iterate in reverse to prioritize front-most draggables.
     for (let i = gContainers.length - 1; i >= 0; i--) {
         const container = gContainers[i];
-        if (gMouseX > container.x && gMouseX < container.x + container.w &&
-            gMouseY > container.y && gMouseY < container.y + container.h)
+        const w2 = container.w / 2
+        const h2 = container.h / 2
+        if (gMouseX > container.x - w2 && gMouseX < container.x + w2 &&
+            gMouseY > container.y - h2 && gMouseY < container.y + h2)
             return container
     }
     return null
@@ -587,8 +583,8 @@ function UpdateDraggables() {
     for (let i = 0; i < gDraggables.length; i++) {
         const draggable = gDraggables[i];
         if (draggable.picked_up) {
-            draggable.x = gMouseX - draggable.w / 2
-            draggable.y = gMouseY - draggable.h / 2
+            draggable.x = gMouseX
+            draggable.y = gMouseY
         }
         if (gMb1State == false)
             draggable.Drop()
@@ -604,26 +600,12 @@ function TotalContainerScore() {
     return score;
 }
 
-function UpdateDecorations() {
-    // Placeholder.
-}
-
 function UpdateGameEvents() {
     for (let i = 0; i < gGameEvents.length; i++) {
         const game_event = gGameEvents[i];
-        if (TotalContainerScore() == 10 && game_event.can_start) {
+        if (game_event.StartCriterion()) {
             game_event.can_start = false
             game_event.Run()
-        }
-    }
-}
-
-function UpdateDialogue() {
-    for (let i = 0; i < gDialogues.length; i++) {
-        const element = gDialogues[i];
-        if (TotalContainerScore() == 10 && element.can_start) {
-            element.can_start = false
-            element.Start()
         }
     }
 }
