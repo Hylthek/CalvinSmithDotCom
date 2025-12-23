@@ -561,14 +561,14 @@ function DrawDialogues() {
 
             // Draw box
             ctx.strokeStyle = "black";
-            ctx.lineWidth = gW * 0.002;
+            ctx.lineWidth = gW * 0.001;
             ctx.fillStyle = "#bbbbbb";
             const x = (gW - (max_text_width + 2 * Dialogue.inner_margin)) / 2
             const y = gH - (Dialogue.outer_margin + dialogue_height + 2 * Dialogue.inner_margin)
             const w = max_text_width + 2 * Dialogue.inner_margin
             const h = dialogue_height + 2 * Dialogue.inner_margin
-            ctx.strokeRect(x, y, w, h)
             ctx.fillRect(x, y, w, h)
+            ctx.strokeRect(x, y, w, h)
 
             // Draw text.
             ctx.fillStyle = "black";
@@ -579,7 +579,12 @@ function DrawDialogues() {
             })
 
             // Draw instruction text.
-            ctx.fillText("Press space to continue.", x + w / 2, y + h + Dialogue.line_spacing / 2 + Dialogue.outer_margin / 2)
+            const w2 = ctx.measureText("Press space to continue.").width
+            ctx.fillStyle = "#bbbbbb";
+            ctx.fillRect((gW - w2) / 2, y + h + Dialogue.outer_margin / 2 - Dialogue.line_spacing / 2, w2, Dialogue.line_spacing)
+            ctx.strokeRect((gW - w2) / 2, y + h + Dialogue.outer_margin / 2 - Dialogue.line_spacing / 2, w2, Dialogue.line_spacing)
+            ctx.fillStyle = "black"
+            ctx.fillText("Press space to continue.", gW / 2, y + h + Dialogue.line_spacing / 2 + Dialogue.outer_margin / 2)
         }
     })
 
