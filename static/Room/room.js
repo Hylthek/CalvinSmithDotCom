@@ -488,17 +488,24 @@ function ClearScreen() { ctx.clearRect(0, 0, gW, gH) }
 function DrawBackground() {
     ctx.save()
 
+    // Define frequencies.
+    const hz_1 = Math.sin(GetTime()) / 2 + 1
+    const hz_2 = Math.sin(GetTime() * 1.314159) / 2 + 1
+    const hz_3 = Math.sin(GetTime() * 2.618034) / 2 + 1
+    // Draw back rectangle.
+    ctx.fillStyle = `rgb(${hz_2 * 50},${hz_3 * 50},${hz_1 * 50})`
+    ctx.fillRect(0, 0, gW, gH)
+    // Draw gridlines.
+    ctx.strokeStyle = `rgb(${hz_1 * 100},${hz_2 * 100},${hz_3 * 100})`
+    ctx.lineWidth = gW * 0.05
     const gridSize = gW * 0.1
-    const time_thing = GetTime() * (gW * 0.1) % gridSize
-    ctx.strokeStyle = "#000"
-    ctx.lineWidth = gW * 0.001
-    for (let t = time_thing; t <= gW; t += gridSize) {
+    for (let t = hz_1 * gridSize - gridSize; t <= gW + gridSize; t += gridSize) {
         ctx.beginPath()
         ctx.moveTo(t, 0)
         ctx.lineTo(t, gH)
         ctx.stroke()
     }
-    for (let y = time_thing; y <= gH; y += gridSize) {
+    for (let y = hz_2 * gridSize - gridSize; y <= gH + gridSize; y += gridSize) {
         ctx.beginPath()
         ctx.moveTo(0, y)
         ctx.lineTo(gW, y)
