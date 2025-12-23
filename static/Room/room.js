@@ -3,6 +3,8 @@
 // Canvas boilerplate.
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
+let gW = canvas.width
+let gH = canvas.height
 ResizeCanvas()
 
 //     $$$$$$\  $$\           $$\                 $$\           
@@ -252,42 +254,73 @@ class GameEvent {
 let gDraggables = []
 let gContainers = []
 let gGameEvents = []
-const goobert_img = new Image()
-const goobert2_img = new Image()
-const trashcan_even_img = new Image()
-const trashcan_odd_img = new Image()
+// Draggables
+const clothes_img = new Image()
+const clothes_unraveled_img = new Image()
+const trash_img = new Image()
+const trinket_img = new Image()
+clothes_img.src = "/room/clothes.png";
+clothes_unraveled_img.src = "/room/clothes.png";
+trash_img.src = "/room/trash.png";
+trinket_img.src = "/room/trinket.png";
+// Containers
+const trashcan_img = new Image()
+const closet_img = new Image()
+const cabinet_img = new Image()
+trashcan_img.src = "/room/trashcan.png";
+closet_img.src = "/room/closet.jpg";
+cabinet_img.src = "/room/cabinet.png";
+// Characters (decorations)
+const shrimp_img = new Image()
 const horse_img = new Image()
-goobert_img.src = "/room/goobert.png";
-goobert2_img.src = "/room/goobert2.png";
-trashcan_odd_img.src = "/room/trash_odd.png";
-trashcan_even_img.src = "/room/trash_even.png";
+const leopard_img = new Image()
+const spiderman_img = new Image()
+const goob_img = new Image()
+const wolfman_img = new Image()
+shrimp_img.src = "/room/shrimp.png";
 horse_img.src = "/room/horsejean.png";
+leopard_img.src = "/room/leopard.png";
+spiderman_img.src = "/room/spiderman.png";
+goob_img.src = "/room/goob.png";
+wolfman_img.src = "/room/wolfman.png";
 
 // Add draggables
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 3; i++) {
     gDraggables.push(new Draggable(
-        (0.2 + 0.6 * Math.random()) * canvas.width, (0.2 + 0.6 * Math.random()) * canvas.height,
-        100, 100, [goobert_img, goobert2_img]
+        0.2 * gW + 0.6 * Math.random() * gW, (0.7 + 0.2 * Math.random()) * gH,
+        100, 100, [clothes_img, clothes_unraveled_img]
     ))
-    
-    const new_draggable = gDraggables[gDraggables.length - 1];
-    new_draggable.description = "Goob #" + (i + 1);
-    if (i % 2 == 0)
-        new_draggable.compatibilities = ["odd-trash"]
-    else
-        new_draggable.compatibilities = ["even-trash"]
+    gDraggables.push(new Draggable(
+        (0.2 + 0.6 * Math.random()) * gW, (0.7 + 0.2 * Math.random()) * gH,
+        100, 100, [trash_img, trash_img]
+    ))
+    gDraggables.push(new Draggable(
+        (0.2 + 0.6 * Math.random()) * gW, (0.7 + 0.2 * Math.random()) * gH,
+        100, 100, [trinket_img, trinket_img]
+    ))
+
+    const new_draggables = gDraggables.slice(-3)
+    new_draggables[0].description = "Clothes";
+    new_draggables[0].compatibilities = ["clothes"]
+    new_draggables[1].description = "Trash";
+    new_draggables[1].compatibilities = ["trash"]
+    new_draggables[2].description = "Trinket";
+    new_draggables[2].compatibilities = ["trinkets"]
 }
 
 // Add containers.
-gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan_odd_img]))
-gContainers.push(new Container(100 + 600 * Math.random(), 100 + 400 * Math.random(), 100, 100, [trashcan_even_img]))
-gContainers[0].description = "Odd Goobs here!"
-gContainers[0].compatibilities = ["odd-trash"]
-gContainers[1].description = "Even Goobs here!"
-gContainers[1].compatibilities = ["even-trash"]
+gContainers.push(new Container(gW*0.2, gH*0.3, gW/10, gH/10, [closet_img]))
+gContainers.push(new Container(gW*0.9, gH*0.5, gW/10, gH/10, [trashcan_img]))
+gContainers.push(new Container(gW*0.8, gH*0.2, gW/10, gH/10, [cabinet_img]))
+gContainers[0].description = "The Closet"
+gContainers[0].compatibilities = ["clothes"]
+gContainers[1].description = "The Trashcan"
+gContainers[1].compatibilities = ["trash"]
+gContainers[2].description = "The Cabinet"
+gContainers[2].compatibilities = ["trinkets"]
 
 // Add game event.
-const foo_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
+const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
     "O, ever, do the crepances of the small, four-legged mite dote me unnerved.",
     "For I too once possessed such an abhorration of the mind.",
     "To live without the slight whisper of a morality is to be consumed by night, losing that which binds us to the body,",
@@ -301,7 +334,7 @@ const foo_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the
     "Its time for a bath.",
     "Goodbye."
 ])
-const horse = new Decoration(100, 100, 100, 100, [horse_img])
+const horse_character = new Decoration(100, 100, 100, 100, [horse_img])
 const foo_program = (game_object) => {
     let horse = game_object.decorations[0]
     let poem = game_object.dialogue
@@ -357,7 +390,7 @@ const foo_program = (game_object) => {
             break;
     }
 };
-gGameEvents.push(new GameEvent(foo_dialogue, [horse], foo_program))
+gGameEvents.push(new GameEvent(poem_dialogue, [horse_character], foo_program))
 
 //    $$\      $$\           $$\           
 //    $$$\    $$$ |          \__|          
@@ -425,10 +458,12 @@ function ResizeCanvas() {
     const canvas_rect = canvas.getBoundingClientRect()
     canvas.width = canvas_rect.width
     canvas.height = canvas_rect.height
+    gW = canvas.width
+    gH = canvas.height
     return canvas_rect
 }
 
-function ClearScreen() { ctx.clearRect(0, 0, canvas.width, canvas.height) }
+function ClearScreen() { ctx.clearRect(0, 0, gW, gH) }
 
 function DrawBackground() {
     ctx.save()
@@ -437,16 +472,16 @@ function DrawBackground() {
     const time_thing = GetTime() * 100 % gridSize
     ctx.strokeStyle = "#000"
     ctx.lineWidth = 1
-    for (let t = time_thing; t <= canvas.width; t += gridSize) {
+    for (let t = time_thing; t <= gW; t += gridSize) {
         ctx.beginPath()
         ctx.moveTo(t, 0)
-        ctx.lineTo(t, canvas.height)
+        ctx.lineTo(t, gH)
         ctx.stroke()
     }
-    for (let y = time_thing; y <= canvas.height; y += gridSize) {
+    for (let y = time_thing; y <= gH; y += gridSize) {
         ctx.beginPath()
         ctx.moveTo(0, y)
-        ctx.lineTo(canvas.width, y)
+        ctx.lineTo(gW, y)
         ctx.stroke()
     }
 
@@ -494,8 +529,8 @@ function DrawDialogues() {
             ctx.lineWidth = 2;
             ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
             const x = Dialogue.outer_margin
-            const y = canvas.height - (Dialogue.outer_margin + dialogue_height + 2 * Dialogue.inner_margin)
-            const w = canvas.width - (2 * Dialogue.outer_margin)
+            const y = gH - (Dialogue.outer_margin + dialogue_height + 2 * Dialogue.inner_margin)
+            const w = gW - (2 * Dialogue.outer_margin)
             const h = dialogue_height + 2 * Dialogue.inner_margin
             ctx.strokeRect(x, y, w, h)
             ctx.fillRect(x, y, w, h)
