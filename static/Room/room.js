@@ -3,8 +3,8 @@
 // Canvas boilerplate.
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
-let gW = canvas.width
-let gH = canvas.height
+let gW = undefined
+let gH = undefined
 ResizeCanvas()
 
 //     $$$$$$\  $$\           $$\                 $$\           
@@ -98,7 +98,7 @@ class Draggable {
     DrawHoverText() {
         ctx.save()
 
-        ctx.font = "16px Arial";
+        ctx.font = `${gW * 0.016}px Arial`;
         ctx.fillStyle = "black";
         ctx.textAlign = "left";
         ctx.textBaseline = "middle"
@@ -161,7 +161,7 @@ class Container {
     DrawHoverText() {
         ctx.save()
 
-        ctx.font = "16px Arial";
+        ctx.font = `${gW * 0.016}px Arial`;
         ctx.fillStyle = "black";
         ctx.textAlign = "right";
         ctx.textBaseline = "middle"
@@ -187,9 +187,9 @@ class Decoration {
 
 class Dialogue {
     // In pixels
-    static outer_margin = 25
-    static inner_margin = 5
-    static line_spacing = 20
+    static outer_margin = gW * 0.025
+    static inner_margin = gW * 0.005
+    static line_spacing = gW * 0.020
 
     /**@param text An array of dialogue strings. */
     constructor(text) {
@@ -229,7 +229,7 @@ class GameEvent {
         this.program(this)
     }
 
-    StartCriterion() { return TotalContainerScore() == 9 && this.can_start; }
+    StartCriterion() { return TotalContainerScore() == 2 && this.can_start; }
 }
 
 //    $$$$$$\           $$\   $$\     $$\           $$\ 
@@ -280,15 +280,15 @@ wolfman_img.src = "/room/wolfman.png";
 for (let i = 0; i < 3; i++) {
     gDraggables.push(new Draggable(
         0.2 * gW + 0.6 * Math.random() * gW, (0.7 + 0.2 * Math.random()) * gH,
-        100, 100, [clothes_img, clothes_unraveled_img]
+        gW * 0.05, gW * 0.05, [clothes_img, clothes_unraveled_img] // It doesn't matter whether to use gW or gH for sizes because 16:9 is maintained.
     ))
     gDraggables.push(new Draggable(
         (0.2 + 0.6 * Math.random()) * gW, (0.7 + 0.2 * Math.random()) * gH,
-        100, 100, [trash_img, trash_img]
+        gW * 0.05, gW * 0.05, [trash_img, trash_img]
     ))
     gDraggables.push(new Draggable(
         (0.2 + 0.6 * Math.random()) * gW, (0.7 + 0.2 * Math.random()) * gH,
-        100, 100, [trinket_img, trinket_img]
+        gW * 0.05, gW * 0.05, [trinket_img, trinket_img]
     ))
 
     const new_draggables = gDraggables.slice(-3)
@@ -301,9 +301,9 @@ for (let i = 0; i < 3; i++) {
 }
 
 // Add containers.
-gContainers.push(new Container(gW * 0.2, gH * 0.3, gW / 10, gH / 10, [closet_img]))
-gContainers.push(new Container(gW * 0.9, gH * 0.5, gW / 10, gH / 10, [trashcan_img]))
-gContainers.push(new Container(gW * 0.8, gH * 0.2, gW / 10, gH / 10, [cabinet_img]))
+gContainers.push(new Container(gW * 0.2, gH * 0.3, gW * 0.1, gH * 0.2, [closet_img]))
+gContainers.push(new Container(gW * 0.9, gH * 0.5, gW * 0.075, gH * 0.15, [trashcan_img]))
+gContainers.push(new Container(gW * 0.8, gH * 0.2, gW * 0.1, gH * 0.2, [cabinet_img]))
 gContainers[0].description = "The Closet"
 gContainers[0].compatibilities = ["clothes"]
 gContainers[1].description = "The Trashcan"
@@ -311,11 +311,12 @@ gContainers[1].compatibilities = ["trash"]
 gContainers[2].description = "The Cabinet"
 gContainers[2].compatibilities = ["trinkets"]
 
-// Add game event.
+// Initialize dialogue.
 const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
     "O, ever, do the crepances of the small, four-legged mite dote me unnerved.",
     "For I too once possessed such an abhorration of the mind.",
-    "To live without the slight whisper of a morality is to be consumed by night, losing that which binds us to the body,",
+    `To live without the slight whisper of a morality is to be consumed by night,
+    losing that which binds us to the body,`,
     "SOUL.",
     "If this sloth were to ever reach my teeth again, I fear I will not recover.",
     "The predisposition of my own SOUL is that of air, to be strewn about, ceasing in seconds.",
@@ -326,7 +327,11 @@ const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of th
     "Its time for a bath.",
     "Goodbye."
 ])
-const horse_character = new Decoration(100, 100, 100, 100, [horse_img])
+
+// Initialize characters.
+const horse_character = new Decoration(0.1 * gW, 0.5 * gH, 0.2 * gW, 0.2 * gW, [horse_img])
+
+// Initialize game event sequence.
 const foo_program = (game_object) => {
     let horse = game_object.decorations[0]
     let poem = game_object.dialogue
@@ -342,40 +347,40 @@ const foo_program = (game_object) => {
             poem.visible = false
             break;
         case 0:
-            horse.x = 200
+            horse.x = 0.2 * gW
             break;
         case 1:
-            horse.x = 100
+            horse.x = 0.15 * gW
             break;
         case 2:
-            horse.x = 200
+            horse.x = 0.2 * gW
             break;
         case 3:
-            horse.x = 100
+            horse.x = 0.15 * gW
             break;
         case 4:
-            horse.x = 200
+            horse.x = 0.2 * gW
             break;
         case 5:
-            horse.x = 100
+            horse.x = 0.15 * gW
             break;
         case 6:
-            horse.x = 200
+            horse.x = 0.2 * gW
             break;
         case 7:
-            horse.x = 100
+            horse.x = 0.15 * gW
             break;
         case 8:
-            horse.x = 200
+            horse.x = 0.2 * gW
             break;
         case 9:
-            horse.x = 100
+            horse.x = 0.15 * gW
             break;
         case 10:
-            horse.x = 200
+            horse.x = 0.2 * gW
             break;
         case 11:
-            horse.x = 100
+            horse.x = 0.15 * gW
             break;
         default:
             console.error("Invalid curr_stage.", curr_stage)
@@ -460,10 +465,10 @@ function ClearScreen() { ctx.clearRect(0, 0, gW, gH) }
 function DrawBackground() {
     ctx.save()
 
-    const gridSize = 100
-    const time_thing = GetTime() * 100 % gridSize
+    const gridSize = gW * 0.1
+    const time_thing = GetTime() * (gW * 0.1) % gridSize
     ctx.strokeStyle = "#000"
-    ctx.lineWidth = 1
+    ctx.lineWidth = gW * 0.001
     for (let t = time_thing; t <= gW; t += gridSize) {
         ctx.beginPath()
         ctx.moveTo(t, 0)
@@ -518,7 +523,7 @@ function DrawDialogues() {
 
             // Draw box
             ctx.strokeStyle = "black";
-            ctx.lineWidth = 2;
+            ctx.lineWidth = gW * 0.002;
             ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
             const x = Dialogue.outer_margin
             const y = gH - (Dialogue.outer_margin + dialogue_height + 2 * Dialogue.inner_margin)
@@ -528,7 +533,7 @@ function DrawDialogues() {
             ctx.fillRect(x, y, w, h)
 
             // Draw text.
-            ctx.font = "20px Arial";
+            ctx.font = `${gW * 0.02}px Arial`;
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
             ctx.textBaseline = "bottom";
