@@ -84,6 +84,7 @@ class Draggable {
         this.compatibilities = []
         this.pickup_location = [null, null]
         this.falling = false;
+        this.velocity = 0; // A proportion of gH.
     }
 
     Pickup() {
@@ -96,6 +97,8 @@ class Draggable {
         gDraggables.push(this)
 
         this.pickup_location = [this.x, this.y]
+        this.falling = false
+        this.velocity = 0
     }
 
     Drop() {
@@ -663,9 +666,16 @@ function UpdateDraggables() {
 
         // Gravity.
         if (draggable.falling) {
-            draggable.y += gH * 0.1
+            // Update pos and velo.
+            draggable.y += gH * draggable.velocity
+            draggable.velocity += 0.01;
+            // Fix bugged pickup locations.
+            if (draggable.pickup_location[1] < GetScenePoints()[2][1])
+                draggable.pickup_location[1] = (GetScenePoints()[2][1] + gH) / 2
+            // Stop gravity if object hit pickup height.
             if (draggable.y > draggable.pickup_location[1]) {
                 draggable.falling = false
+                draggable.velocity = 0;
                 draggable.y = draggable.pickup_location[1]
             }
         }
