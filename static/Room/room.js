@@ -1,62 +1,120 @@
-'use strict';
+'use strict'; // Makes sure variables don't accidentally pollute the global scope.
 
+//     $$$$$$\                                  $$\                          $$\               
+//    $$  __$$\                                 $$ |                         $$ |              
+//    $$ /  \__| $$$$$$\  $$$$$$$\   $$$$$$$\ $$$$$$\    $$$$$$\  $$$$$$$\ $$$$$$\    $$$$$$$\ 
+//    $$ |      $$  __$$\ $$  __$$\ $$  _____|\_$$  _|   \____$$\ $$  __$$\\_$$  _|  $$  _____|
+//    $$ |      $$ /  $$ |$$ |  $$ |\$$$$$$\    $$ |     $$$$$$$ |$$ |  $$ | $$ |    \$$$$$$\  
+//    $$ |  $$\ $$ |  $$ |$$ |  $$ | \____$$\   $$ |$$\ $$  __$$ |$$ |  $$ | $$ |$$\  \____$$\ 
+//    \$$$$$$  |\$$$$$$  |$$ |  $$ |$$$$$$$  |  \$$$$  |\$$$$$$$ |$$ |  $$ | \$$$$  |$$$$$$$  |
+//     \______/  \______/ \__|  \__|\_______/    \____/  \_______|\__|  \__|  \____/ \_______/ 
+//                                                                                             
+//                                                                                             
+//                                                                                             
 // Constants pt1.
 const kPixelationFactor = 2 // Must be defined before ResizeCanvas()
 
 // Canvas boilerplate.
-const canvas = document.getElementById("canvas")
-const ctx = canvas.getContext("2d")
-let gW = undefined // Can't read non-existent inline value as we are using a media query.
-let gH = undefined
-ResizeCanvas() // Must be called here to set gW and gH to proper values.
+const kCanvas = document.getElementById("canvas")
+const kCtx = kCanvas.getContext("2d")
+kCanvas.width = kCanvas.getBoundingClientRect().width / kPixelationFactor
+kCanvas.height = kCanvas.getBoundingClientRect().height / kPixelationFactor
+const kW = kCanvas.width
+const kH = kCanvas.height
 
 // Constants pt2.
-const kVanishingPoint = [0.5 * gW, 0.2 * gH]
-const kSceneDepth = 0.45 // Amount the room edges travel to the vanishing point.
+const kVanishingPoint = [0.5 * kW, 0.2 * kH]
+const kSceneDepth = 0.45 // Proportional length to the vanishing point that the room edges are drawn.
 
-//     $$$$$$\  $$\           $$\                 $$\           
-//    $$  __$$\ $$ |          $$ |                $$ |          
-//    $$ /  \__|$$ | $$$$$$\  $$$$$$$\   $$$$$$\  $$ | $$$$$$$\ 
-//    $$ |$$$$\ $$ |$$  __$$\ $$  __$$\  \____$$\ $$ |$$  _____|
-//    $$ |\_$$ |$$ |$$ /  $$ |$$ |  $$ | $$$$$$$ |$$ |\$$$$$$\  
-//    $$ |  $$ |$$ |$$ |  $$ |$$ |  $$ |$$  __$$ |$$ | \____$$\ 
-//    \$$$$$$  |$$ |\$$$$$$  |$$$$$$$  |\$$$$$$$ |$$ |$$$$$$$  |
-//     \______/ \__| \______/ \_______/  \_______|\__|\_______/ 
+//    $$$$$$$$\                             $$\     $$\       $$\             $$\                                                       
+//    $$  _____|                            $$ |    $$ |      \__|            $$ |                                                      
+//    $$ |  $$\    $$\  $$$$$$\  $$$$$$$\ $$$$$$\   $$ |      $$\  $$$$$$$\ $$$$$$\    $$$$$$\  $$$$$$$\   $$$$$$\   $$$$$$\   $$$$$$$\ 
+//    $$$$$\\$$\  $$  |$$  __$$\ $$  __$$\\_$$  _|  $$ |      $$ |$$  _____|\_$$  _|  $$  __$$\ $$  __$$\ $$  __$$\ $$  __$$\ $$  _____|
+//    $$  __|\$$\$$  / $$$$$$$$ |$$ |  $$ | $$ |    $$ |      $$ |\$$$$$$\    $$ |    $$$$$$$$ |$$ |  $$ |$$$$$$$$ |$$ |  \__|\$$$$$$\  
+//    $$ |    \$$$  /  $$   ____|$$ |  $$ | $$ |$$\ $$ |      $$ | \____$$\   $$ |$$\ $$   ____|$$ |  $$ |$$   ____|$$ |       \____$$\ 
+//    $$$$$$$$\\$  /   \$$$$$$$\ $$ |  $$ | \$$$$  |$$$$$$$$\ $$ |$$$$$$$  |  \$$$$  |\$$$$$$$\ $$ |  $$ |\$$$$$$$\ $$ |      $$$$$$$  |
+//    \________|\_/     \_______|\__|  \__|  \____/ \________|\__|\_______/    \____/  \_______|\__|  \__| \_______|\__|      \_______/ 
 //                                                              
 //                                                              
 //                                                              
+// Globals
 let gMouseX = 0
 let gMouseY = 0
 let gMb1State = false
 let gMb1StateChanged = false
 
-canvas.addEventListener("mousemove", (event) => {
-    gMouseX = (event.clientX - canvas.getBoundingClientRect().left) / kPixelationFactor
-    gMouseY = (event.clientY - canvas.getBoundingClientRect().top) / kPixelationFactor
+kCanvas.addEventListener("mousemove", (event) => {
+    gMouseX = (event.clientX - kCanvas.getBoundingClientRect().left) / kPixelationFactor
+    gMouseY = (event.clientY - kCanvas.getBoundingClientRect().top) / kPixelationFactor
 })
-
-canvas.addEventListener("mousedown", (event) => {
+kCanvas.addEventListener("mousedown", (event) => {
     gMb1State = true
     gMb1StateChanged = true // Value is reset by GetMouseData()
 })
-
-canvas.addEventListener("mouseup", () => {
+kCanvas.addEventListener("mouseup", () => {
     gMb1State = false
     gMb1StateChanged = true
 })
-
 document.addEventListener("keydown", (event) => {
+    // Progress dialogues.
     if (event.code === "Space") {
-        gGameEvents.forEach(event => {
+        ActManager.game_events.forEach(event => {
             if (event.curr_stage != -1) {
                 event.curr_stage++
                 if (event.curr_stage >= event.dialogue.text.length)
                     event.curr_stage = -1;
-                event.program(event)
+                event.sequence(event)
             }
         });
     }
 })
+
+//     $$$$$$\              $$\     $$\      $$\                                                             
+//    $$  __$$\             $$ |    $$$\    $$$ |                                                            
+//    $$ /  $$ | $$$$$$$\ $$$$$$\   $$$$\  $$$$ | $$$$$$\  $$$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\  
+//    $$$$$$$$ |$$  _____|\_$$  _|  $$\$$\$$ $$ | \____$$\ $$  __$$\  \____$$\ $$  __$$\ $$  __$$\ $$  __$$\ 
+//    $$  __$$ |$$ /        $$ |    $$ \$$$  $$ | $$$$$$$ |$$ |  $$ | $$$$$$$ |$$ /  $$ |$$$$$$$$ |$$ |  \__|
+//    $$ |  $$ |$$ |        $$ |$$\ $$ |\$  /$$ |$$  __$$ |$$ |  $$ |$$  __$$ |$$ |  $$ |$$   ____|$$ |      
+//    $$ |  $$ |\$$$$$$$\   \$$$$  |$$ | \_/ $$ |\$$$$$$$ |$$ |  $$ |\$$$$$$$ |\$$$$$$$ |\$$$$$$$\ $$ |      
+//    \__|  \__| \_______|   \____/ \__|     \__| \_______|\__|  \__| \_______| \____$$ | \_______|\__|      
+//                                                                             $$\   $$ |                    
+//                                                                             \$$$$$$  |                    
+//                                                                              \______/                     
+class ActManager {
+    static current_act = 1 // Values 0-4: (intro,clean,sweep,moveBed,credits)
+    static active_draggables = []
+    static active_containers = []
+    static active_decorations = []
+    static game_events = []
+
+    constructor() {
+        throw ": Cannot instantiate this \"static\" class."
+    }
+
+    static NextAct() {
+        switch (self.current_act) {
+            case 0:
+                self.current_act = 1
+                // Load objects for act 1
+                break;
+            case 1:
+                self.current_act = 2
+                break;
+            case 2:
+                self.current_act = 3
+                break;
+            case 3:
+                self.current_act = 4
+                break;
+            case 4:
+                console.log("End of game reached.")
+                break;
+            default:
+                console.error("Invalid act number.", self.current_act)
+                break;
+        }
+    }
+}
 
 //    $$$$$$$\                                                   $$\       $$\           
 //    $$  __$$\                                                  $$ |      $$ |          
@@ -70,6 +128,19 @@ document.addEventListener("keydown", (event) => {
 //                                 \$$$$$$  |\$$$$$$  |                                  
 //                                  \______/  \______/                                   
 class Draggable {
+    x = null
+    y = null
+    w = null
+    h = null
+    images = null
+    picked_up = false
+    curr_image = 0;
+    description = ""
+    compatibilities = []
+    pickup_location = [null, null]
+    falling = false;
+    velocity = 0; // A proportion of gH.
+    
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images) {
         // This function is.
@@ -78,13 +149,6 @@ class Draggable {
         this.w = w;
         this.h = h;
         this.images = images
-        this.picked_up = false
-        this.curr_image = 0;
-        this.description = "Drag me!"
-        this.compatibilities = []
-        this.pickup_location = [null, null]
-        this.falling = false;
-        this.velocity = 0; // A proportion of gH.
     }
 
     Pickup() {
@@ -92,9 +156,9 @@ class Draggable {
         this.curr_image = 1;
 
         // Make last on draw order.
-        const idx = gDraggables.indexOf(this)
-        gDraggables.splice(idx, 1)
-        gDraggables.push(this)
+        const idx = ActManager.active_draggables.indexOf(this)
+        ActManager.active_draggables.splice(idx, 1)
+        ActManager.active_draggables.push(this)
 
         this.pickup_location = [this.x, this.y]
         this.falling = false
@@ -111,23 +175,23 @@ class Draggable {
     }
 
     DrawHoverText() {
-        ctx.save()
+        kCtx.save()
 
         //Set font.
-        ctx.font = `${gW * 0.016}px Arial`;
+        kCtx.font = `${kW * 0.016}px Arial`;
 
         // Draw background.
-        ctx.fillStyle = "white"
-        const text_size = ctx.measureText(this.description)
-        ctx.fillRect(this.x + this.w / 2, this.y - gW * 0.008, text_size.width, gW * 0.016)
+        kCtx.fillStyle = "white"
+        const text_size = kCtx.measureText(this.description)
+        kCtx.fillRect(this.x + this.w / 2, this.y - kW * 0.008, text_size.width, kW * 0.016)
 
         // Draw text.
-        ctx.fillStyle = "black";
-        ctx.textAlign = "left";
-        ctx.textBaseline = "middle"
-        ctx.fillText(this.description, this.x + this.w / 2, this.y);
+        kCtx.fillStyle = "black";
+        kCtx.textAlign = "left";
+        kCtx.textBaseline = "middle"
+        kCtx.fillText(this.description, this.x + this.w / 2, this.y);
 
-        ctx.restore()
+        kCtx.restore()
     }
 
     Reject() {
@@ -148,6 +212,16 @@ class Draggable {
 //                                                                                       
 //                                                                                       
 class Container {
+    x = null
+    y = null
+    w = null
+    h = null
+    images = null
+    curr_image = 0;
+    eaten_counter = 0;
+    description = "Drop here!"
+    compatibilities = []
+    
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images) {
         this.x = x;
@@ -155,10 +229,6 @@ class Container {
         this.w = w;
         this.h = h;
         this.images = images
-        this.curr_image = 0;
-        this.eaten_counter = 0;
-        this.description = "Drop here!"
-        this.compatibilities = []
     }
 
     EatDraggable(draggable) {
@@ -178,32 +248,52 @@ class Container {
 
         // Process successful eat.
         this.eaten_counter++
-        gDraggables.splice(gDraggables.indexOf(draggable), 1)
+        ActManager.active_draggables.splice(ActManager.active_draggables.indexOf(draggable), 1)
     }
 
     DrawHoverText() {
-        ctx.save()
+        kCtx.save()
 
         //Set font.
-        ctx.font = `${gW * 0.016}px Arial`;
+        kCtx.font = `${kW * 0.016}px Arial`;
 
         // Draw background.
-        ctx.fillStyle = "white"
-        const text_size = ctx.measureText(this.description)
-        ctx.fillRect(this.x - this.w / 2 - text_size.width, this.y - gW * 0.008, text_size.width, gW * 0.016)
+        kCtx.fillStyle = "white"
+        const text_size = kCtx.measureText(this.description)
+        kCtx.fillRect(this.x - this.w / 2 - text_size.width, this.y - kW * 0.008, text_size.width, kW * 0.016)
 
         // Draw text.
-        ctx.fillStyle = "black";
-        ctx.textAlign = "right";
-        ctx.textBaseline = "middle"
-        ctx.fillText(this.description, this.x - this.w / 2, this.y);
+        kCtx.fillStyle = "black";
+        kCtx.textAlign = "right";
+        kCtx.textBaseline = "middle"
+        kCtx.fillText(this.description, this.x - this.w / 2, this.y);
 
-        ctx.restore()
+        kCtx.restore()
     }
 
 }
 
+//    $$$$$$$\                                                    $$\     $$\                     
+//    $$  __$$\                                                   $$ |    \__|                    
+//    $$ |  $$ | $$$$$$\   $$$$$$$\  $$$$$$\   $$$$$$\  $$$$$$\ $$$$$$\   $$\  $$$$$$\  $$$$$$$\  
+//    $$ |  $$ |$$  __$$\ $$  _____|$$  __$$\ $$  __$$\ \____$$\\_$$  _|  $$ |$$  __$$\ $$  __$$\ 
+//    $$ |  $$ |$$$$$$$$ |$$ /      $$ /  $$ |$$ |  \__|$$$$$$$ | $$ |    $$ |$$ /  $$ |$$ |  $$ |
+//    $$ |  $$ |$$   ____|$$ |      $$ |  $$ |$$ |     $$  __$$ | $$ |$$\ $$ |$$ |  $$ |$$ |  $$ |
+//    $$$$$$$  |\$$$$$$$\ \$$$$$$$\ \$$$$$$  |$$ |     \$$$$$$$ | \$$$$  |$$ |\$$$$$$  |$$ |  $$ |
+//    \_______/  \_______| \_______| \______/ \__|      \_______|  \____/ \__| \______/ \__|  \__|
+//                                                                                                
+//                                                                                                
+//                                                                                                
+// Decorations are drawn after draggables and containers.
 class Decoration {
+    x = null
+    y = null
+    w = null
+    h = null
+    images = null
+    curr_image = 0;
+    visible = false;
+    
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images) {
         this.x = x;
@@ -211,22 +301,31 @@ class Decoration {
         this.w = w;
         this.h = h;
         this.images = images
-        this.curr_image = 0;
-        this.visible = false;
     }
 }
 
+//    $$$$$$$\  $$\           $$\                                         
+//    $$  __$$\ \__|          $$ |                                        
+//    $$ |  $$ |$$\  $$$$$$\  $$ | $$$$$$\   $$$$$$\  $$\   $$\  $$$$$$\  
+//    $$ |  $$ |$$ | \____$$\ $$ |$$  __$$\ $$  __$$\ $$ |  $$ |$$  __$$\ 
+//    $$ |  $$ |$$ | $$$$$$$ |$$ |$$ /  $$ |$$ /  $$ |$$ |  $$ |$$$$$$$$ |
+//    $$ |  $$ |$$ |$$  __$$ |$$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$   ____|
+//    $$$$$$$  |$$ |\$$$$$$$ |$$ |\$$$$$$  |\$$$$$$$ |\$$$$$$  |\$$$$$$$\ 
+//    \_______/ \__| \_______|\__| \______/  \____$$ | \______/  \_______|
+//                                          $$\   $$ |                    
+//                                          \$$$$$$  |                    
+//                                           \______/                     
 class Dialogue {
-    // In pixels
-    static outer_margin = gW * 0.025
-    static inner_margin = gW * 0.005
-    static line_spacing = gW * 0.020
+    static outer_margin = kW * 0.025
+    static inner_margin = kW * 0.005
+    static line_spacing = kW * 0.020
+    visible = false // Visibility.
+    curr_text = -1; // Current index of this.text
+    text = null
 
     /**@param text An array of dialogue strings. */
     constructor(text) {
         this.text = text // Array of dialogue strings.
-        this.visible = false // Visibility.
-        this.curr_text = -1; // Current index of this.text
     }
 }
 
@@ -242,25 +341,29 @@ class Dialogue {
 //                                                                                              
 //                                                                                              
 class GameEvent {
+    dialogue = null
+    decorations = null
+    sequence = null
+    can_start = true // Ensures GameEvent can only run once.
+    curr_stage = -1 // The current stage of this.program
+
     /**
      * @param {Dialogue} dialogue The dialogue to play for the event.
      * @param {Decoration[]} decorations An array of the characters involved in the event.
-     * @param {function} program An anonymous function with the prototype <_(GameObject): void>. 
+     * @param {function} sequence An anonymous function with the prototype <_(GameObject): void>. 
      */
-    constructor(dialogue, decorations, program) {
+    constructor(dialogue, decorations, sequence) {
         this.dialogue = dialogue
         this.decorations = decorations
-        this.program = program
-        this.can_start = true // Ensures GameEvent can only run once.
-        this.curr_stage = -1 // The current stage of this.program
+        this.sequence = sequence
     }
 
     Run() {
         this.curr_stage = 0;
-        this.program(this)
+        this.sequence(this)
     }
 
-    StartCriterion() { return TotalContainerScore() == 2 && this.can_start; }
+    StartCriterionMet() { return TotalContainerScore() == 2 && this.can_start; }
 }
 
 //    $$$$$$\           $$\   $$\     $$\           $$\ 
@@ -274,9 +377,7 @@ class GameEvent {
 //                                                      
 //                                                      
 //                                                      
-let gDraggables = []
-let gContainers = []
-let gGameEvents = []
+// Images
 // Draggables
 const clothes_img = new Image()
 const clothes_unraveled_img = new Image()
@@ -309,20 +410,20 @@ wolfman_img.src = "/room/wolfman.png";
 
 // Add draggables
 for (let i = 0; i < 9; i++) {
-    gDraggables.push(new Draggable(
-        0.2 * gW + 0.6 * Math.random() * gW, (0.7 + 0.2 * Math.random()) * gH,
-        gW * 0.05, gW * 0.05, [clothes_img, clothes_unraveled_img] // It doesn't matter whether to use gW or gH for sizes because 16:9 is maintained.
+    ActManager.active_draggables.push(new Draggable(
+        0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH,
+        kW * 0.05, kW * 0.05, [clothes_img, clothes_unraveled_img] // It doesn't matter whether to use gW or gH for sizes because 16:9 is maintained.
     ))
-    gDraggables.push(new Draggable(
-        (0.2 + 0.6 * Math.random()) * gW, (0.7 + 0.2 * Math.random()) * gH,
-        gW * 0.05, gW * 0.05, [trash_img, trash_img]
+    ActManager.active_draggables.push(new Draggable(
+        (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
+        kW * 0.05, kW * 0.05, [trash_img, trash_img]
     ))
-    gDraggables.push(new Draggable(
-        (0.2 + 0.6 * Math.random()) * gW, (0.7 + 0.2 * Math.random()) * gH,
-        gW * 0.05, gW * 0.05, [trinket_img, trinket_img]
+    ActManager.active_draggables.push(new Draggable(
+        (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
+        kW * 0.05, kW * 0.05, [trinket_img, trinket_img]
     ))
 
-    const new_draggables = gDraggables.slice(-3)
+    const new_draggables = ActManager.active_draggables.slice(-3)
     new_draggables[0].description = "Clothes";
     new_draggables[0].compatibilities = ["clothes"]
     new_draggables[1].description = "Trash";
@@ -332,15 +433,15 @@ for (let i = 0; i < 9; i++) {
 }
 
 // Add containers.
-gContainers.push(new Container(gW * 0.47, gH * 0.54, gW * 0.1, gH * 0.2, [closet_img]))
-gContainers.push(new Container(gW * 0.76, gH * 0.65, gW * 0.05, gH * 0.1, [trashcan_img]))
-gContainers.push(new Container(gW * 0.675, gH * 0.24, gW * 0.2, gH * 0.3, [cabinet_img]))
-gContainers[0].description = "The Closet"
-gContainers[0].compatibilities = ["clothes"]
-gContainers[1].description = "The Trashcan"
-gContainers[1].compatibilities = ["trash"]
-gContainers[2].description = "The Trinket Cabinet"
-gContainers[2].compatibilities = ["trinkets"]
+ActManager.active_containers.push(new Container(kW * 0.47, kH * 0.54, kW * 0.1, kH * 0.2, [closet_img]))
+ActManager.active_containers.push(new Container(kW * 0.76, kH * 0.65, kW * 0.05, kH * 0.1, [trashcan_img]))
+ActManager.active_containers.push(new Container(kW * 0.675, kH * 0.24, kW * 0.2, kH * 0.3, [cabinet_img]))
+ActManager.active_containers[0].description = "The Closet"
+ActManager.active_containers[0].compatibilities = ["clothes"]
+ActManager.active_containers[1].description = "The Trashcan"
+ActManager.active_containers[1].compatibilities = ["trash"]
+ActManager.active_containers[2].description = "The Trinket Cabinet"
+ActManager.active_containers[2].compatibilities = ["trinkets"]
 
 // Initialize dialogue.
 const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
@@ -360,7 +461,7 @@ const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of th
 ])
 
 // Initialize characters.
-const horse_character = new Decoration(0.1 * gW, 0.5 * gH, 0.2 * gW, 0.2 * gW, [horse_img])
+const horse_character = new Decoration(0.1 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [horse_img])
 
 // Initialize game event sequence.
 const foo_program = (game_object) => {
@@ -378,47 +479,47 @@ const foo_program = (game_object) => {
             poem.visible = false
             break;
         case 0:
-            horse.x = 0.2 * gW
+            horse.x = 0.2 * kW
             break;
         case 1:
-            horse.x = 0.15 * gW
+            horse.x = 0.15 * kW
             break;
         case 2:
-            horse.x = 0.2 * gW
+            horse.x = 0.2 * kW
             break;
         case 3:
-            horse.x = 0.15 * gW
+            horse.x = 0.15 * kW
             break;
         case 4:
-            horse.x = 0.2 * gW
+            horse.x = 0.2 * kW
             break;
         case 5:
-            horse.x = 0.15 * gW
+            horse.x = 0.15 * kW
             break;
         case 6:
-            horse.x = 0.2 * gW
+            horse.x = 0.2 * kW
             break;
         case 7:
-            horse.x = 0.15 * gW
+            horse.x = 0.15 * kW
             break;
         case 8:
-            horse.x = 0.2 * gW
+            horse.x = 0.2 * kW
             break;
         case 9:
-            horse.x = 0.15 * gW
+            horse.x = 0.15 * kW
             break;
         case 10:
-            horse.x = 0.2 * gW
+            horse.x = 0.2 * kW
             break;
         case 11:
-            horse.x = 0.15 * gW
+            horse.x = 0.15 * kW
             break;
         default:
             console.error("Invalid curr_stage.", curr_stage)
             break;
     }
 };
-gGameEvents.push(new GameEvent(poem_dialogue, [horse_character], foo_program))
+ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_program))
 
 //    $$\      $$\           $$\           
 //    $$$\    $$$ |          \__|          
@@ -435,7 +536,6 @@ function main() {
     window.requestAnimationFrame(main);
 
     // Present screen. (draw objects)
-    ResizeCanvas()
     ClearScreen()
     DrawBackground()
     DrawContainers()
@@ -484,138 +584,121 @@ main();
 //                                                                                     
 //                                                                                     
 
-function ResizeCanvas() {
-    const canvas_rect = canvas.getBoundingClientRect()
-    canvas_rect.width /= kPixelationFactor
-    canvas_rect.height /= kPixelationFactor
-    canvas.width = canvas_rect.width
-    canvas.height = canvas_rect.height
-    gW = canvas.width
-    gH = canvas.height
-    return canvas_rect
-}
-
-function ClearScreen() { ctx.clearRect(0, 0, gW, gH) }
+function ClearScreen() { kCtx.clearRect(0, 0, kW, kH) }
 
 // Returns a double array of the 2D coordinates of the room corners.
 // [TopLeft, TopRight, BottomLeft, BottomLeft]
 function GetScenePoints() {
     return [
         [kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth],
-        [gW - kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth],
-        [kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth],
-        [gW - kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth]
+        [kW - kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth],
+        [kVanishingPoint[0] * kSceneDepth, kH - (kH - kVanishingPoint[1]) * kSceneDepth],
+        [kW - kVanishingPoint[0] * kSceneDepth, kH - (kH - kVanishingPoint[1]) * kSceneDepth]
     ]
 }
 
 function DrawBackground() {
-    ctx.save()
+    kCtx.save()
 
     const scene_points = GetScenePoints()
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = gW * 0.0015;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(scene_points[0][0], scene_points[0][1]);
-    ctx.lineTo(scene_points[1][0], scene_points[1][1]);
-    ctx.lineTo(gW, 0);
-    ctx.moveTo(0, gH);
-    ctx.lineTo(scene_points[2][0], scene_points[2][1]);
-    ctx.lineTo(scene_points[3][0], scene_points[3][1]);
-    ctx.lineTo(gW, gH);
-    ctx.moveTo(scene_points[0][0], scene_points[0][1]);
-    ctx.lineTo(scene_points[2][0], scene_points[2][1]);
-    ctx.moveTo(scene_points[1][0], scene_points[1][1]);
-    ctx.lineTo(scene_points[3][0], scene_points[3][1]);
-    ctx.stroke();
+    kCtx.strokeStyle = "black";
+    kCtx.lineWidth = kW * 0.0015;
+    kCtx.beginPath();
+    kCtx.moveTo(0, 0);
+    kCtx.lineTo(scene_points[0][0], scene_points[0][1]);
+    kCtx.lineTo(scene_points[1][0], scene_points[1][1]);
+    kCtx.lineTo(kW, 0);
+    kCtx.moveTo(0, kH);
+    kCtx.lineTo(scene_points[2][0], scene_points[2][1]);
+    kCtx.lineTo(scene_points[3][0], scene_points[3][1]);
+    kCtx.lineTo(kW, kH);
+    kCtx.moveTo(scene_points[0][0], scene_points[0][1]);
+    kCtx.lineTo(scene_points[2][0], scene_points[2][1]);
+    kCtx.moveTo(scene_points[1][0], scene_points[1][1]);
+    kCtx.lineTo(scene_points[3][0], scene_points[3][1]);
+    kCtx.stroke();
 
-    ctx.font = `${gW * 0.02}px Arial`;
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("Placeholder", gW * 0.1, gH * 0.5);
-    ctx.fillText("Placeholder", gW * 0.9, gH * 0.5);
-    ctx.fillText("Placeholder", gW * 0.5, gH * 0.4);
-    ctx.fillText("Placeholder", gW * 0.5, gH * 0.8);
-    ctx.fillText("Placeholder", gW * 0.5, gH * 0.05);
+    kCtx.font = `${kW * 0.02}px Arial`;
+    kCtx.fillStyle = "black";
+    kCtx.textAlign = "center";
+    kCtx.textBaseline = "middle";
+    kCtx.fillText("Placeholder", kW * 0.1, kH * 0.5);
+    kCtx.fillText("Placeholder", kW * 0.9, kH * 0.5);
+    kCtx.fillText("Placeholder", kW * 0.5, kH * 0.4);
+    kCtx.fillText("Placeholder", kW * 0.5, kH * 0.8);
+    kCtx.fillText("Placeholder", kW * 0.5, kH * 0.05);
 
-    ctx.restore()
-}
-
-// Track the time the page has been running.
-function GetTime() {
-    const currentTime = performance.now();
-    return ((currentTime) / 1000); // Return elapsed time in seconds.
+    kCtx.restore()
 }
 
 function DrawDraggables() {
-    gDraggables.forEach(draggable => {
-        ctx.drawImage(draggable.images[draggable.curr_image], draggable.x - draggable.w / 2, draggable.y - draggable.h / 2, draggable.w, draggable.h);
+    ActManager.active_draggables.forEach(draggable => {
+        kCtx.drawImage(draggable.images[draggable.curr_image], draggable.x - draggable.w / 2, draggable.y - draggable.h / 2, draggable.w, draggable.h);
     })
 }
 
 function DrawContainers() {
-    gContainers.forEach(container => {
-        ctx.drawImage(container.images[container.curr_image], container.x - container.w / 2, container.y - container.h / 2, container.w, container.h);
+    ActManager.active_containers.forEach(container => {
+        kCtx.drawImage(container.images[container.curr_image], container.x - container.w / 2, container.y - container.h / 2, container.w, container.h);
     })
 }
 
 function DrawDecorations() {
-    gGameEvents.forEach(game_event => {
+    ActManager.game_events.forEach(game_event => {
         game_event.decorations.forEach(decoration => {
             if (decoration.visible)
-                ctx.drawImage(decoration.images[decoration.curr_image], decoration.x - decoration.w / 2, decoration.y - decoration.h / 2, decoration.w, decoration.h);
+                kCtx.drawImage(decoration.images[decoration.curr_image], decoration.x - decoration.w / 2, decoration.y - decoration.h / 2, decoration.w, decoration.h);
         })
     })
 }
 
 function DrawDialogues() {
-    ctx.save()
+    kCtx.save()
 
-    gGameEvents.forEach(game_event => {
+    ActManager.game_events.forEach(game_event => {
         if (game_event.dialogue.visible) {
             // Process text.
             const lines = game_event.dialogue.text[game_event.dialogue.curr_text].split("\n")
             const dialogue_height = lines.length * Dialogue.line_spacing
 
             // Find maximum text width in lines.
-            ctx.font = `${gW * 0.02}px Arial`; // Must be called before ctx.measureText().
+            kCtx.font = `${kW * 0.02}px Arial`; // Must be called before ctx.measureText().
             let max_text_width = 0;
             lines.forEach(line => {
-                if (ctx.measureText(line).width > max_text_width)
-                    max_text_width = ctx.measureText(line).width;
+                if (kCtx.measureText(line).width > max_text_width)
+                    max_text_width = kCtx.measureText(line).width;
             });
 
             // Draw box
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = gW * 0.001;
-            ctx.fillStyle = "#bbbbbb";
-            const x = (gW - (max_text_width + 2 * Dialogue.inner_margin)) / 2
-            const y = gH - (Dialogue.outer_margin + dialogue_height + 2 * Dialogue.inner_margin)
+            kCtx.strokeStyle = "black";
+            kCtx.lineWidth = kW * 0.001;
+            kCtx.fillStyle = "#bbbbbb";
+            const x = (kW - (max_text_width + 2 * Dialogue.inner_margin)) / 2
+            const y = kH - (Dialogue.outer_margin + dialogue_height + 2 * Dialogue.inner_margin)
             const w = max_text_width + 2 * Dialogue.inner_margin
             const h = dialogue_height + 2 * Dialogue.inner_margin
-            ctx.fillRect(x, y, w, h)
-            ctx.strokeRect(x, y, w, h)
+            kCtx.fillRect(x, y, w, h)
+            kCtx.strokeRect(x, y, w, h)
 
             // Draw text.
-            ctx.fillStyle = "black";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "bottom";
+            kCtx.fillStyle = "black";
+            kCtx.textAlign = "center";
+            kCtx.textBaseline = "bottom";
             lines.forEach((line, index) => {
-                ctx.fillText(line, x + w / 2, (y + Dialogue.line_spacing) + Dialogue.inner_margin + Dialogue.line_spacing * index);
+                kCtx.fillText(line, x + w / 2, (y + Dialogue.line_spacing) + Dialogue.inner_margin + Dialogue.line_spacing * index);
             })
 
             // Draw instruction text.
-            const w2 = ctx.measureText("Press space to continue.").width
-            ctx.fillStyle = "#bbbbbb";
-            ctx.fillRect((gW - w2) / 2, y + h + Dialogue.outer_margin / 2 - Dialogue.line_spacing / 2, w2, Dialogue.line_spacing)
-            ctx.strokeRect((gW - w2) / 2, y + h + Dialogue.outer_margin / 2 - Dialogue.line_spacing / 2, w2, Dialogue.line_spacing)
-            ctx.fillStyle = "black"
-            ctx.fillText("Press space to continue.", gW / 2, y + h + Dialogue.line_spacing / 2 + Dialogue.outer_margin / 2)
+            const w2 = kCtx.measureText("Press space to continue.").width
+            kCtx.fillStyle = "#bbbbbb";
+            kCtx.fillRect((kW - w2) / 2, y + h + Dialogue.outer_margin / 2 - Dialogue.line_spacing / 2, w2, Dialogue.line_spacing)
+            kCtx.strokeRect((kW - w2) / 2, y + h + Dialogue.outer_margin / 2 - Dialogue.line_spacing / 2, w2, Dialogue.line_spacing)
+            kCtx.fillStyle = "black"
+            kCtx.fillText("Press space to continue.", kW / 2, y + h + Dialogue.line_spacing / 2 + Dialogue.outer_margin / 2)
         }
     })
 
-    ctx.restore
+    kCtx.restore
 }
 
 function GetMouseData() {
@@ -629,8 +712,8 @@ function GetMouseData() {
 
 function GetHoveredDraggable() {
     // Iterate in reverse to prioritize front-most draggables.
-    for (let i = gDraggables.length - 1; i >= 0; i--) {
-        const draggable = gDraggables[i];
+    for (let i = ActManager.active_draggables.length - 1; i >= 0; i--) {
+        const draggable = ActManager.active_draggables[i];
         const w2 = draggable.w / 2
         const h2 = draggable.h / 2
         if (gMouseX > draggable.x - w2 && gMouseX < draggable.x + w2 &&
@@ -642,8 +725,8 @@ function GetHoveredDraggable() {
 
 function GetHoveredContainer() {
     // Iterate in reverse to prioritize front-most draggables.
-    for (let i = gContainers.length - 1; i >= 0; i--) {
-        const container = gContainers[i];
+    for (let i = ActManager.active_containers.length - 1; i >= 0; i--) {
+        const container = ActManager.active_containers[i];
         const w2 = container.w / 2
         const h2 = container.h / 2
         if (gMouseX > container.x - w2 && gMouseX < container.x + w2 &&
@@ -654,9 +737,9 @@ function GetHoveredContainer() {
 }
 
 function UpdateDraggables() {
-    for (let i = 0; i < gDraggables.length; i++) {
+    for (let i = 0; i < ActManager.active_draggables.length; i++) {
         // Handle pickups.
-        const draggable = gDraggables[i];
+        const draggable = ActManager.active_draggables[i];
         if (draggable.picked_up) {
             draggable.x = gMouseX
             draggable.y = gMouseY
@@ -667,11 +750,11 @@ function UpdateDraggables() {
         // Gravity.
         if (draggable.falling) {
             // Update pos and velo.
-            draggable.y += gH * draggable.velocity
+            draggable.y += kH * draggable.velocity
             draggable.velocity += 0.01;
             // Fix bugged pickup locations.
             if (draggable.pickup_location[1] < GetScenePoints()[2][1])
-                draggable.pickup_location[1] = (GetScenePoints()[2][1] + gH) / 2
+                draggable.pickup_location[1] = (GetScenePoints()[2][1] + kH) / 2
             // Stop gravity if object hit pickup height.
             if (draggable.y > draggable.pickup_location[1]) {
                 draggable.falling = false
@@ -684,17 +767,17 @@ function UpdateDraggables() {
 
 function TotalContainerScore() {
     let score = 0;
-    for (let i = 0; i < gContainers.length; i++) {
-        const element = gContainers[i];
+    for (let i = 0; i < ActManager.active_containers.length; i++) {
+        const element = ActManager.active_containers[i];
         score += element.eaten_counter;
     }
     return score;
 }
 
 function UpdateGameEvents() {
-    for (let i = 0; i < gGameEvents.length; i++) {
-        const game_event = gGameEvents[i];
-        if (game_event.StartCriterion()) {
+    for (let i = 0; i < ActManager.game_events.length; i++) {
+        const game_event = ActManager.game_events[i];
+        if (game_event.StartCriterionMet()) {
             game_event.can_start = false
             game_event.Run()
         }
