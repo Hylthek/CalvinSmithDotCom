@@ -83,6 +83,7 @@ class Draggable {
         this.description = "Drag me!"
         this.compatibilities = []
         this.pickup_location = [null, null]
+        this.falling = false;
     }
 
     Pickup() {
@@ -100,6 +101,10 @@ class Draggable {
     Drop() {
         this.picked_up = false
         this.curr_image = 0;
+
+        // Handle gravity.
+        if (this.y < GetScenePoints()[2][1])
+            this.falling = true
     }
 
     DrawHoverText() {
@@ -489,32 +494,44 @@ function ResizeCanvas() {
 
 function ClearScreen() { ctx.clearRect(0, 0, gW, gH) }
 
+// Returns a double array of the 2D coordinates of the room corners.
+// [TopLeft, TopRight, BottomLeft, BottomLeft]
+function GetScenePoints() {
+    return [
+        [kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth],
+        [gW - kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth],
+        [kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth],
+        [gW - kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth]
+    ]
+}
+
 function DrawBackground() {
     ctx.save()
 
+    const scene_points = GetScenePoints()
     ctx.strokeStyle = "black";
     ctx.lineWidth = gW * 0.0015;
     ctx.beginPath();
     ctx.moveTo(0, 0);
-    ctx.lineTo(kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
-    ctx.lineTo(gW - kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
+    ctx.lineTo(scene_points[0][0], scene_points[0][1]);
+    ctx.lineTo(scene_points[1][0], scene_points[1][1]);
     ctx.lineTo(gW, 0);
     ctx.moveTo(0, gH);
-    ctx.lineTo(kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
-    ctx.lineTo(gW - kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
+    ctx.lineTo(scene_points[2][0], scene_points[2][1]);
+    ctx.lineTo(scene_points[3][0], scene_points[3][1]);
     ctx.lineTo(gW, gH);
-    ctx.moveTo(kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
-    ctx.lineTo(kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
-    ctx.moveTo(gW - kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
-    ctx.lineTo(gW - kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
+    ctx.moveTo(scene_points[0][0], scene_points[0][1]);
+    ctx.lineTo(scene_points[2][0], scene_points[2][1]);
+    ctx.moveTo(scene_points[1][0], scene_points[1][1]);
+    ctx.lineTo(scene_points[3][0], scene_points[3][1]);
     ctx.stroke();
 
     ctx.font = `${gW * 0.02}px Arial`;
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("Placeholder", gW * 0.1, gH  * 0.5);
-    ctx.fillText("Placeholder", gW * 0.9, gH  * 0.5);
+    ctx.fillText("Placeholder", gW * 0.1, gH * 0.5);
+    ctx.fillText("Placeholder", gW * 0.9, gH * 0.5);
     ctx.fillText("Placeholder", gW * 0.5, gH * 0.4);
     ctx.fillText("Placeholder", gW * 0.5, gH * 0.8);
     ctx.fillText("Placeholder", gW * 0.5, gH * 0.05);
@@ -635,6 +652,7 @@ function GetHoveredContainer() {
 
 function UpdateDraggables() {
     for (let i = 0; i < gDraggables.length; i++) {
+        // Handle pickups.
         const draggable = gDraggables[i];
         if (draggable.picked_up) {
             draggable.x = gMouseX
@@ -642,6 +660,15 @@ function UpdateDraggables() {
         }
         if (gMb1State == false)
             draggable.Drop()
+
+        // Gravity.
+        if (draggable.falling) {
+            draggable.y += gH * 0.1
+            if (draggable.y > draggable.pickup_location[1]) {
+                draggable.falling = false
+                draggable.y = draggable.pickup_location[1]
+            }
+        }
     }
 }
 
