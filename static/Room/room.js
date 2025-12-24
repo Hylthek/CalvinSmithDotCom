@@ -1,6 +1,6 @@
 'use strict';
 
-// Constants
+// Constants pt1.
 const kPixelationFactor = 2 // Must be defined before ResizeCanvas()
 
 // Canvas boilerplate.
@@ -9,6 +9,10 @@ const ctx = canvas.getContext("2d")
 let gW = undefined // Can't read non-existent inline value as we are using a media query.
 let gH = undefined
 ResizeCanvas() // Must be called here to set gW and gH to proper values.
+
+// Constants pt2.
+const kVanishingPoint = [0.5 * gW, 0.1 * gH]
+const kSceneDepth = 0.45 // Amount the room edges travel to the vanishing point.
 
 //     $$$$$$\  $$\           $$\                 $$\           
 //    $$  __$$\ $$ |          $$ |                $$ |          
@@ -320,14 +324,14 @@ for (let i = 0; i < 3; i++) {
 }
 
 // Add containers.
-gContainers.push(new Container(gW * 0.2, gH * 0.3, gW * 0.1, gH * 0.2, [closet_img]))
-gContainers.push(new Container(gW * 0.9, gH * 0.5, gW * 0.075, gH * 0.15, [trashcan_img]))
-gContainers.push(new Container(gW * 0.8, gH * 0.2, gW * 0.1, gH * 0.2, [cabinet_img]))
+gContainers.push(new Container(gW * 0.47, gH * 0.495, gW * 0.1, gH * 0.2, [closet_img]))
+gContainers.push(new Container(gW * 0.75, gH * 0.6, gW * 0.05, gH * 0.1, [trashcan_img]))
+gContainers.push(new Container(gW * 0.675, gH * 0.2, gW * 0.2, gH * 0.3, [cabinet_img]))
 gContainers[0].description = "The Closet"
 gContainers[0].compatibilities = ["clothes"]
 gContainers[1].description = "The Trashcan"
 gContainers[1].compatibilities = ["trash"]
-gContainers[2].description = "The Cabinet"
+gContainers[2].description = "The Trinket Cabinet"
 gContainers[2].compatibilities = ["trinkets"]
 
 // Initialize dialogue.
@@ -488,29 +492,22 @@ function ClearScreen() { ctx.clearRect(0, 0, gW, gH) }
 function DrawBackground() {
     ctx.save()
 
-    // Define frequencies.
-    const hz_1 = Math.sin(GetTime()) / 2 + 1
-    const hz_2 = Math.sin(GetTime() * 1.314159) / 2 + 1
-    const hz_3 = Math.sin(GetTime() * 2.618034) / 2 + 1
-    // Draw back rectangle.
-    ctx.fillStyle = `rgb(${hz_2 * 50},${hz_3 * 50},${hz_1 * 50})`
-    ctx.fillRect(0, 0, gW, gH)
-    // Draw gridlines.
-    ctx.strokeStyle = `rgb(${hz_1 * 100},${hz_2 * 100},${hz_3 * 100})`
-    ctx.lineWidth = gW * 0.05
-    const gridSize = gW * 0.1
-    for (let t = hz_1 * gridSize - gridSize; t <= gW + gridSize; t += gridSize) {
-        ctx.beginPath()
-        ctx.moveTo(t, 0)
-        ctx.lineTo(t, gH)
-        ctx.stroke()
-    }
-    for (let y = hz_2 * gridSize - gridSize; y <= gH + gridSize; y += gridSize) {
-        ctx.beginPath()
-        ctx.moveTo(0, y)
-        ctx.lineTo(gW, y)
-        ctx.stroke()
-    }
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = gW * 0.0015;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
+    ctx.lineTo(gW - kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
+    ctx.lineTo(gW, 0);
+    ctx.moveTo(0, gH);
+    ctx.lineTo(kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
+    ctx.lineTo(gW - kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
+    ctx.lineTo(gW, gH);
+    ctx.moveTo(kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
+    ctx.lineTo(kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
+    ctx.moveTo(gW - kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
+    ctx.lineTo(gW - kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
+    ctx.stroke();
 
     ctx.restore()
 }
