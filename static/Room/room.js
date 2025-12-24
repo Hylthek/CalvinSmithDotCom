@@ -11,7 +11,7 @@ let gH = undefined
 ResizeCanvas() // Must be called here to set gW and gH to proper values.
 
 // Constants pt2.
-const kVanishingPoint = [0.5 * gW, 0.1 * gH]
+const kVanishingPoint = [0.5 * gW, 0.2 * gH]
 const kSceneDepth = 0.45 // Amount the room edges travel to the vanishing point.
 
 //     $$$$$$\  $$\           $$\                 $$\           
@@ -300,7 +300,7 @@ goob_img.src = "/room/goob.png";
 wolfman_img.src = "/room/wolfman.png";
 
 // Add draggables
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 9; i++) {
     gDraggables.push(new Draggable(
         0.2 * gW + 0.6 * Math.random() * gW, (0.7 + 0.2 * Math.random()) * gH,
         gW * 0.05, gW * 0.05, [clothes_img, clothes_unraveled_img] // It doesn't matter whether to use gW or gH for sizes because 16:9 is maintained.
@@ -324,9 +324,9 @@ for (let i = 0; i < 3; i++) {
 }
 
 // Add containers.
-gContainers.push(new Container(gW * 0.47, gH * 0.495, gW * 0.1, gH * 0.2, [closet_img]))
-gContainers.push(new Container(gW * 0.75, gH * 0.6, gW * 0.05, gH * 0.1, [trashcan_img]))
-gContainers.push(new Container(gW * 0.675, gH * 0.2, gW * 0.2, gH * 0.3, [cabinet_img]))
+gContainers.push(new Container(gW * 0.47, gH * 0.54, gW * 0.1, gH * 0.2, [closet_img]))
+gContainers.push(new Container(gW * 0.76, gH * 0.65, gW * 0.05, gH * 0.1, [trashcan_img]))
+gContainers.push(new Container(gW * 0.675, gH * 0.24, gW * 0.2, gH * 0.3, [cabinet_img]))
 gContainers[0].description = "The Closet"
 gContainers[0].compatibilities = ["clothes"]
 gContainers[1].description = "The Trashcan"
@@ -508,6 +508,16 @@ function DrawBackground() {
     ctx.moveTo(gW - kVanishingPoint[0] * kSceneDepth, kVanishingPoint[1] * kSceneDepth);
     ctx.lineTo(gW - kVanishingPoint[0] * kSceneDepth, gH - (gH - kVanishingPoint[1]) * kSceneDepth);
     ctx.stroke();
+
+    ctx.font = `${gW * 0.02}px Arial`;
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("Placeholder", gW * 0.1, gH  * 0.5);
+    ctx.fillText("Placeholder", gW * 0.9, gH  * 0.5);
+    ctx.fillText("Placeholder", gW * 0.5, gH * 0.4);
+    ctx.fillText("Placeholder", gW * 0.5, gH * 0.8);
+    ctx.fillText("Placeholder", gW * 0.5, gH * 0.05);
 
     ctx.restore()
 }
