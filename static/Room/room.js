@@ -479,39 +479,66 @@ class DrawingHelperFunctions {
     static ClearScreen() { kCtx.clearRect(0, 0, kW, kH) }
 
     static DrawBackground() {
-        if (ActManager.current_act != 1)
-            return;
-
         kCtx.save()
+        switch (ActManager.current_act) {
+            case 0:
+                kCtx.font = `${kW * 0.05}px Arial`;
+                kCtx.fillStyle = "black";
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                kCtx.fillText("Intro", kW / 2, kH / 2);
+                break;
+            case 1:
+                const scene_points = GetScenePoints()
+                kCtx.strokeStyle = "black";
+                kCtx.lineWidth = kW * 0.0015;
+                kCtx.beginPath();
+                kCtx.moveTo(0, 0);
+                kCtx.lineTo(scene_points[0][0], scene_points[0][1]);
+                kCtx.lineTo(scene_points[1][0], scene_points[1][1]);
+                kCtx.lineTo(kW, 0);
+                kCtx.moveTo(0, kH);
+                kCtx.lineTo(scene_points[2][0], scene_points[2][1]);
+                kCtx.lineTo(scene_points[3][0], scene_points[3][1]);
+                kCtx.lineTo(kW, kH);
+                kCtx.moveTo(scene_points[0][0], scene_points[0][1]);
+                kCtx.lineTo(scene_points[2][0], scene_points[2][1]);
+                kCtx.moveTo(scene_points[1][0], scene_points[1][1]);
+                kCtx.lineTo(scene_points[3][0], scene_points[3][1]);
+                kCtx.stroke();
 
-        const scene_points = GetScenePoints()
-        kCtx.strokeStyle = "black";
-        kCtx.lineWidth = kW * 0.0015;
-        kCtx.beginPath();
-        kCtx.moveTo(0, 0);
-        kCtx.lineTo(scene_points[0][0], scene_points[0][1]);
-        kCtx.lineTo(scene_points[1][0], scene_points[1][1]);
-        kCtx.lineTo(kW, 0);
-        kCtx.moveTo(0, kH);
-        kCtx.lineTo(scene_points[2][0], scene_points[2][1]);
-        kCtx.lineTo(scene_points[3][0], scene_points[3][1]);
-        kCtx.lineTo(kW, kH);
-        kCtx.moveTo(scene_points[0][0], scene_points[0][1]);
-        kCtx.lineTo(scene_points[2][0], scene_points[2][1]);
-        kCtx.moveTo(scene_points[1][0], scene_points[1][1]);
-        kCtx.lineTo(scene_points[3][0], scene_points[3][1]);
-        kCtx.stroke();
-
-        kCtx.font = `${kW * 0.02}px Arial`;
-        kCtx.fillStyle = "black";
-        kCtx.textAlign = "center";
-        kCtx.textBaseline = "middle";
-        kCtx.fillText("Placeholder", kW * 0.1, kH * 0.5);
-        kCtx.fillText("Placeholder", kW * 0.9, kH * 0.5);
-        kCtx.fillText("Placeholder", kW * 0.5, kH * 0.4);
-        kCtx.fillText("Placeholder", kW * 0.5, kH * 0.8);
-        kCtx.fillText("Placeholder", kW * 0.5, kH * 0.05);
-
+                kCtx.font = `${kW * 0.02}px Arial`;
+                kCtx.fillStyle = "black";
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                kCtx.fillText("Placeholder", kW * 0.1, kH * 0.5);
+                kCtx.fillText("Placeholder", kW * 0.9, kH * 0.5);
+                kCtx.fillText("Placeholder", kW * 0.5, kH * 0.4);
+                kCtx.fillText("Placeholder", kW * 0.5, kH * 0.8);
+                kCtx.fillText("Placeholder", kW * 0.5, kH * 0.05);
+                break;
+            case 2:
+                kCtx.font = `${kW * 0.05}px Arial`;
+                kCtx.fillStyle = "black";
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                kCtx.fillText("Act II", kW / 2, kH / 2);
+                break;
+            case 3:
+                kCtx.font = `${kW * 0.05}px Arial`;
+                kCtx.fillStyle = "black";
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                kCtx.fillText("Act III", kW / 2, kH / 2);
+                break;
+            case 4:
+                kCtx.font = `${kW * 0.05}px Arial`;
+                kCtx.fillStyle = "black";
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                kCtx.fillText("The End", kW / 2, kH / 2);
+                break;
+        }
         kCtx.restore()
     }
 
