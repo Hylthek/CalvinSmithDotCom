@@ -84,7 +84,7 @@ document.addEventListener("keydown", (event) => {
 //                                                                             \$$$$$$  |                    
 //                                                                              \______/                     
 class ActManager {
-    static current_act = "splash-screen" // Values: (splash-screen, intro, act-1, act-2, act-3, outro, credits)
+    static current_act = null // Values: (splash-screen, intro, act-1, act-2, act-3, outro, credits)
     static active_draggables = []
     static active_containers = []
     static active_decorations = []
@@ -96,6 +96,10 @@ class ActManager {
 
     static NextAct() {
         switch (this.current_act) {
+            case null:
+                ActInitializations.SplashScreen()
+                this.current_act = "splash-screen"
+                break
             case "splash-screen":
                 ActManager.ClearArrays()
                 this.current_act = "intro"
@@ -522,8 +526,7 @@ class DrawingHelperFunctions {
                 kCtx.fillText("Placeholder", kW * 0.5, kH * 0.8);
                 kCtx.fillText("Placeholder", kW * 0.5, kH * 0.05);
 
-                // fallthrough
-            case "splash-screen":
+            // fallthrough
             case "act-3":
             case "credits":
                 kCtx.font = `${kW * 0.05}px Arial`;
@@ -531,6 +534,14 @@ class DrawingHelperFunctions {
                 kCtx.textAlign = "center";
                 kCtx.textBaseline = "middle";
                 kCtx.fillText(ActManager.current_act, kW / 2, kH / 2);
+                break;
+            case "splash-screen":
+                // Draw text.
+                kCtx.font = `${kW * 0.05}px serif`;
+                kCtx.fillStyle = "black";
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                kCtx.fillText("For S.", kW / 2, kH * 0.45);
                 break;
             default:
                 console.error("Invalid act string.", ActManager.current_act)
@@ -551,11 +562,17 @@ class DrawingHelperFunctions {
     }
 
     static DrawDecorations() {
+        // Draw GameEvent decorations (characters)
         ActManager.game_events.forEach(game_event => {
             game_event.decorations.forEach(decoration => {
                 if (decoration.visible)
                     kCtx.drawImage(decoration.images[decoration.curr_image], decoration.x - decoration.w / 2, decoration.y - decoration.h / 2, decoration.w, decoration.h);
             })
+        })
+        // Draw normal decorations.
+        ActManager.active_decorations.forEach(decoration => {
+            if (decoration.visible)
+                kCtx.drawImage(decoration.images[decoration.curr_image], decoration.x - decoration.w / 2, decoration.y - decoration.h / 2, decoration.w, decoration.h);
         })
     }
 
@@ -635,6 +652,26 @@ function GetScenePoints() {
 class ActInitializations {
     constructor() {
         console.error(": Cannot instantiate this static class.")
+    }
+
+    static SplashScreen() {
+        // Decoration images.
+        const monkey_img = new Image()
+        const heart_image = new Image()
+        const fly_img = new Image()
+        monkey_img.src = "/room/monkey.png";
+        heart_image.src = "/room/heart.png";
+        fly_img.src = "/room/fly.webp";
+        // Add decorations.
+        const monkey_decoration = new Decoration(kW * 0.39, kH * 0.6, kW * 0.12, kW * 0.1, [monkey_img])
+        const heart_decoration = new Decoration(kW * 0.5, kH * 0.6, kW * 0.1, kW * 0.1, [heart_image])
+        const fly_decoration = new Decoration(kW * 0.6, kH * 0.6, kW * 0.1, kW * 0.1, [fly_img])
+        monkey_decoration.visible = true;
+        fly_decoration.visible = true;
+        heart_decoration.visible = true;
+        ActManager.active_decorations.push(monkey_decoration)
+        ActManager.active_decorations.push(fly_decoration)
+        ActManager.active_decorations.push(heart_decoration)
     }
 
     static ActOne() {
@@ -781,6 +818,14 @@ class ActInitializations {
         };
         ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_sequence))
     }
+
+    static ActTwo() {
+        // Images.
+        // Draggables
+        const broom_img = new Image()
+        broom_img.src = "/room/broom.png";
+        // Characters
+    }
 }
 
 //    $$\      $$\           $$\           
@@ -794,6 +839,8 @@ class ActInitializations {
 //                                         
 //                                         
 //                                         
+// Initialize first act.
+ActManager.NextAct()
 function main() {
     window.requestAnimationFrame(main);
 
