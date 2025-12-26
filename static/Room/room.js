@@ -50,6 +50,10 @@ kCanvas.addEventListener("mousemove", (event) => {
 kCanvas.addEventListener("mousedown", (event) => {
     gMb1State = true
     gMb1StateChanged = true // Value is reset by main().
+    
+    // Continue from splash screen.
+    if (ActManager.current_act == "splash-screen")
+        ActManager.NextAct()
 })
 kCanvas.addEventListener("mouseup", () => {
     gMb1State = false
@@ -564,6 +568,13 @@ class DrawingHelperFunctions {
                 if (curr_time > fade_time + hold_time)
                     kCtx.fillStyle = `rgba(255,255,255,${(curr_time - fade_time - hold_time) / fade_time})`
                 kCtx.fillRect(0, 0, kW, kH)
+                // Draw instruction text.
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                kCtx.font = `${kW * 0.02}px Arial`;
+                kCtx.fillStyle = "black"
+                if (curr_time > 2 * fade_time + hold_time)
+                    kCtx.fillText("Click to Continue", kW / 2, kH / 2)
                 break;
             default:
             // Do nothing.
