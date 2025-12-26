@@ -84,7 +84,7 @@ document.addEventListener("keydown", (event) => {
 //                                                                             \$$$$$$  |                    
 //                                                                              \______/                     
 class ActManager {
-    static current_act = 0 // Values 0-4: (intro,clean,sweep,moveBed,credits)
+    static current_act = "splash-screen" // Values: (splash-screen, intro, act-1, act-2, act-3, outro, credits)
     static active_draggables = []
     static active_containers = []
     static active_decorations = []
@@ -96,33 +96,42 @@ class ActManager {
 
     static NextAct() {
         switch (this.current_act) {
-            case 0:
+            case "splash-screen":
+                ActManager.ClearArrays()
+                this.current_act = "intro"
+                break;
+            case "intro":
                 ActManager.ClearArrays()
                 ActInitializations.ActOne()
-                this.current_act = 1
+                this.current_act = "act-1"
                 break;
-            case 1:
+            case "act-1":
                 ActManager.ClearArrays()
                 // Load.
-                this.current_act = 2
+                this.current_act = "act-2"
                 break;
-            case 2:
+            case "act-2":
                 ActManager.ClearArrays()
                 // Load.
-                this.current_act = 3
+                this.current_act = "act-3"
                 break;
-            case 3:
+            case "act-3":
                 ActManager.ClearArrays()
                 // Load.
-                this.current_act = 4
+                this.current_act = "outro"
                 break;
-            case 4:
+            case "outro":
+                ActManager.ClearArrays()
+                // Load.
+                this.current_act = "credits"
+                break;
+            case "credits":
                 ActManager.ClearArrays()
                 // Load.
                 console.log("End of game reached.")
                 break;
             default:
-                console.error("Invalid act number.", this.current_act)
+                console.error("Invalid act string.", this.current_act)
                 break;
         }
     }
@@ -331,7 +340,7 @@ class Container {
             const type = draggable.compatibilities[i]
             if (this.compatibilities.indexOf(type) != -1) {
                 compatible = true
-                break
+                break;
             }
         }
         if (compatible == false) {
@@ -481,14 +490,10 @@ class DrawingHelperFunctions {
     static DrawBackground() {
         kCtx.save()
         switch (ActManager.current_act) {
-            case 0:
-                kCtx.font = `${kW * 0.05}px Arial`;
-                kCtx.fillStyle = "black";
-                kCtx.textAlign = "center";
-                kCtx.textBaseline = "middle";
-                kCtx.fillText("Intro", kW / 2, kH / 2);
-                break;
-            case 1:
+            case "act-1":
+            case "act-2":
+            case "intro":
+            case "outro":
                 const scene_points = GetScenePoints()
                 kCtx.strokeStyle = "black";
                 kCtx.lineWidth = kW * 0.0015;
@@ -516,28 +521,19 @@ class DrawingHelperFunctions {
                 kCtx.fillText("Placeholder", kW * 0.5, kH * 0.4);
                 kCtx.fillText("Placeholder", kW * 0.5, kH * 0.8);
                 kCtx.fillText("Placeholder", kW * 0.5, kH * 0.05);
-                break;
-            case 2:
+
+                // fallthrough
+            case "splash-screen":
+            case "act-3":
+            case "credits":
                 kCtx.font = `${kW * 0.05}px Arial`;
                 kCtx.fillStyle = "black";
                 kCtx.textAlign = "center";
                 kCtx.textBaseline = "middle";
-                kCtx.fillText("Act II", kW / 2, kH / 2);
+                kCtx.fillText(ActManager.current_act, kW / 2, kH / 2);
                 break;
-            case 3:
-                kCtx.font = `${kW * 0.05}px Arial`;
-                kCtx.fillStyle = "black";
-                kCtx.textAlign = "center";
-                kCtx.textBaseline = "middle";
-                kCtx.fillText("Act III", kW / 2, kH / 2);
-                break;
-            case 4:
-                kCtx.font = `${kW * 0.05}px Arial`;
-                kCtx.fillStyle = "black";
-                kCtx.textAlign = "center";
-                kCtx.textBaseline = "middle";
-                kCtx.fillText("The End", kW / 2, kH / 2);
-                break;
+            default:
+                console.error("Invalid act string.", ActManager.current_act)
         }
         kCtx.restore()
     }
