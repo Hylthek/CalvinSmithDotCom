@@ -67,6 +67,9 @@ document.addEventListener("keydown", (event) => {
             }
         });
     }
+    if (event.code === 'KeyN') {
+        ActManager.NextAct()
+    }
 })
 
 //     $$$$$$\              $$\     $$\      $$\                                                             
@@ -81,38 +84,54 @@ document.addEventListener("keydown", (event) => {
 //                                                                             \$$$$$$  |                    
 //                                                                              \______/                     
 class ActManager {
-    static current_act = 1 // Values 0-4: (intro,clean,sweep,moveBed,credits)
+    static current_act = 0 // Values 0-4: (intro,clean,sweep,moveBed,credits)
     static active_draggables = []
     static active_containers = []
     static active_decorations = []
     static game_events = []
 
     constructor() {
-        throw ": Cannot instantiate this \"static\" class."
+        console.error(": Cannot instantiate this \"static\" class.")
     }
 
     static NextAct() {
-        switch (self.current_act) {
+        switch (this.current_act) {
             case 0:
-                self.current_act = 1
-                // Load objects for act 1
+                ActManager.ClearArrays()
+                ActInitializations.ActOne()
+                this.current_act = 1
                 break;
             case 1:
-                self.current_act = 2
+                ActManager.ClearArrays()
+                // Load.
+                this.current_act = 2
                 break;
             case 2:
-                self.current_act = 3
+                ActManager.ClearArrays()
+                // Load.
+                this.current_act = 3
                 break;
             case 3:
-                self.current_act = 4
+                ActManager.ClearArrays()
+                // Load.
+                this.current_act = 4
                 break;
             case 4:
+                ActManager.ClearArrays()
+                // Load.
                 console.log("End of game reached.")
                 break;
             default:
-                console.error("Invalid act number.", self.current_act)
+                console.error("Invalid act number.", this.current_act)
                 break;
         }
+    }
+
+    static ClearArrays() {
+        this.active_containers = []
+        this.active_draggables = []
+        this.active_decorations = []
+        this.game_events = []
     }
 
     static GetHoveredDraggable() {
@@ -454,12 +473,15 @@ class GameEvent {
 
 class DrawingHelperFunctions {
     constructor() {
-        throw ": Cant instantiate static class."
+        console.error(": Cant instantiate static class.")
     }
 
     static ClearScreen() { kCtx.clearRect(0, 0, kW, kH) }
 
     static DrawBackground() {
+        if (ActManager.current_act != 1)
+            return;
+
         kCtx.save()
 
         const scene_points = GetScenePoints()
@@ -576,160 +598,167 @@ function GetScenePoints() {
     ]
 }
 
-//    $$$$$$\           $$\   $$\     $$\           $$\ 
-//    \_$$  _|          \__|  $$ |    \__|          $$ |
-//      $$ |  $$$$$$$\  $$\ $$$$$$\   $$\  $$$$$$\  $$ |
-//      $$ |  $$  __$$\ $$ |\_$$  _|  $$ | \____$$\ $$ |
-//      $$ |  $$ |  $$ |$$ |  $$ |    $$ | $$$$$$$ |$$ |
-//      $$ |  $$ |  $$ |$$ |  $$ |$$\ $$ |$$  __$$ |$$ |
-//    $$$$$$\ $$ |  $$ |$$ |  \$$$$  |$$ |\$$$$$$$ |$$ |
-//    \______|\__|  \__|\__|   \____/ \__| \_______|\__|
-//                                                      
-//                                                      
-//                                                      
-// Images
-// Draggables
-const clothes_img = new Image()
-const clothes_unraveled_img = new Image()
-const trash_img = new Image()
-const trinket_img = new Image()
-clothes_img.src = "/room/clothes.png";
-clothes_unraveled_img.src = "/room/clothes.png";
-trash_img.src = "/room/trash.png";
-trinket_img.src = "/room/trinket.png";
-// Containers
-const trashcan_img = new Image()
-const closet_img = new Image()
-const cabinet_img = new Image()
-trashcan_img.src = "/room/trashcan.png";
-closet_img.src = "/room/closet.jpg";
-cabinet_img.src = "/room/cabinet.png";
-// Characters (decorations)
-const shrimp_img = new Image()
-const horse_img = new Image()
-const leopard_img = new Image()
-const spiderman_img = new Image()
-const goob_img = new Image()
-const wolfman_img = new Image()
-shrimp_img.src = "/room/shrimp.png";
-horse_img.src = "/room/horsejean.png";
-leopard_img.src = "/room/leopard.png";
-spiderman_img.src = "/room/spiderman.png";
-goob_img.src = "/room/goob.png";
-wolfman_img.src = "/room/wolfman.png";
+//     $$$$$$\              $$\               
+//    $$  __$$\             $$ |              
+//    $$ /  $$ | $$$$$$$\ $$$$$$\    $$$$$$$\ 
+//    $$$$$$$$ |$$  _____|\_$$  _|  $$  _____|
+//    $$  __$$ |$$ /        $$ |    \$$$$$$\  
+//    $$ |  $$ |$$ |        $$ |$$\  \____$$\ 
+//    $$ |  $$ |\$$$$$$$\   \$$$$  |$$$$$$$  |
+//    \__|  \__| \_______|   \____/ \_______/ 
+//                                            
+//                                            
+//                                            
+class ActInitializations {
+    constructor() {
+        console.error(": Cannot instantiate this static class.")
+    }
+    
+    static ActOne() {
+        // Images
+        // Draggables
+        const clothes_img = new Image()
+        const clothes_unraveled_img = new Image()
+        const trash_img = new Image()
+        const trinket_img = new Image()
+        clothes_img.src = "/room/clothes.png";
+        clothes_unraveled_img.src = "/room/clothes.png";
+        trash_img.src = "/room/trash.png";
+        trinket_img.src = "/room/trinket.png";
+        // Containers
+        const trashcan_img = new Image()
+        const closet_img = new Image()
+        const cabinet_img = new Image()
+        trashcan_img.src = "/room/trashcan.png";
+        closet_img.src = "/room/closet.jpg";
+        cabinet_img.src = "/room/cabinet.png";
+        // Characters (decorations)
+        const shrimp_img = new Image()
+        const horse_img = new Image()
+        const leopard_img = new Image()
+        const spiderman_img = new Image()
+        const goob_img = new Image()
+        const wolfman_img = new Image()
+        shrimp_img.src = "/room/shrimp.png";
+        horse_img.src = "/room/horsejean.png";
+        leopard_img.src = "/room/leopard.png";
+        spiderman_img.src = "/room/spiderman.png";
+        goob_img.src = "/room/goob.png";
+        wolfman_img.src = "/room/wolfman.png";
 
-// Add draggables
-for (let i = 0; i < 9; i++) {
-    ActManager.active_draggables.push(new Draggable(
-        0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH,
-        kW * 0.05, kW * 0.05, [clothes_img, clothes_unraveled_img] // It doesn't matter whether to use gW or gH for sizes because 16:9 is maintained.
-    ))
-    ActManager.active_draggables.push(new Draggable(
-        (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
-        kW * 0.05, kW * 0.05, [trash_img, trash_img]
-    ))
-    ActManager.active_draggables.push(new Draggable(
-        (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
-        kW * 0.05, kW * 0.05, [trinket_img, trinket_img]
-    ))
+        // Add draggables
+        for (let i = 0; i < 9; i++) {
+            ActManager.active_draggables.push(new Draggable(
+                0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH,
+                kW * 0.05, kW * 0.05, [clothes_img, clothes_unraveled_img] // It doesn't matter whether to use gW or gH for sizes because 16:9 is maintained.
+            ))
+            ActManager.active_draggables.push(new Draggable(
+                (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
+                kW * 0.05, kW * 0.05, [trash_img, trash_img]
+            ))
+            ActManager.active_draggables.push(new Draggable(
+                (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
+                kW * 0.05, kW * 0.05, [trinket_img, trinket_img]
+            ))
 
-    const new_draggables = ActManager.active_draggables.slice(-3)
-    new_draggables[0].description = "Clothes";
-    new_draggables[0].compatibilities = ["clothes"]
-    new_draggables[1].description = "Trash";
-    new_draggables[1].compatibilities = ["trash"]
-    new_draggables[2].description = "Trinket";
-    new_draggables[2].compatibilities = ["trinkets"]
+            const new_draggables = ActManager.active_draggables.slice(-3)
+            new_draggables[0].description = "Clothes";
+            new_draggables[0].compatibilities = ["clothes"]
+            new_draggables[1].description = "Trash";
+            new_draggables[1].compatibilities = ["trash"]
+            new_draggables[2].description = "Trinket";
+            new_draggables[2].compatibilities = ["trinkets"]
+        }
+
+        // Add containers.
+        ActManager.active_containers.push(new Container(kW * 0.47, kH * 0.54, kW * 0.1, kH * 0.2, [closet_img]))
+        ActManager.active_containers.push(new Container(kW * 0.76, kH * 0.65, kW * 0.05, kH * 0.1, [trashcan_img]))
+        ActManager.active_containers.push(new Container(kW * 0.675, kH * 0.24, kW * 0.2, kH * 0.3, [cabinet_img]))
+        ActManager.active_containers[0].description = "The Closet"
+        ActManager.active_containers[0].compatibilities = ["clothes"]
+        ActManager.active_containers[1].description = "The Trashcan"
+        ActManager.active_containers[1].compatibilities = ["trash"]
+        ActManager.active_containers[2].description = "The Trinket Cabinet"
+        ActManager.active_containers[2].compatibilities = ["trinkets"]
+
+        // Initialize dialogue.
+        const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
+            "O, ever, do the crepances of the small, four-legged mite dote me unnerved.",
+            "For I too once possessed such an abhorration of the mind.",
+            "To live without the slight whisper of a morality is to be consumed by night,\nlosing that which binds us to the body,",
+            "SOUL.",
+            "If this sloth were to ever reach my teeth again, I fear I will not recover.",
+            "The predisposition of my own SOUL is that of air, to be strewn about, ceasing in seconds.",
+            "Alas, the four-legged mite perseveres, taunting me with subjugations of the psyche.",
+            "Will I ever escape this body?",
+            "Will I ever defy my bones?",
+            "My untimely death would bring no more to you than a breath.",
+            "Its time for a bath.",
+            "Goodbye."
+        ])
+
+        // Initialize characters.
+        const horse_character = new Decoration(0.1 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [horse_img])
+
+        // Initialize game event sequence.
+        const foo_sequence = (game_object) => {
+            let horse = game_object.decorations[0]
+            let poem = game_object.dialogue
+            const curr_stage = game_object.curr_stage
+            if (curr_stage != -1) {
+                horse.visible = true
+                poem.visible = true
+                poem.curr_text = curr_stage
+            }
+            switch (curr_stage) {
+                case -1:
+                    horse.visible = false
+                    poem.visible = false
+                    break;
+                case 0:
+                    horse.x = 0.2 * kW
+                    break;
+                case 1:
+                    horse.x = 0.15 * kW
+                    break;
+                case 2:
+                    horse.x = 0.2 * kW
+                    break;
+                case 3:
+                    horse.x = 0.15 * kW
+                    break;
+                case 4:
+                    horse.x = 0.2 * kW
+                    break;
+                case 5:
+                    horse.x = 0.15 * kW
+                    break;
+                case 6:
+                    horse.x = 0.2 * kW
+                    break;
+                case 7:
+                    horse.x = 0.15 * kW
+                    break;
+                case 8:
+                    horse.x = 0.2 * kW
+                    break;
+                case 9:
+                    horse.x = 0.15 * kW
+                    break;
+                case 10:
+                    horse.x = 0.2 * kW
+                    break;
+                case 11:
+                    horse.x = 0.15 * kW
+                    break;
+                default:
+                    console.error("Invalid curr_stage.", curr_stage)
+                    break;
+            }
+        };
+        ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_sequence))
+    }
 }
-
-// Add containers.
-ActManager.active_containers.push(new Container(kW * 0.47, kH * 0.54, kW * 0.1, kH * 0.2, [closet_img]))
-ActManager.active_containers.push(new Container(kW * 0.76, kH * 0.65, kW * 0.05, kH * 0.1, [trashcan_img]))
-ActManager.active_containers.push(new Container(kW * 0.675, kH * 0.24, kW * 0.2, kH * 0.3, [cabinet_img]))
-ActManager.active_containers[0].description = "The Closet"
-ActManager.active_containers[0].compatibilities = ["clothes"]
-ActManager.active_containers[1].description = "The Trashcan"
-ActManager.active_containers[1].compatibilities = ["trash"]
-ActManager.active_containers[2].description = "The Trinket Cabinet"
-ActManager.active_containers[2].compatibilities = ["trinkets"]
-
-// Initialize dialogue.
-const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
-    "O, ever, do the crepances of the small, four-legged mite dote me unnerved.",
-    "For I too once possessed such an abhorration of the mind.",
-    `To live without the slight whisper of a morality is to be consumed by night,
-    losing that which binds us to the body,`,
-    "SOUL.",
-    "If this sloth were to ever reach my teeth again, I fear I will not recover.",
-    "The predisposition of my own SOUL is that of air, to be strewn about, ceasing in seconds.",
-    "Alas, the four-legged mite perseveres, taunting me with subjugations of the psyche.",
-    "Will I ever escape this body?",
-    "Will I ever defy my bones?",
-    "My untimely death would bring no more to you than a breath.",
-    "Its time for a bath.",
-    "Goodbye."
-])
-
-// Initialize characters.
-const horse_character = new Decoration(0.1 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [horse_img])
-
-// Initialize game event sequence.
-const foo_program = (game_object) => {
-    let horse = game_object.decorations[0]
-    let poem = game_object.dialogue
-    const curr_stage = game_object.curr_stage
-    if (curr_stage != -1) {
-        horse.visible = true
-        poem.visible = true
-        poem.curr_text = curr_stage
-    }
-    switch (curr_stage) {
-        case -1:
-            horse.visible = false
-            poem.visible = false
-            break;
-        case 0:
-            horse.x = 0.2 * kW
-            break;
-        case 1:
-            horse.x = 0.15 * kW
-            break;
-        case 2:
-            horse.x = 0.2 * kW
-            break;
-        case 3:
-            horse.x = 0.15 * kW
-            break;
-        case 4:
-            horse.x = 0.2 * kW
-            break;
-        case 5:
-            horse.x = 0.15 * kW
-            break;
-        case 6:
-            horse.x = 0.2 * kW
-            break;
-        case 7:
-            horse.x = 0.15 * kW
-            break;
-        case 8:
-            horse.x = 0.2 * kW
-            break;
-        case 9:
-            horse.x = 0.15 * kW
-            break;
-        case 10:
-            horse.x = 0.2 * kW
-            break;
-        case 11:
-            horse.x = 0.15 * kW
-            break;
-        default:
-            console.error("Invalid curr_stage.", curr_stage)
-            break;
-    }
-};
-ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_program))
 
 //    $$\      $$\           $$\           
 //    $$$\    $$$ |          \__|          
