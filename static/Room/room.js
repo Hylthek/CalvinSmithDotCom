@@ -549,6 +549,28 @@ class DrawingHelperFunctions {
         kCtx.restore()
     }
 
+    static DrawForeground() {
+        kCtx.save()
+
+        switch (ActManager.current_act) {
+            case "splash-screen":
+                // Draw fading.
+                const curr_time = performance.now()
+                const fade_time = 2000
+                const hold_time = 1000
+                kCtx.fillStyle = `rgba(255,255,255,0)`
+                if (curr_time < fade_time)
+                    kCtx.fillStyle = `rgba(255,255,255,${1 - curr_time / fade_time})`
+                if (curr_time > fade_time + hold_time)
+                    kCtx.fillStyle = `rgba(255,255,255,${(curr_time - fade_time - hold_time) / fade_time})`
+                kCtx.fillRect(0, 0, kW, kH)
+                break;
+            default:
+            // Do nothing.
+        }
+        kCtx.restore()
+    }
+
     static DrawDraggables() {
         ActManager.active_draggables.forEach(draggable => {
             kCtx.drawImage(draggable.images[draggable.curr_image], draggable.x - draggable.w / 2, draggable.y - draggable.h / 2, draggable.w, draggable.h);
@@ -876,6 +898,8 @@ function main() {
 
     ActManager.UpdateGameEvents()
     ActManager.UpdateDraggables()
+
+    DrawingHelperFunctions.DrawForeground()
 }
 main();
 
