@@ -19,7 +19,7 @@ const kCanvas = document.getElementById("canvas")
 const kCtx = kCanvas.getContext("2d")
 kCanvas.width = kCanvas.getBoundingClientRect().width / kPixelationFactor
 kCanvas.height = kCanvas.getBoundingClientRect().height / kPixelationFactor
-const kW = kCanvas.width
+const kW = kCanvas.width // It doesn't matter whether to reference kW or kH for normalization because 16:9 is maintained.
 const kH = kCanvas.height
 
 // Constants pt2.
@@ -613,7 +613,7 @@ class ActInitializations {
     constructor() {
         console.error(": Cannot instantiate this static class.")
     }
-    
+
     static ActOne() {
         // Images
         // Draggables
@@ -650,7 +650,7 @@ class ActInitializations {
         for (let i = 0; i < 9; i++) {
             ActManager.active_draggables.push(new Draggable(
                 0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH,
-                kW * 0.05, kW * 0.05, [clothes_img, clothes_unraveled_img] // It doesn't matter whether to use gW or gH for sizes because 16:9 is maintained.
+                kW * 0.05, kW * 0.05, [clothes_img, clothes_unraveled_img]
             ))
             ActManager.active_draggables.push(new Draggable(
                 (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
