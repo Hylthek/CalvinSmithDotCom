@@ -65,7 +65,7 @@ document.addEventListener("keydown", (event) => {
         ActManager.game_events.forEach(event => {
             if (event.curr_stage != -1) {
                 event.curr_stage++
-                if (event.curr_stage >= event.dialogue.text.length)
+                if (event.curr_stage >= event.dialogue.text.length) 
                     event.curr_stage = -1;
                 event.sequence(event)
             }
@@ -106,6 +106,7 @@ class ActManager {
                 break
             case "splash-screen":
                 ActManager.ClearArrays()
+                ActInitializations.Intro()
                 this.current_act = "intro"
                 break;
             case "intro":
@@ -219,7 +220,6 @@ class ActManager {
         for (let i = 0; i < this.game_events.length; i++) {
             const game_event = this.game_events[i];
             if (game_event.StartCriterionMet()) {
-                game_event.can_start = false
                 game_event.Run()
             }
         }
@@ -469,11 +469,14 @@ class GameEvent {
     }
 
     Run() {
+        if (!this.can_start)
+            return
+        this.can_start = false
         this.curr_stage = 0;
         this.sequence(this)
     }
 
-    StartCriterionMet() { return ActManager.TotalContainerScore() == 2 && this.can_start; }
+    StartCriterionMet() { return ActManager.TotalContainerScore() == 2; }
 }
 
 //    $$$$$$$$\                              $$\     $$\                               
@@ -696,15 +699,56 @@ class ActInitializations {
         heart_image.src = "/room/heart.png";
         fly_img.src = "/room/fly.webp";
         // Add decorations.
-        const monkey_decoration = new Decoration(kW * 0.39, kH * 0.6, kW * 0.12, kW * 0.1, [monkey_img])
-        const heart_decoration = new Decoration(kW * 0.5, kH * 0.6, kW * 0.1, kW * 0.1, [heart_image])
-        const fly_decoration = new Decoration(kW * 0.6, kH * 0.6, kW * 0.1, kW * 0.1, [fly_img])
-        monkey_decoration.visible = true;
-        fly_decoration.visible = true;
-        heart_decoration.visible = true;
-        ActManager.active_decorations.push(monkey_decoration)
-        ActManager.active_decorations.push(fly_decoration)
-        ActManager.active_decorations.push(heart_decoration)
+        const monkey = new Decoration(kW * 0.39, kH * 0.6, kW * 0.12, kW * 0.1, [monkey_img])
+        const heart = new Decoration(kW * 0.5, kH * 0.6, kW * 0.1, kW * 0.1, [heart_image])
+        const fly = new Decoration(kW * 0.6, kH * 0.6, kW * 0.1, kW * 0.1, [fly_img])
+        monkey.visible = true;
+        fly.visible = true;
+        heart.visible = true;
+        ActManager.active_decorations.push(monkey)
+        ActManager.active_decorations.push(fly)
+        ActManager.active_decorations.push(heart)
+    }
+
+    static Intro() {
+        // GameEvent characters.
+        const shrimp_img = new Image()
+        shrimp_img.src = "/room/shrimp.png";
+        const shrimp = new Decoration(kW * 0.6, kH * 0.5, kW * 0.2, kW * 0.2, [shrimp_img])
+        
+        // GameEvent dialogue.
+        const intro_dialogue = new Dialogue([
+            "My goodness, I need to clean my room.",
+            "It smells like doodoo in here.",
+            ">:(",
+            "// Dialogue WIP."
+        ])
+
+        // GameEvent sequence.
+        const intro_sequence = (game_object) => {
+            const shrimp = game_object.decorations[0]
+            const dialogue = game_object.dialogue
+            const curr_stage = game_object.curr_stage;
+            if (curr_stage != -1) {
+                shrimp.visible = true
+                dialogue.visible = true
+                dialogue.curr_text = curr_stage
+            }
+            else {
+                shrimp.visible = false
+                dialogue.visible = false
+            }
+
+            // End of event action.
+            if (curr_stage == -1 && game_object.can_start == false)
+                ActManager.NextAct()
+        }
+
+        // GameEvent
+        ActManager.game_events.push(new GameEvent(intro_dialogue, [shrimp], intro_sequence))
+
+        // Run event.
+        ActManager.game_events[0].Run()
     }
 
     static ActOne() {
@@ -804,7 +848,7 @@ class ActInitializations {
                 poem.curr_text = curr_stage
             }
             switch (curr_stage) {
-                case -1:
+                case -1: // Deactivated state.
                     horse.visible = false
                     poem.visible = false
                     break;
