@@ -12,7 +12,7 @@
 //                                                                                             
 //                                                                                             
 // Constants pt1.
-const kPixelationFactor = 2 // Must be defined before ResizeCanvas()
+const kPixelationFactor = 1.75 // Must be defined before ResizeCanvas()
 
 // Canvas boilerplate.
 const kCanvas = document.getElementById("canvas")
@@ -404,6 +404,7 @@ class Decoration {
     curr_image = 0;
     visible = false;
     rotation = 0; // In degrees cw.
+    is_background = false // Draw in the background instead of foreground.
 
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images) {
@@ -598,13 +599,13 @@ class DrawingHelperFunctions {
         })
     }
 
-    static DrawDecorations() {
+    static DrawDecorations(is_background_pass = false) {
         kCtx.save()
 
         // Draw GameEvent decorations (characters)
         ActManager.game_events.forEach(game_event => {
             game_event.decorations.forEach(decoration => {
-                if (decoration.visible) {
+                if (decoration.visible && (is_background_pass == decoration.is_background)) {
                     kCtx.setTransform(
                         Math.cos(decoration.rotation * Math.PI / 180), Math.sin(decoration.rotation * Math.PI / 180),
                         -Math.sin(decoration.rotation * Math.PI / 180), Math.cos(decoration.rotation * Math.PI / 180),
@@ -616,7 +617,7 @@ class DrawingHelperFunctions {
         })
         // Draw normal decorations.
         ActManager.active_decorations.forEach(decoration => {
-            if (decoration.visible) {
+            if (decoration.visible && (is_background_pass == decoration.is_background)) {
                 kCtx.setTransform(
                     Math.cos(decoration.rotation * Math.PI / 180), Math.sin(decoration.rotation * Math.PI / 180),
                     -Math.sin(decoration.rotation * Math.PI / 180), Math.cos(decoration.rotation * Math.PI / 180),
@@ -924,7 +925,7 @@ class ActInitializations {
             const just_pushed = ActManager.active_decorations[ActManager.active_decorations.length - 1]
             just_pushed.visible = true
             just_pushed.rotation = Math.random() * 360
-
+            just_pushed.is_background = true
         }
         // Characters
         const leopard_img = new Image()
@@ -953,6 +954,7 @@ function main() {
     // Present screen. (draw objects)
     DrawingHelperFunctions.ClearScreen()
     DrawingHelperFunctions.DrawBackground()
+    DrawingHelperFunctions.DrawDecorations(true) // Performs a background decorations pass.
     DrawingHelperFunctions.DrawContainers()
     DrawingHelperFunctions.DrawDraggables()
     DrawingHelperFunctions.DrawDecorations()
