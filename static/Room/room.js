@@ -310,6 +310,12 @@ class Draggable {
     }
 }
 
+// Broom inherits from Draggable
+class Broom extends Draggable{
+    broom_tip_x = kW * -0.01
+    broom_tip_y = kH * 0.1
+}
+
 //     $$$$$$\                       $$\               $$\                               
 //    $$  __$$\                      $$ |              \__|                              
 //    $$ /  \__| $$$$$$\  $$$$$$$\ $$$$$$\    $$$$$$\  $$\ $$$$$$$\   $$$$$$\   $$$$$$\  
@@ -341,7 +347,7 @@ class Container {
         this.images = images
     }
 
-    EatDraggable(draggable) {
+    TryEatDraggable(draggable) {
         // Scan compatibility lists for a match.
         let compatible = false
         for (let i = 0; i < draggable.compatibilities.length; i++) {
@@ -903,7 +909,7 @@ class ActInitializations {
         // Add draggables
         const broom_img = new Image()
         broom_img.src = "/room/broom.png";
-        ActManager.active_draggables.push(new Draggable(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.25, [broom_img, broom_img]))
+        ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.25, [broom_img, broom_img]))
         // Add decorations (dirt).
         const dirt_imgs = [new Image(), new Image(), new Image()]
         dirt_imgs[0].src = "/room/dirt1.png";
@@ -964,7 +970,7 @@ function main() {
     const state_changed = gMb1StateChanged
     if (gMb1StateChanged) gMb1StateChanged = false; // gMb1StateChanged is set by eventlistener and reset by main.
 
-    // Calculate next screen. (mutate objects)
+    // Process drag and drops.
     const hovered_draggable = ActManager.GetHoveredDraggable()
     const hovered_container = ActManager.GetHoveredContainer()
     if (hovered_draggable && mb1_state && state_changed)
@@ -972,8 +978,9 @@ function main() {
     if (hovered_draggable && !mb1_state)
         hovered_draggable.Drop()
     if (hovered_container && hovered_draggable && !mb1_state && state_changed)
-        hovered_container.EatDraggable(hovered_draggable)
+        hovered_container.TryEatDraggable(hovered_draggable)
 
+    // Hover text.
     if (hovered_draggable)
         hovered_draggable.DrawHoverText()
     if (hovered_container)
@@ -988,4 +995,3 @@ function main() {
     DrawingHelperFunctions.DrawForeground()
 }
 main();
-
