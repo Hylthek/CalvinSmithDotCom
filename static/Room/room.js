@@ -50,7 +50,7 @@ kCanvas.addEventListener("mousemove", (event) => {
 kCanvas.addEventListener("mousedown", (event) => {
     gMb1State = true
     gMb1StateChanged = true // Value is reset by main().
-    
+
     // Continue from splash screen.
     if (ActManager.current_act == "splash-screen")
         ActManager.NextAct()
@@ -65,7 +65,7 @@ document.addEventListener("keydown", (event) => {
         ActManager.game_events.forEach(event => {
             if (event.curr_stage != -1) {
                 event.curr_stage++
-                if (event.curr_stage >= event.dialogue.text.length) 
+                if (event.curr_stage >= event.dialogue.text.length)
                     event.curr_stage = -1;
                 event.sequence(event)
             }
@@ -455,7 +455,7 @@ class GameEvent {
     decorations = null
     sequence = null
     can_start = true // Ensures GameEvent can only run once.
-    curr_stage = -1 // The current stage of this.program
+    curr_stage = -1 // The current stage of this.program (-1 is deactivated).
 
     /**
      * @param {Dialogue} dialogue The dialogue to play for the event.
@@ -715,7 +715,7 @@ class ActInitializations {
         const shrimp_img = new Image()
         shrimp_img.src = "/room/shrimp.png";
         const shrimp = new Decoration(kW * 0.6, kH * 0.5, kW * 0.2, kW * 0.2, [shrimp_img])
-        
+
         // GameEvent dialogue.
         const intro_dialogue = new Dialogue([
             "My goodness, I need to clean my room.",
@@ -842,56 +842,37 @@ class ActInitializations {
             let horse = game_object.decorations[0]
             let poem = game_object.dialogue
             const curr_stage = game_object.curr_stage
-            if (curr_stage != -1) {
+            if (curr_stage == -1) { // -1 is deactivated state.
+                horse.visible = false
+                poem.visible = false
+            }
+            else {
                 horse.visible = true
                 poem.visible = true
                 poem.curr_text = curr_stage
             }
             switch (curr_stage) {
-                case -1: // Deactivated state.
-                    horse.visible = false
-                    poem.visible = false
-                    break;
                 case 0:
-                    horse.x = 0.2 * kW
-                    break;
-                case 1:
-                    horse.x = 0.15 * kW
-                    break;
                 case 2:
-                    horse.x = 0.2 * kW
-                    break;
-                case 3:
-                    horse.x = 0.15 * kW
-                    break;
                 case 4:
-                    horse.x = 0.2 * kW
-                    break;
-                case 5:
-                    horse.x = 0.15 * kW
-                    break;
                 case 6:
-                    horse.x = 0.2 * kW
-                    break;
-                case 7:
-                    horse.x = 0.15 * kW
-                    break;
                 case 8:
-                    horse.x = 0.2 * kW
-                    break;
-                case 9:
-                    horse.x = 0.15 * kW
-                    break;
                 case 10:
                     horse.x = 0.2 * kW
                     break;
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 9:
                 case 11:
                     horse.x = 0.15 * kW
                     break;
-                default:
-                    console.error("Invalid curr_stage.", curr_stage)
-                    break;
             }
+
+            // End of event action.
+            if (curr_stage == -1 && game_object.can_start == false)
+                ActManager.NextAct()
         };
         ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_sequence))
     }
