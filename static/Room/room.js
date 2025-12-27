@@ -116,7 +116,7 @@ class ActManager {
                 break;
             case "act-1":
                 ActManager.ClearArrays()
-                // Load.
+                ActInitializations.ActTwo()
                 this.current_act = "act-2"
                 break;
             case "act-2":
@@ -403,6 +403,7 @@ class Decoration {
     images = null
     curr_image = 0;
     visible = false;
+    rotation = 0; // In degrees cw.
 
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images) {
@@ -598,18 +599,34 @@ class DrawingHelperFunctions {
     }
 
     static DrawDecorations() {
+        kCtx.save()
+
         // Draw GameEvent decorations (characters)
         ActManager.game_events.forEach(game_event => {
             game_event.decorations.forEach(decoration => {
-                if (decoration.visible)
-                    kCtx.drawImage(decoration.images[decoration.curr_image], decoration.x - decoration.w / 2, decoration.y - decoration.h / 2, decoration.w, decoration.h);
+                if (decoration.visible) {
+                    kCtx.setTransform(
+                        Math.cos(decoration.rotation * Math.PI / 180), Math.sin(decoration.rotation * Math.PI / 180),
+                        -Math.sin(decoration.rotation * Math.PI / 180), Math.cos(decoration.rotation * Math.PI / 180),
+                        decoration.x, decoration.y
+                    )
+                    kCtx.drawImage(decoration.images[decoration.curr_image], -decoration.w / 2, -decoration.h / 2, decoration.w, decoration.h);
+                }
             })
         })
         // Draw normal decorations.
         ActManager.active_decorations.forEach(decoration => {
-            if (decoration.visible)
-                kCtx.drawImage(decoration.images[decoration.curr_image], decoration.x - decoration.w / 2, decoration.y - decoration.h / 2, decoration.w, decoration.h);
+            if (decoration.visible) {
+                kCtx.setTransform(
+                    Math.cos(decoration.rotation * Math.PI / 180), Math.sin(decoration.rotation * Math.PI / 180),
+                    -Math.sin(decoration.rotation * Math.PI / 180), Math.cos(decoration.rotation * Math.PI / 180),
+                    decoration.x, decoration.y
+                )
+                kCtx.drawImage(decoration.images[decoration.curr_image], -decoration.w / 2, -decoration.h / 2, decoration.w, decoration.h);
+            }
         })
+
+        kCtx.restore()
     }
 
     static DrawDialogues() {
@@ -672,6 +689,18 @@ function GetScenePoints() {
         [kVanishingPoint[0] * kSceneDepth, kH - (kH - kVanishingPoint[1]) * kSceneDepth],
         [kW - kVanishingPoint[0] * kSceneDepth, kH - (kH - kVanishingPoint[1]) * kSceneDepth]
     ]
+}
+
+function Lerp(a, b, t) {
+    return a + (b - a) * t;
+}
+
+// Function gives slope of bisecting line, given two slopes
+function BisectingSlope(m, n) {
+    const sqrt = Math.sqrt
+    const numer = m * sqrt(1 + n * n) + n * sqrt(1 + m * m)
+    const denom = sqrt(1 + m * m) + sqrt(1 + n * n)
+    return numer / denom
 }
 
 //     $$$$$$\              $$\               
@@ -772,16 +801,8 @@ class ActInitializations {
         // Characters (decorations)
         const shrimp_img = new Image()
         const horse_img = new Image()
-        const leopard_img = new Image()
-        const spiderman_img = new Image()
-        const goob_img = new Image()
-        const wolfman_img = new Image()
         shrimp_img.src = "/room/shrimp.png";
         horse_img.src = "/room/horsejean.png";
-        leopard_img.src = "/room/leopard.png";
-        spiderman_img.src = "/room/spiderman.png";
-        goob_img.src = "/room/goob.png";
-        wolfman_img.src = "/room/wolfman.png";
 
         // Add draggables
         for (let i = 0; i < 9; i++) {
@@ -878,11 +899,38 @@ class ActInitializations {
     }
 
     static ActTwo() {
-        // Images.
-        // Draggables
+        // Add draggables
         const broom_img = new Image()
         broom_img.src = "/room/broom.png";
+        ActManager.active_draggables.push(new Draggable(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.25, [broom_img, broom_img]))
+        // Add decorations (dirt).
+        const dirt_imgs = [new Image(), new Image(), new Image()]
+        dirt_imgs[0].src = "/room/dirt1.png";
+        dirt_imgs[1].src = "/room/dirt2.png";
+        dirt_imgs[2].src = "/room/dirt3.png";
+        const dirt_amount = 10000
+        for (let i = 0; i < dirt_amount; i++) {
+            // Randomize (x, y) but do it so that every dirt image is entirely inside the floor trapezoid.
+            const dirt_radius = 0.005 * kW // The center of the square image, to an outer corner.
+            const scene_point = GetScenePoints()[2] // Bottom left point of the back wall.
+            const rand_coef_y = Math.random() // [0, 1]
+            const y_val = Lerp(scene_point[1] + dirt_radius, kH - dirt_radius, rand_coef_y) // Dirt image is strictly contained to floor, vertically.
+            const slope_1 = BisectingSlope(0, (kH - scene_point[1]) / scene_point[0]) // Slope between the bottom-left room-edge & a horizontal line (acute).
+            const slope_2 = -1 / slope_1 // Slope between the bottom-left room-edge & a horizontal line (obtuse).
+            const x_offset = Lerp(scene_point[0] - 1 / slope_2 * dirt_radius, 1 / slope_1 * dirt_radius, rand_coef_y) // Multiply dirt radius with RUN/RISE of each slope.
+            const x_val = Lerp(x_offset, kW - x_offset, Math.random()) // Use the offset to create a trapezoid shape with (x_val, y_val).
+            const rand_idx = Math.floor(Math.random() * 2.999) // 0:2
+            ActManager.active_decorations.push(new Decoration(x_val, y_val, dirt_radius * Math.SQRT2, dirt_radius * Math.SQRT2, [dirt_imgs[rand_idx]]))
+            const just_pushed = ActManager.active_decorations[ActManager.active_decorations.length - 1]
+            just_pushed.visible = true
+            just_pushed.rotation = Math.random() * 360
+
+        }
         // Characters
+        const leopard_img = new Image()
+        const spiderman_img = new Image()
+        leopard_img.src = "/room/leopard.png";
+        spiderman_img.src = "/room/spiderman.png";
     }
 }
 
