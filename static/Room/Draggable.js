@@ -76,12 +76,50 @@ class Draggable {
 
 // Broom inherits from Draggable
 class Broom extends Draggable {
-    broom_tip = [kW * -0.009, kH * 0.17] // Location of the broom tip relative to image center.
-    buffer_factor = 5 // Amount of extra this.heights to stretch sprite upwards.
+    // Positional and scale offsets to draw the broom independent from its bounding box.
+    drawing_offsets = {
+        x: 0 * kW,
+        y: -0.22 * kW,
+        w: 1.2,
+        h: 10
+    }
 
     // Function will draw the broom handle above the bounding box of the object.
     Draw() {
-        const buffer = this.buffer_factor * this.h
-        kCtx.drawImage(this.images[this.curr_image], this.x - this.w / 2, this.y - this.h / 2 - buffer, this.w, this.h + buffer);
+        const pos = [this.drawing_offsets.x + this.x - this.w / 2, this.drawing_offsets.y + this.y - this.h / 2]
+        const scale = [this.drawing_offsets.w * this.w, this.drawing_offsets.h * this.h]
+        kCtx.drawImage(this.images[this.curr_image], pos[0], pos[1], scale[0], scale[1]);
+        kCtx.strokeStyle = "black";
+        kCtx.lineWidth = kW * 0.002;
+    }
+
+    prev_dirt = [] // Dirt previously inside broom hitbox.
+    chance_of_removal = 0.25
+    // Manages dirt removal.
+    CleanDirt() {
+        // Find all dirt in hitbox.
+        let new_dirt = []
+        let curr_dirt = []
+        ActManager.active_decorations.forEach((dirt) => {
+            const w2 = dirt.w / 2
+            const h2 = dirt.h / 2
+            if (this.x - this.w / 2 < dirt.x + w2 &&
+                this.x + this.w / 2 > dirt.x - w2 &&
+                this.y - this.h / 2 < dirt.y + h2 &&
+                this.y + this.h / 2 > dirt.y - h2) {
+                if (this.prev_dirt.includes(dirt) == false)
+                    new_dirt.push(dirt)
+                curr_dirt.push(dirt)
+            }
+        })
+        this.prev_dirt = curr_dirt
+        
+        // Process new dirt.
+        new_dirt.forEach((dirt) => {
+            if (Math.random() < this.chance_of_removal) {
+                const idx = ActManager.active_decorations.indexOf(dirt)
+                ActManager.active_decorations.splice(idx, 1)
+            }
+        });
     }
 }

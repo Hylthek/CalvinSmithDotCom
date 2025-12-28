@@ -198,7 +198,7 @@ class ActInitializations {
         // Add draggables
         const broom_img = new Image()
         broom_img.src = "/room/broom.png";
-        ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.05, [broom_img, broom_img]))
+        ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.025, [broom_img, broom_img]))
         ActManager.active_draggables[ActManager.active_draggables.length - 1].description = "Broom"
         
         // Add decorations (dirt).
@@ -206,10 +206,10 @@ class ActInitializations {
         dirt_imgs[0].src = "/room/dirt1.png";
         dirt_imgs[1].src = "/room/dirt2.png";
         dirt_imgs[2].src = "/room/dirt3.png";
-        const dirt_amount = 10000
+        const dirt_amount = 3000
         for (let i = 0; i < dirt_amount; i++) {
             // Randomize (x, y) but do it so that every dirt image is entirely inside the floor trapezoid.
-            const dirt_radius = 0.005 * kW // The center of the square image, to an outer corner.
+            const dirt_radius = 0.01 * kW // The center of the square image, to an outer corner.
             const scene_point = GetScenePoints()[2] // Bottom left point of the back wall.
             const rand_coef_y = Math.random() // [0, 1]
             const y_val = Lerp(scene_point[1] + dirt_radius, kH - dirt_radius, rand_coef_y) // Dirt image is strictly contained to floor, vertically.
