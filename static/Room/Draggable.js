@@ -46,6 +46,9 @@ class Draggable {
     }
 
     DrawHoverText() {
+        if (this.picked_up)
+            return
+
         kCtx.save()
 
         //Set font.
