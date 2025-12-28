@@ -1,0 +1,231 @@
+function Lerp(a, b, t) {
+    return a + (b - a) * t;
+}
+
+// Function gives slope of bisecting line, given two slopes
+function BisectingSlope(m, n) {
+    const sqrt = Math.sqrt
+    const numer = m * sqrt(1 + n * n) + n * sqrt(1 + m * m)
+    const denom = sqrt(1 + m * m) + sqrt(1 + n * n)
+    return numer / denom
+}
+
+class ActInitializations {
+    constructor() {
+        console.error(": Cannot instantiate this static class.")
+    }
+
+    static SplashScreen() {
+        // Decoration images.
+        const monkey_img = new Image()
+        const heart_image = new Image()
+        const fly_img = new Image()
+        monkey_img.src = "/room/monkey.png";
+        heart_image.src = "/room/heart.png";
+        fly_img.src = "/room/fly.webp";
+        // Add decorations.
+        const monkey = new Decoration(kW * 0.39, kH * 0.6, kW * 0.12, kW * 0.1, [monkey_img])
+        const heart = new Decoration(kW * 0.5, kH * 0.6, kW * 0.1, kW * 0.1, [heart_image])
+        const fly = new Decoration(kW * 0.6, kH * 0.6, kW * 0.1, kW * 0.1, [fly_img])
+        monkey.visible = true;
+        fly.visible = true;
+        heart.visible = true;
+        ActManager.active_decorations.push(monkey)
+        ActManager.active_decorations.push(fly)
+        ActManager.active_decorations.push(heart)
+    }
+
+    static Intro() {
+        // GameEvent characters.
+        const shrimp_img = new Image()
+        shrimp_img.src = "/room/shrimp.png";
+        const shrimp = new Decoration(kW * 0.6, kH * 0.5, kW * 0.2, kW * 0.2, [shrimp_img])
+
+        // GameEvent dialogue.
+        const intro_dialogue = new Dialogue([
+            "My goodness, I need to clean my room.",
+            "It smells like doodoo in here.",
+            ">:(",
+            "// Dialogue WIP."
+        ])
+
+        // GameEvent sequence.
+        const intro_sequence = (game_object) => {
+            const shrimp = game_object.decorations[0]
+            const dialogue = game_object.dialogue
+            const curr_stage = game_object.curr_stage;
+            if (curr_stage != -1) {
+                shrimp.visible = true
+                dialogue.visible = true
+                dialogue.curr_text = curr_stage
+            }
+            else {
+                shrimp.visible = false
+                dialogue.visible = false
+            }
+
+            // End of event action.
+            if (curr_stage == -1 && game_object.can_start == false)
+                ActManager.NextAct()
+        }
+
+        // GameEvent
+        ActManager.game_events.push(new GameEvent(intro_dialogue, [shrimp], intro_sequence))
+
+        // Run event.
+        ActManager.game_events[0].Run()
+    }
+
+    static ActOne() {
+        // Images
+        // Draggables
+        const clothes_img = new Image()
+        const clothes_unraveled_img = new Image()
+        const trash_img = new Image()
+        const trinket_img = new Image()
+        clothes_img.src = "/room/clothes.png";
+        clothes_unraveled_img.src = "/room/clothes.png";
+        trash_img.src = "/room/trash.png";
+        trinket_img.src = "/room/trinket.png";
+        // Containers
+        const trashcan_img = new Image()
+        const closet_img = new Image()
+        const cabinet_img = new Image()
+        trashcan_img.src = "/room/trashcan.png";
+        closet_img.src = "/room/closet.jpg";
+        cabinet_img.src = "/room/cabinet.png";
+        // Characters (decorations)
+        const shrimp_img = new Image()
+        const horse_img = new Image()
+        shrimp_img.src = "/room/shrimp.png";
+        horse_img.src = "/room/horsejean.png";
+
+        // Add draggables
+        for (let i = 0; i < 9; i++) {
+            ActManager.active_draggables.push(new Draggable(
+                0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH,
+                kW * 0.05, kW * 0.05, [clothes_img, clothes_unraveled_img]
+            ))
+            ActManager.active_draggables.push(new Draggable(
+                (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
+                kW * 0.05, kW * 0.05, [trash_img, trash_img]
+            ))
+            ActManager.active_draggables.push(new Draggable(
+                (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
+                kW * 0.05, kW * 0.05, [trinket_img, trinket_img]
+            ))
+
+            const new_draggables = ActManager.active_draggables.slice(-3)
+            new_draggables[0].description = "Clothes";
+            new_draggables[0].compatibilities = ["clothes"]
+            new_draggables[1].description = "Trash";
+            new_draggables[1].compatibilities = ["trash"]
+            new_draggables[2].description = "Trinket";
+            new_draggables[2].compatibilities = ["trinkets"]
+        }
+
+        // Add containers.
+        ActManager.active_containers.push(new Container(kW * 0.47, kH * 0.54, kW * 0.1, kH * 0.2, [closet_img]))
+        ActManager.active_containers.push(new Container(kW * 0.76, kH * 0.65, kW * 0.05, kH * 0.1, [trashcan_img]))
+        ActManager.active_containers.push(new Container(kW * 0.675, kH * 0.24, kW * 0.2, kH * 0.3, [cabinet_img]))
+        ActManager.active_containers[0].description = "The Closet"
+        ActManager.active_containers[0].compatibilities = ["clothes"]
+        ActManager.active_containers[1].description = "The Trashcan"
+        ActManager.active_containers[1].compatibilities = ["trash"]
+        ActManager.active_containers[2].description = "The Trinket Cabinet"
+        ActManager.active_containers[2].compatibilities = ["trinkets"]
+
+        // Initialize dialogue.
+        const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
+            "O, ever, do the crepances of the small, four-legged mite dote me unnerved.",
+            "For I too once possessed such an abhorration of the mind.",
+            "To live without the slight whisper of a morality is to be consumed by night,\nlosing that which binds us to the body,",
+            "SOUL.",
+            "If this sloth were to ever reach my teeth again, I fear I will not recover.",
+            "The predisposition of my own SOUL is that of air, to be strewn about, ceasing in seconds.",
+            "Alas, the four-legged mite perseveres, taunting me with subjugations of the psyche.",
+            "Will I ever escape this body?",
+            "Will I ever defy my bones?",
+            "My untimely death would bring no more to you than a breath.",
+            "Its time for a bath.",
+            "Goodbye."
+        ])
+
+        // Initialize characters.
+        const horse_character = new Decoration(0.1 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [horse_img])
+
+        // Initialize game event sequence.
+        const foo_sequence = (game_object) => {
+            let horse = game_object.decorations[0]
+            let poem = game_object.dialogue
+            const curr_stage = game_object.curr_stage
+            if (curr_stage == -1) { // -1 is deactivated state.
+                horse.visible = false
+                poem.visible = false
+            }
+            else {
+                horse.visible = true
+                poem.visible = true
+                poem.curr_text = curr_stage
+            }
+            switch (curr_stage) {
+                case 0:
+                case 2:
+                case 4:
+                case 6:
+                case 8:
+                case 10:
+                    horse.x = 0.2 * kW
+                    break;
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 9:
+                case 11:
+                    horse.x = 0.15 * kW
+                    break;
+            }
+
+            // End of event action.
+            if (curr_stage == -1 && game_object.can_start == false)
+                ActManager.NextAct()
+        };
+        ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_sequence))
+    }
+
+    static ActTwo() {
+        // Add draggables
+        const broom_img = new Image()
+        broom_img.src = "/room/broom.png";
+        ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.25, [broom_img, broom_img]))
+        // Add decorations (dirt).
+        const dirt_imgs = [new Image(), new Image(), new Image()]
+        dirt_imgs[0].src = "/room/dirt1.png";
+        dirt_imgs[1].src = "/room/dirt2.png";
+        dirt_imgs[2].src = "/room/dirt3.png";
+        const dirt_amount = 10000
+        for (let i = 0; i < dirt_amount; i++) {
+            // Randomize (x, y) but do it so that every dirt image is entirely inside the floor trapezoid.
+            const dirt_radius = 0.005 * kW // The center of the square image, to an outer corner.
+            const scene_point = GetScenePoints()[2] // Bottom left point of the back wall.
+            const rand_coef_y = Math.random() // [0, 1]
+            const y_val = Lerp(scene_point[1] + dirt_radius, kH - dirt_radius, rand_coef_y) // Dirt image is strictly contained to floor, vertically.
+            const slope_1 = BisectingSlope(0, (kH - scene_point[1]) / scene_point[0]) // Slope between the bottom-left room-edge & a horizontal line (acute).
+            const slope_2 = -1 / slope_1 // Slope between the bottom-left room-edge & a horizontal line (obtuse).
+            const x_offset = Lerp(scene_point[0] - 1 / slope_2 * dirt_radius, 1 / slope_1 * dirt_radius, rand_coef_y) // Multiply dirt radius with RUN/RISE of each slope.
+            const x_val = Lerp(x_offset, kW - x_offset, Math.random()) // Use the offset to create a trapezoid shape with (x_val, y_val).
+            const rand_idx = Math.floor(Math.random() * 2.999) // 0:2
+            ActManager.active_decorations.push(new Decoration(x_val, y_val, dirt_radius * Math.SQRT2, dirt_radius * Math.SQRT2, [dirt_imgs[rand_idx]]))
+            const just_pushed = ActManager.active_decorations[ActManager.active_decorations.length - 1]
+            just_pushed.visible = true
+            just_pushed.rotation = Math.random() * 360
+            just_pushed.is_background = true
+        }
+        // Characters
+        const leopard_img = new Image()
+        const spiderman_img = new Image()
+        leopard_img.src = "/room/leopard.png";
+        spiderman_img.src = "/room/spiderman.png";
+    }
+}
