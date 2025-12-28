@@ -74,4 +74,11 @@ class Draggable {
 // Broom inherits from Draggable
 class Broom extends Draggable {
     broom_tip = [kW * -0.009, kH * 0.17] // Location of the broom tip relative to image center.
+    buffer_factor = 5 // Amount of extra this.heights to stretch sprite upwards.
+
+    // Function will draw the broom handle above the bounding box of the object.
+    Draw() {
+        const buffer = this.buffer_factor * this.h
+        kCtx.drawImage(this.images[this.curr_image], this.x - this.w / 2, this.y - this.h / 2 - buffer, this.w, this.h + buffer);
+    }
 }

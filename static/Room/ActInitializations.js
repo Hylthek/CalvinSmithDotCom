@@ -198,7 +198,9 @@ class ActInitializations {
         // Add draggables
         const broom_img = new Image()
         broom_img.src = "/room/broom.png";
-        ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.25, [broom_img, broom_img]))
+        ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.05, [broom_img, broom_img]))
+        ActManager.active_draggables[ActManager.active_draggables.length - 1].description = "Broom"
+        
         // Add decorations (dirt).
         const dirt_imgs = [new Image(), new Image(), new Image()]
         dirt_imgs[0].src = "/room/dirt1.png";
