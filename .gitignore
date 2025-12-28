@@ -5,3 +5,4 @@ i18n/
 archetypes/
 .vscode/
 cheatsheet.md
+static/Room/jsconfig.json
