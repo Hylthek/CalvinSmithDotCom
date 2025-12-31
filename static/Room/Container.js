@@ -39,23 +39,23 @@ class Container {
     }
 
     DrawHoverText() {
-        CanvasWrapper.context.save()
+        kCtx.save()
 
         //Set font.
-        CanvasWrapper.context.font = `${kW * 0.016}px Arial`;
+        kCtx.font = `${kW * 0.016}px Arial`;
 
         // Draw background.
-        CanvasWrapper.context.fillStyle = "white"
-        const text_size = CanvasWrapper.context.measureText(this.description)
-        CanvasWrapper.context.fillRect(this.x - this.w / 2 - text_size.width, this.y - kW * 0.008, text_size.width, kW * 0.016)
+        kCtx.fillStyle = "white"
+        const text_size = kCtx.measureText(this.description)
+        kCtx.fillRect(this.x - this.w / 2 - text_size.width, this.y - kW * 0.008, text_size.width, kW * 0.016)
 
         // Draw text.
-        CanvasWrapper.context.fillStyle = "black";
-        CanvasWrapper.context.textAlign = "right";
-        CanvasWrapper.context.textBaseline = "middle"
-        CanvasWrapper.context.fillText(this.description, this.x - this.w / 2, this.y);
+        kCtx.fillStyle = "black";
+        kCtx.textAlign = "right";
+        kCtx.textBaseline = "middle"
+        kCtx.fillText(this.description, this.x - this.w / 2, this.y);
 
-        CanvasWrapper.context.restore()
+        kCtx.restore()
     }
 
 }

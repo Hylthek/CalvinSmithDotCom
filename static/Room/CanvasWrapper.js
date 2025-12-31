@@ -13,3 +13,4 @@ CanvasWrapper.canvas.height = CanvasWrapper.canvas.getBoundingClientRect().heigh
 // Some globals for frequent usage.
 const kW = CanvasWrapper.canvas.width // It doesn't matter whether to reference kW or kH for normalization because 16:9 is maintained (kW preferred). TODO, make a copy of kW for normalization usage.
 const kH = CanvasWrapper.canvas.height
+const kCtx = CanvasWrapper.context
