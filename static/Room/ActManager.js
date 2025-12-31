@@ -106,8 +106,8 @@ class ActManager {
                 draggable.y += kH * draggable.velocity
                 draggable.velocity += 0.01;
                 // Fix bugged pickup locations.
-                if (draggable.pickup_location[1] < GetScenePoints()[2][1])
-                    draggable.pickup_location[1] = (GetScenePoints()[2][1] + kH) / 2
+                if (draggable.pickup_location[1] < ScenePerspective.GetScenePoints()[2][1])
+                    draggable.pickup_location[1] = (ScenePerspective.GetScenePoints()[2][1] + kH) / 2
                 // Stop gravity if object hit pickup height.
                 if (draggable.y > draggable.pickup_location[1]) {
                     draggable.falling = false

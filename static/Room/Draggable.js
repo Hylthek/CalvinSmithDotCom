@@ -41,7 +41,7 @@ class Draggable {
         this.curr_image = 0;
 
         // Handle gravity.
-        if (this.y < GetScenePoints()[2][1])
+        if (this.y < ScenePerspective.GetScenePoints()[2][1])
             this.falling = true
     }
 
@@ -49,23 +49,23 @@ class Draggable {
         if (this.picked_up)
             return
 
-        kCtx.save()
+        CanvasWrapper.context.save()
 
         //Set font.
-        kCtx.font = `${kW * 0.016}px Arial`;
+        CanvasWrapper.context.font = `${kW * 0.016}px Arial`;
 
         // Draw background.
-        kCtx.fillStyle = "white"
-        const text_size = kCtx.measureText(this.description)
-        kCtx.fillRect(this.x + this.w / 2, this.y - kW * 0.008, text_size.width, kW * 0.016)
+        CanvasWrapper.context.fillStyle = "white"
+        const text_size = CanvasWrapper.context.measureText(this.description)
+        CanvasWrapper.context.fillRect(this.x + this.w / 2, this.y - kW * 0.008, text_size.width, kW * 0.016)
 
         // Draw text.
-        kCtx.fillStyle = "black";
-        kCtx.textAlign = "left";
-        kCtx.textBaseline = "middle"
-        kCtx.fillText(this.description, this.x + this.w / 2, this.y);
+        CanvasWrapper.context.fillStyle = "black";
+        CanvasWrapper.context.textAlign = "left";
+        CanvasWrapper.context.textBaseline = "middle"
+        CanvasWrapper.context.fillText(this.description, this.x + this.w / 2, this.y);
 
-        kCtx.restore()
+        CanvasWrapper.context.restore()
     }
 
     Reject() {
@@ -88,9 +88,9 @@ class Broom extends Draggable {
     Draw() {
         const pos = [this.drawing_offsets.x + this.x - this.w / 2, this.drawing_offsets.y + this.y - this.h / 2]
         const scale = [this.drawing_offsets.w * this.w, this.drawing_offsets.h * this.h]
-        kCtx.drawImage(this.images[this.curr_image], pos[0], pos[1], scale[0], scale[1]);
-        kCtx.strokeStyle = "black";
-        kCtx.lineWidth = kW * 0.002;
+        CanvasWrapper.context.drawImage(this.images[this.curr_image], pos[0], pos[1], scale[0], scale[1]);
+        CanvasWrapper.context.strokeStyle = "black";
+        CanvasWrapper.context.lineWidth = kW * 0.002;
     }
 
     prev_dirt = [] // Dirt previously inside broom hitbox.

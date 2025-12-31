@@ -210,7 +210,7 @@ class ActInitializations {
         for (let i = 0; i < dirt_amount; i++) {
             // Randomize (x, y) but do it so that every dirt image is entirely inside the floor trapezoid.
             const dirt_radius = 0.01 * kW // The center of the square image, to an outer corner.
-            const scene_point = GetScenePoints()[2] // Bottom left point of the back wall.
+            const scene_point = ScenePerspective.GetScenePoints()[2] // Bottom left point of the back wall.
             const rand_coef_y = Math.random() // [0, 1]
             const y_val = Lerp(scene_point[1] + dirt_radius, kH - dirt_radius, rand_coef_y) // Dirt image is strictly contained to floor, vertically.
             const slope_1 = BisectingSlope(0, (kH - scene_point[1]) / scene_point[0]) // Slope between the bottom-left room-edge & a horizontal line (acute).

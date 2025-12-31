@@ -3,11 +3,11 @@ let gMouseY = 0
 let gMb1State = false
 let gMb1StateChanged = false
 
-kCanvas.addEventListener("mousemove", (event) => {
-    gMouseX = (event.clientX - kCanvas.getBoundingClientRect().left) / kPixelationFactor
-    gMouseY = (event.clientY - kCanvas.getBoundingClientRect().top) / kPixelationFactor
+CanvasWrapper.canvas.addEventListener("mousemove", (event) => {
+    gMouseX = (event.clientX - CanvasWrapper.canvas.getBoundingClientRect().left) / CanvasWrapper.pixelation_factor
+    gMouseY = (event.clientY - CanvasWrapper.canvas.getBoundingClientRect().top) / CanvasWrapper.pixelation_factor
 })
-kCanvas.addEventListener("mousedown", (event) => {
+CanvasWrapper.canvas.addEventListener("mousedown", (event) => {
     gMb1State = true
     gMb1StateChanged = true // Value is reset by main().
 
@@ -15,7 +15,7 @@ kCanvas.addEventListener("mousedown", (event) => {
     if (ActManager.current_act == "splash-screen")
         ActManager.NextAct()
 })
-kCanvas.addEventListener("mouseup", () => {
+CanvasWrapper.canvas.addEventListener("mouseup", () => {
     gMb1State = false
     gMb1StateChanged = true // Value is reset by main().
 })

@@ -1,0 +1,1 @@
+"use strict" // Makes sure variables don't accidentally pollute the global scope.
