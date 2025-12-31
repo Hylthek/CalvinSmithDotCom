@@ -12,6 +12,11 @@ class DrawingHelperFunctions {
             case "act-2":
             case "intro":
             case "outro":
+                // Draw image.
+                const room_img = new Image()
+                room_img.src = "Room/RoomBackground1.jpg"
+                kCtx.drawImage(room_img, 0, 0, kW, kH)
+
                 const scene_points = ScenePerspective.GetScenePoints()
                 kCtx.strokeStyle = "black";
                 kCtx.lineWidth = kW * 0.0015;
