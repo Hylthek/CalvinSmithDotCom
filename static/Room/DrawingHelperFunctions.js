@@ -123,15 +123,23 @@ class DrawingHelperFunctions {
                 }
             })
         })
+
+        kCtx.restore()
+        kCtx.save()
+
         // Draw normal decorations.
         ActManager.active_decorations.forEach(decoration => {
-            if (decoration.visible && (is_background_pass == decoration.is_background)) {
+            if (decoration.visible && (is_background_pass == decoration.is_background) && !decoration.DrawHud) {
                 kCtx.setTransform(
                     Math.cos(decoration.rotation * Math.PI / 180), Math.sin(decoration.rotation * Math.PI / 180),
                     -Math.sin(decoration.rotation * Math.PI / 180), Math.cos(decoration.rotation * Math.PI / 180),
                     decoration.x, decoration.y
                 )
                 kCtx.drawImage(decoration.images[decoration.curr_image], -decoration.w / 2, -decoration.h / 2, decoration.w, decoration.h);
+            }
+            if (decoration.DrawHud) {
+                // Draw HUD decorations.
+                decoration.DrawHud()
             }
         })
 

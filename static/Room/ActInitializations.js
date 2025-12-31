@@ -76,6 +76,7 @@ class ActInitializations {
         ActManager.game_events[0].Run()
     }
 
+    static act_1_total_draggables = 27
     static ActOne() {
         // Images
         // Draggables
@@ -101,7 +102,7 @@ class ActInitializations {
         horse_img.src = "/room/horsejean.png";
 
         // Add draggables
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < ActInitializations.act_1_total_draggables / 3; i++) {
             ActManager.active_draggables.push(new Draggable(
                 0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH,
                 kW * 0.05, kW * 0.05, [clothes_img, clothes_unraveled_img]
@@ -134,6 +135,9 @@ class ActInitializations {
         ActManager.active_containers[1].compatibilities = ["trash"]
         ActManager.active_containers[2].description = "The Trinket Cabinet"
         ActManager.active_containers[2].compatibilities = ["trinkets"]
+
+        // Add hud.
+        ActManager.active_decorations.push(new ProgressHud("Test HUD", 0.1*kW, 0.05*kW, "act-1"))
 
         // Initialize dialogue.
         const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.

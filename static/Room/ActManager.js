@@ -118,6 +118,15 @@ class ActManager {
         }
     }
 
+    static UpdateHuds() {
+        for (let i = 0; i < this.active_decorations.length; i++) {
+            const decoration = this.active_decorations[i];
+            if (!decoration.UpdateHud)
+                continue;
+            decoration.UpdateHud()
+        }
+    }
+
     static TotalContainerScore() {
         let score = 0;
         for (let i = 0; i < this.active_containers.length; i++) {

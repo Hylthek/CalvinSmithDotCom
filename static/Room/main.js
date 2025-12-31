@@ -37,12 +37,12 @@ function main() {
     if (hovered_container)
         hovered_container.DrawHoverText()
 
-
     // Draw dialogue on top of hover text.
     DrawingHelperFunctions.DrawDialogues()
 
     ActManager.UpdateGameEvents()
     ActManager.UpdateDraggables()
+    ActManager.UpdateHuds()
 
     DrawingHelperFunctions.DrawForeground()
 }
