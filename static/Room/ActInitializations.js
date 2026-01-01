@@ -17,12 +17,9 @@ class ActInitializations {
 
     static SplashScreen() {
         // Decoration images.
-        const monkey_img = new Image()
-        const heart_image = new Image()
-        const fly_img = new Image()
-        monkey_img.src = "/room/monkey.png";
-        heart_image.src = "/room/heart.png";
-        fly_img.src = "/room/fly.webp";
+        const monkey_img = PreloadedImages.monkey
+        const heart_image = PreloadedImages.heart
+        const fly_img = PreloadedImages.fly
         // Add decorations.
         const monkey = new Decoration(kW * 0.39, kH * 0.6, kW * 0.12, kW * 0.1, [monkey_img])
         const heart = new Decoration(kW * 0.5, kH * 0.6, kW * 0.1, kW * 0.1, [heart_image])
@@ -37,8 +34,7 @@ class ActInitializations {
 
     static Intro() {
         // GameEvent characters.
-        const shrimp_img = new Image()
-        shrimp_img.src = "/room/shrimp.png";
+        const shrimp_img = PreloadedImages.shrimp
         const shrimp = new Decoration(kW * 0.6, kH * 0.5, kW * 0.2, kW * 0.2, [shrimp_img])
 
         // GameEvent dialogue.
@@ -80,26 +76,17 @@ class ActInitializations {
     static ActOne() {
         // Images
         // Draggables
-        const clothes_img = new Image()
-        const clothes_unraveled_img = new Image()
-        const trash_img = new Image()
-        const trinket_img = new Image()
-        clothes_img.src = "/room/clothes.png";
-        clothes_unraveled_img.src = "/room/clothes.png";
-        trash_img.src = "/room/trash.png";
-        trinket_img.src = "/room/trinket.png";
+        const clothes_img = PreloadedImages.clothes
+        const clothes_unraveled_img = PreloadedImages.clothes
+        const trash_img = PreloadedImages.trash
+        const trinket_img = PreloadedImages.trinket
         // Containers
-        const trashcan_img = new Image()
-        const closet_img = new Image()
-        const cabinet_img = new Image()
-        trashcan_img.src = "/room/trashcan.png";
-        closet_img.src = "/room/closet.jpg";
-        cabinet_img.src = "/room/cabinet.png";
+        const trashcan_img = PreloadedImages.trashcan
+        const closet_img = PreloadedImages.closet
+        const cabinet_img = PreloadedImages.cabinet
         // Characters (decorations)
-        const shrimp_img = new Image()
-        const horse_img = new Image()
-        shrimp_img.src = "/room/shrimp.png";
-        horse_img.src = "/room/horsejean.png";
+        const shrimp_img = PreloadedImages.shrimp
+        const horse_img = PreloadedImages.horsejean
 
         // Add draggables
         for (let i = 0; i < ActInitializations.act_1_total_draggables / 3; i++) {
@@ -200,16 +187,12 @@ class ActInitializations {
 
     static ActTwo() {
         // Add draggables
-        const broom_img = new Image()
-        broom_img.src = "/room/broom.png";
+        const broom_img = PreloadedImages.broom
         ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.025, [broom_img, broom_img]))
         ActManager.active_draggables[ActManager.active_draggables.length - 1].description = "Broom"
         
         // Add decorations (dirt).
-        const dirt_imgs = [new Image(), new Image(), new Image()]
-        dirt_imgs[0].src = "/room/dirt1.png";
-        dirt_imgs[1].src = "/room/dirt2.png";
-        dirt_imgs[2].src = "/room/dirt3.png";
+        const dirt_imgs = [PreloadedImages.dirt1, PreloadedImages.dirt2, PreloadedImages.dirt3]
         const dirt_amount = 3000
         for (let i = 0; i < dirt_amount; i++) {
             // Randomize (x, y) but do it so that every dirt image is entirely inside the floor trapezoid.
@@ -229,9 +212,7 @@ class ActInitializations {
             just_pushed.is_background = true
         }
         // Characters
-        const leopard_img = new Image()
-        const spiderman_img = new Image()
-        leopard_img.src = "/room/leopard.png";
-        spiderman_img.src = "/room/spiderman.png";
+        const leopard_img = PreloadedImages.leopard
+        const spiderman_img = PreloadedImages.spiderman
     }
 }

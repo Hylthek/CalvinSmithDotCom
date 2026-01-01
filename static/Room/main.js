@@ -1,6 +1,10 @@
 // Initialize first act.
 ActManager.current_act = null
 ActManager.NextAct()
+
+// Preload images.
+PreloadedImages.PreloadAllImages()
+
 function main() {
     window.requestAnimationFrame(main);
 
@@ -26,11 +30,11 @@ function main() {
         hovered_draggable.Drop()
     if (hovered_container && hovered_draggable && !mb1_state && state_changed)
         hovered_container.TryEatDraggable(hovered_draggable)
-    
+
     // Process act 2 dirt removal.
     if (ActManager.current_act == "act-2")
         ActManager.active_draggables[0].CleanDirt()
-    
+
     // Hover text.
     if (hovered_draggable)
         hovered_draggable.DrawHoverText()
