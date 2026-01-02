@@ -119,6 +119,7 @@ class Broom extends Draggable {
             if (Math.random() < this.chance_of_removal) {
                 const idx = ActManager.active_decorations.indexOf(dirt)
                 ActManager.active_decorations.splice(idx, 1)
+                ActManager.dirt_swept++
             }
         });
     }

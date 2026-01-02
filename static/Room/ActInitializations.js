@@ -124,7 +124,7 @@ class ActInitializations {
         ActManager.active_containers[2].compatibilities = ["trinkets"]
 
         // Add hud.
-        ActManager.active_decorations.push(new ProgressHud("Test HUD", 0.1*kW, 0.05*kW, "act-1"))
+        ActManager.active_decorations.push(new ProgressHud("Hoarding Progress", 0.025*kW, 0.065*kW, "act-1"))
 
         // Initialize dialogue.
         const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
@@ -185,16 +185,19 @@ class ActInitializations {
         ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_sequence))
     }
 
+    static act_2_total_dirt = 3000
     static ActTwo() {
         // Add draggables
         const broom_img = PreloadedImages.broom
         ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.025, [broom_img, broom_img]))
         ActManager.active_draggables[ActManager.active_draggables.length - 1].description = "Broom"
         
+        // Add HUD.
+        ActManager.active_decorations.push(new ProgressHud("Cleaning Progress", 0.025*kW, 0.065*kW, "act-2"))
+
         // Add decorations (dirt).
         const dirt_imgs = [PreloadedImages.dirt1, PreloadedImages.dirt2, PreloadedImages.dirt3]
-        const dirt_amount = 3000
-        for (let i = 0; i < dirt_amount; i++) {
+        for (let i = 0; i < ActInitializations.act_2_total_dirt; i++) {
             // Randomize (x, y) but do it so that every dirt image is entirely inside the floor trapezoid.
             const dirt_radius = 0.01 * kW // The center of the square image, to an outer corner.
             const scene_point = ScenePerspective.GetScenePoints()[2] // Bottom left point of the back wall.

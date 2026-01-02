@@ -13,23 +13,26 @@ class ProgressHud {
         this.hud_type = hud_type
     }
 
+    // Origin is left-center of object.
+    // HUD is text and progress bar on one line.
     DrawHud() {
         kCtx.save()
 
         // Draw text. 
         kCtx.fillStyle = 'black'
         kCtx.font = `${this.font_size * kW}px Arial`
-        kCtx.textAlign = 'right'
+        kCtx.textAlign = 'left'
         kCtx.textBaseline = 'middle'
-        kCtx.fillText(this.hud_text, this.x - this.buffer / 2, this.y)
+        kCtx.fillText(this.hud_text, this.x, this.y)
 
         // Draw progress bar.
-        const font_size_px = this.font_size * kW
+        const font_size_px = this.font_size * kW * 0.8 // The 0.8 makes it look more even.
+        const text_width = kCtx.measureText(this.hud_text).width
         kCtx.fillStyle = 'green'
-        kCtx.fillRect(this.x + this.buffer / 2, this.y - font_size_px / 2, kCtx.measureText(this.hud_text).width * this.hud_progress, font_size_px * 0.8) // The 0.8 makes it look more even.
+        kCtx.fillRect(this.x + text_width + this.buffer, this.y - font_size_px / 2, text_width * this.hud_progress, font_size_px)
         kCtx.strokeStyle = 'black'
         kCtx.lineWidth = 0.002 * kW
-        kCtx.strokeRect(this.x + this.buffer / 2, this.y - font_size_px / 2, kCtx.measureText(this.hud_text).width, font_size_px * 0.8) // The 0.8 makes it look more even.
+        kCtx.strokeRect(this.x + text_width + this.buffer, this.y - font_size_px / 2, text_width, font_size_px)
 
         kCtx.restore()
     }
@@ -37,5 +40,7 @@ class ProgressHud {
     UpdateHud() {
         if (this.hud_type == "act-1")
             this.hud_progress = ActManager.TotalContainerScore() / ActInitializations.act_1_total_draggables
+        if (this.hud_type == "act-2")
+            this.hud_progress = ActManager.dirt_swept / ActInitializations.act_2_total_dirt
     }
 }

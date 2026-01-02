@@ -136,6 +136,8 @@ class ActManager {
         return score;
     }
 
+    static dirt_swept = 0 // Incremented by Broom.CleanDirt().
+
     static UpdateGameEvents() {
         for (let i = 0; i < this.game_events.length; i++) {
             const game_event = this.game_events[i];
