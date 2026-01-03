@@ -124,3 +124,29 @@ class Broom extends Draggable {
         });
     }
 }
+
+class Node extends Draggable {
+    constructor(x, y, diameter) {
+        super(x, y, diameter, diameter, [])
+        this.x = x;
+        this.y = y;
+        this.diameter = diameter
+    }
+
+    // Function override to disable gravity.
+    Drop() {
+        super.Drop()
+        this.falling = false
+    }
+
+    Draw() {
+        kCtx.save();
+        
+        kCtx.beginPath();
+        kCtx.arc(this.x, this.y, this.diameter / 2, 0, Math.PI * 2);
+        kCtx.fillStyle = "#6BA851";
+        kCtx.fill();
+
+        kCtx.restore();
+    }
+}

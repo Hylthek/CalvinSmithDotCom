@@ -218,4 +218,14 @@ class ActInitializations {
         const leopard_img = PreloadedImages.leopard
         const spiderman_img = PreloadedImages.spiderman
     }
+
+    static ActThree() {
+        // Add bed nodes.
+        ActManager.active_draggables.push(new Node(kW * 0.7, kH * 0.1, kW * 0.03))
+        ActManager.active_draggables.push(new Node(kW * 0.9, kH * 0.1, kW * 0.03))
+        ActManager.active_draggables.push(new Node(kW * 0.9, kH * 0.5, kW * 0.03))
+        ActManager.active_draggables.push(new Node(kW * 0.7, kH * 0.5, kW * 0.03))
+
+
+    }
 }

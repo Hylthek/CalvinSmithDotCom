@@ -32,7 +32,7 @@ class ActManager {
                 break;
             case "act-2":
                 ActManager.ClearArrays()
-                // Load.
+                ActInitializations.ActThree()
                 this.current_act = "act-3"
                 break;
             case "act-3":

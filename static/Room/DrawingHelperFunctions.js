@@ -98,13 +98,13 @@ class DrawingHelperFunctions {
 
     static DrawDraggables() {
         ActManager.active_draggables.forEach(draggable => {
-            if (draggable.Draw) // If method exists.
+            if (draggable.Draw) // If method exists, class is an extension of Draggable.
                 draggable.Draw()
-            else
+            else // Basic Draggable.
                 kCtx.drawImage(draggable.images[draggable.curr_image], draggable.x - draggable.w / 2, draggable.y - draggable.h / 2, draggable.w, draggable.h);
         })
     }
-
+    
     static DrawContainers() {
         ActManager.active_containers.forEach(container => {
             kCtx.drawImage(container.images[container.curr_image], container.x - container.w / 2, container.y - container.h / 2, container.w, container.h);
