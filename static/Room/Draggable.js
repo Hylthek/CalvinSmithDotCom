@@ -57,16 +57,35 @@ class Draggable {
         //Set font.
         kCtx.font = `${kW * 0.016}px Arial`;
 
-        // Draw background.
-        kCtx.fillStyle = "white"
-        const text_size = kCtx.measureText(this.description)
-        kCtx.fillRect(this.x + this.w / 2, this.y - kW * 0.008, text_size.width, kW * 0.016)
-
-        // Draw text.
-        kCtx.fillStyle = "black";
-        kCtx.textAlign = "left";
-        kCtx.textBaseline = "middle"
-        kCtx.fillText(this.description, this.x + this.w / 2, this.y);
+        const text_width = kCtx.measureText(this.description).width
+        const destination_text = "Goes in: " + this.compatibilities[0]
+        const destination_text_width = kCtx.measureText(destination_text).width
+        if (this.x + this.w / 2 + Math.max(text_width, destination_text_width) < kW) { // If text box fits in screen.
+            // Draw background.
+            kCtx.fillStyle = "white"
+            kCtx.fillRect(this.x + this.w / 2, this.y - kW * 0.008, text_width, kW * 0.016)
+            kCtx.fillRect(this.x + this.w / 2, this.y + kW * 0.008, destination_text_width, kW * 0.016)
+            
+            // Draw text.
+            kCtx.fillStyle = "black";
+            kCtx.textAlign = "left";
+            kCtx.textBaseline = "middle"
+            kCtx.fillText(this.description, this.x + this.w / 2, this.y);
+            kCtx.fillText(destination_text, this.x + this.w / 2, this.y + kW * 0.016) // expression uses the arbitrary font size.
+        }
+        else { // Draw on left hand side.
+            // Draw background.
+            kCtx.fillStyle = "white"
+            kCtx.fillRect(this.x - this.w / 2 - text_width, this.y - kW * 0.008, text_width, kW * 0.016)
+            kCtx.fillRect(this.x - this.w / 2 - destination_text_width, this.y + kW * 0.008, destination_text_width, kW * 0.016)
+            
+            // Draw text.
+            kCtx.fillStyle = "black";
+            kCtx.textAlign = "right";
+            kCtx.textBaseline = "middle"
+            kCtx.fillText(this.description, this.x - this.w / 2, this.y);
+            kCtx.fillText(destination_text, this.x - this.w / 2, this.y + kW * 0.016)
+        }
 
         kCtx.restore()
     }
