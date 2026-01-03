@@ -13,18 +13,21 @@ class Draggable {
     velocity = 0; // A proportion of gH.
 
     /** images is an array of HTML Image objects. */
-    constructor(x, y, w, h, images) {
+    constructor(x, y, w, h, images, description = "Description", compatibilities = []) {
         // This function is.
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.images = images
+        this.description = description
+        this.compatibilities = compatibilities
     }
 
     Pickup() {
         this.picked_up = true
-        this.curr_image = 1;
+        if (this.images.length >= 2)
+            this.curr_image = 1;
 
         // Make last on draw order.
         const idx = ActManager.active_draggables.indexOf(this)
@@ -113,7 +116,7 @@ class Broom extends Draggable {
             }
         })
         this.prev_dirt = curr_dirt
-        
+
         // Process new dirt.
         new_dirt.forEach((dirt) => {
             if (Math.random() < this.chance_of_removal) {
@@ -141,7 +144,7 @@ class Node extends Draggable {
 
     Draw() {
         kCtx.save();
-        
+
         kCtx.beginPath();
         kCtx.arc(this.x, this.y, this.diameter / 2, 0, Math.PI * 2);
         kCtx.fillStyle = "#6BA851";

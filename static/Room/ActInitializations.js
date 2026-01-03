@@ -10,6 +10,22 @@ function BisectingSlope(m, n) {
     return numer / denom
 }
 
+// Stolen from stack overflow. "Fisher–Yates (aka Knuth) Shuffle"
+function ShuffleArray(array) {
+    let currentIndex = array.length;
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+
+        // Pick a remaining element...
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+}
+
 class ActInitializations {
     constructor() {
         console.error(": Cannot instantiate this static class.")
@@ -89,42 +105,21 @@ class ActInitializations {
         const horse_img = PreloadedImages.horsejean
 
         // Add draggables
-        for (let i = 0; i < ActInitializations.act_1_total_draggables / 3; i++) {
-            ActManager.active_draggables.push(new Draggable(
-                0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH,
-                kW * 0.05, kW * 0.05, [clothes_img, clothes_unraveled_img]
-            ))
-            ActManager.active_draggables.push(new Draggable(
-                (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
-                kW * 0.05, kW * 0.05, [trash_img, trash_img]
-            ))
-            ActManager.active_draggables.push(new Draggable(
-                (0.2 + 0.6 * Math.random()) * kW, (0.7 + 0.2 * Math.random()) * kH,
-                kW * 0.05, kW * 0.05, [trinket_img, trinket_img]
-            ))
-
-            const new_draggables = ActManager.active_draggables.slice(-3)
-            new_draggables[0].description = "Clothes";
-            new_draggables[0].compatibilities = ["clothes"]
-            new_draggables[1].description = "Trash";
-            new_draggables[1].compatibilities = ["trash"]
-            new_draggables[2].description = "Trinket";
-            new_draggables[2].compatibilities = ["trinkets"]
-        }
+        ActInitializations.AddActOneDraggables()
 
         // Add containers.
         ActManager.active_containers.push(new Container(kW * 0.385, kH * 0.34, kW * 0.195, kH * 0.45, [closet_img]))
         ActManager.active_containers.push(new Container(kW * 0.76, kH * 0.62, kW * 0.075, kH * 0.15, [trashcan_img]))
         ActManager.active_containers.push(new Container(kW * 0.653, kH * 0.253, kW * 0.2, kH * 0.2, [cabinet_img]))
         ActManager.active_containers[0].description = "The Closet"
-        ActManager.active_containers[0].compatibilities = ["clothes"]
+        ActManager.active_containers[0].compatibilities = ["closet"]
         ActManager.active_containers[1].description = "The Trashcan"
-        ActManager.active_containers[1].compatibilities = ["trash"]
+        ActManager.active_containers[1].compatibilities = ["trashcan"]
         ActManager.active_containers[2].description = "The Trinket Cabinet"
-        ActManager.active_containers[2].compatibilities = ["trinkets"]
+        ActManager.active_containers[2].compatibilities = ["cabinet"]
 
         // Add hud.
-        ActManager.active_decorations.push(new ProgressHud("Hoarding Progress", 0.025*kW, 0.065*kW, "act-1"))
+        ActManager.active_decorations.push(new ProgressHud("Hoarding Progress", 0.025 * kW, 0.065 * kW, "act-1"))
 
         // Initialize dialogue.
         const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
@@ -191,9 +186,9 @@ class ActInitializations {
         const broom_img = PreloadedImages.broom
         ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.025, [broom_img, broom_img]))
         ActManager.active_draggables[ActManager.active_draggables.length - 1].description = "Broom"
-        
+
         // Add HUD.
-        ActManager.active_decorations.push(new ProgressHud("Cleaning Progress", 0.025*kW, 0.065*kW, "act-2"))
+        ActManager.active_decorations.push(new ProgressHud("Cleaning Progress", 0.025 * kW, 0.065 * kW, "act-2"))
 
         // Add decorations (dirt).
         const dirt_imgs = [PreloadedImages.dirt1, PreloadedImages.dirt2, PreloadedImages.dirt3]
@@ -225,7 +220,303 @@ class ActInitializations {
         ActManager.active_draggables.push(new Node(kW * 0.9, kH * 0.1, kW * 0.03))
         ActManager.active_draggables.push(new Node(kW * 0.9, kH * 0.5, kW * 0.03))
         ActManager.active_draggables.push(new Node(kW * 0.7, kH * 0.5, kW * 0.03))
+    }
 
+    // A bulk push for act1 draggables.
+    static AddActOneDraggables() {
+        const default_size = 0.1 * kW
 
+        // Closet draggables. Closet draggables. Closet draggables. Closet draggables.
+        // Closet draggables. Closet draggables. Closet draggables. Closet draggables.
+        // Closet draggables. Closet draggables. Closet draggables. Closet draggables.
+        // Closet draggables. Closet draggables. Closet draggables. Closet draggables.
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.blackcanvas],
+            "A shirt",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.crumpledblackplaid, PreloadedImages.blackplaid],
+            "A shirt",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.comb],
+            "A comb",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.combjar],
+            "A jar",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.deodorant],
+            "Some deodorant",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.earrings],
+            "An earring stand",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.fancycrumpled, PreloadedImages.fancyshirt],
+            "A shirt",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.greenfuzzcrumpled, PreloadedImages.greenshirt],
+            "A shirt",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.patternedcrumpled, PreloadedImages.greypatternedshirt],
+            "A shirt",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.leather],
+            "A leather jacket",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.makeupjar],
+            "A jar",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.mucin],
+            "Snail mucin",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.polkacrumpled, PreloadedImages.polka],
+            "A shirt",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.pinktray],
+            "A tray",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.redplaidcrumpled, PreloadedImages.redplaid],
+            "A shirt",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.strawberry],
+            "A strawberry tray",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.whitetray],
+            "A cat tray",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.gordon],
+            "Gordon",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.gumdrop],
+            "Gumdrop",
+            ["closet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.flowervase],
+            "A vase",
+            ["closet"]
+        ))
+
+        // Cabinet draggables. Cabinet draggables. Cabinet draggables. Cabinet draggables.
+        // Cabinet draggables. Cabinet draggables. Cabinet draggables. Cabinet draggables.
+        // Cabinet draggables. Cabinet draggables. Cabinet draggables. Cabinet draggables.
+        // Cabinet draggables. Cabinet draggables. Cabinet draggables. Cabinet draggables.
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.alligator],
+            "An alligator that kinda looks like you.",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.blueslug],
+            "A tiny blue glass slug. \"Meow\"",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.cow],
+            "Rainbow cow",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.crab],
+            "He will hold your pens",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.glassdragon],
+            "A red glass dragon. \"RAHHH\"",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.glassescane],
+            "A cool dude",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.glassmonkey],
+            "A brown glass monkey \"Hello I am a monkey\"",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.gradcane],
+            "Graduated valedogtorian",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.happysnail],
+            "A happy snail",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.headphones],
+            "Your trusty headphones",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.legored],
+            "A LEGO plant",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.legovenusflytrap],
+            "A LEGO Venus Flytrap",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.penguinduck],
+            "A duck in penguin's clothing",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.percussionfrog],
+            "Frog instrument",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.pineapplefrog],
+            "A frog that is also a mutated pineapple.",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.planathan],
+            "Planathan",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.rainbowturtle],
+            "A rainbow turtle",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.raven],
+            "Quoth The Raven",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.shrimpcasket],
+            "in pace, requiescat!",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.toucan],
+            "Quoth The Toucan",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.turtle],
+            "A flying turtle",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.valentinemonkeyplush],
+            "A cute monkey with no insidious backstory whatsoever",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.whale],
+            "A big blue whale",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.whitesquish],
+            "A squishy guy",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.yellowslug],
+            "A tiny yellow glass slug \"Meow\"",
+            ["cabinet"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.yellowsquish],
+            "A squishy guy",
+            ["cabinet"]
+        ))
+
+        // Trash draggables. Trash draggables. Trash draggables. Trash draggables.
+        // Trash draggables. Trash draggables. Trash draggables. Trash draggables.
+        // Trash draggables. Trash draggables. Trash draggables. Trash draggables.
+        // Trash draggables. Trash draggables. Trash draggables. Trash draggables.
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.box],
+            "An empty box of cookies",
+            ["trashcan"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.hotcocoa],
+            "An empty box of hot cocoa",
+            ["trashcan"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.pocky],
+            "An empty bag of Pocky",
+            ["trashcan"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.pockybox],
+            "An empty box of Pocky",
+            ["trashcan"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.tacocup],
+            "A cup from TacoBell",
+            ["trashcan"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.tissue1],
+            "A tissue",
+            ["trashcan"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.tissue2],
+            "A tissue",
+            ["trashcan"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.tissue3],
+            "I rotoscoped these tissues by hand",
+            ["trashcan"]
+        ))
+        ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
+            [PreloadedImages.waterbottle],
+            "An empty WinCo-brand water bottle",
+            ["trashcan"]
+        ))
+
+        // Randomize the array.
+        ShuffleArray(ActManager.active_draggables)
     }
 }
