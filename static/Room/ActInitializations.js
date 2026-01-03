@@ -88,7 +88,9 @@ class ActInitializations {
         ActManager.game_events[0].Run()
     }
 
-    static act_1_total_draggables = 27
+    static total_closet_draggables = 2
+    static total_cabinet_draggables = 2
+    static total_trashcan_draggables = 2
     static ActOne() {
         // Images
         // Draggables
@@ -119,7 +121,9 @@ class ActInitializations {
         ActManager.active_containers[2].compatibilities = ["cabinet"]
 
         // Add hud.
-        ActManager.active_decorations.push(new ProgressHud("Hoarding Progress", 0.025 * kW, 0.065 * kW, "act-1"))
+        ActManager.active_decorations.push(new ProgressHud("Closet Progress", 0.025 * kW, 0.065 * kW, "closet-progress"))
+        ActManager.active_decorations.push(new ProgressHud("Cabinet Progress", 0.025 * kW, 0.085 * kW, "cabinet-progress"))
+        ActManager.active_decorations.push(new ProgressHud("Trash Progress", 0.025 * kW, 0.105 * kW, "trashcan-progress"))
 
         // Initialize dialogue.
         const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.

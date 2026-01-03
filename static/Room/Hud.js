@@ -38,9 +38,13 @@ class ProgressHud {
     }
 
     UpdateHud() {
-        if (this.hud_type == "act-1")
-            this.hud_progress = ActManager.TotalContainerScore() / ActInitializations.act_1_total_draggables
-        if (this.hud_type == "act-2")
+        if (this.hud_type == "closet-progress")
+            this.hud_progress = ActManager.container_contents["closet"] / ActInitializations.total_closet_draggables
+        if (this.hud_type == "cabinet-progress")
+            this.hud_progress = ActManager.container_contents["cabinet"] / ActInitializations.total_cabinet_draggables
+        if (this.hud_type == "trashcan-progress")
+            this.hud_progress = ActManager.container_contents["trashcan"] / ActInitializations.total_trashcan_draggables
+        if (this.hud_type == "dirt-progress")
             this.hud_progress = ActManager.dirt_swept / ActInitializations.act_2_total_dirt
     }
 }

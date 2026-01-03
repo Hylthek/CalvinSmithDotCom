@@ -34,7 +34,7 @@ class Container {
         }
 
         // Process successful eat.
-        this.eaten_counter++
+        ActManager.container_contents[draggable.compatibilities[0]]++
         ActManager.active_draggables.splice(ActManager.active_draggables.indexOf(draggable), 1)
     }
 

@@ -127,21 +127,30 @@ class ActManager {
         }
     }
 
-    static TotalContainerScore() {
-        let score = 0;
-        for (let i = 0; i < this.active_containers.length; i++) {
-            const element = this.active_containers[i];
-            score += element.eaten_counter;
+    static IsGoalMet() {
+        switch (ActManager.current_act) {
+            case "act-1":
+                const _1 = ActManager.container_contents.cabinet >= ActInitializations.total_cabinet_draggables
+                const _2 = ActManager.container_contents.closet >= ActInitializations.total_closet_draggables
+                const _3 = ActManager.container_contents.trashcan >= ActInitializations.total_trashcan_draggables
+                return _1 && _2 && _3
+            case "act-2":
+                return false
+            case "act-3":
+                return false
+            default:
+            // Do nothing.
         }
-        return score;
     }
+
+    static container_contents = { closet: 0, cabinet: 0, trashcan: 0 }
 
     static dirt_swept = 0 // Incremented by Broom.CleanDirt().
 
     static UpdateGameEvents() {
         for (let i = 0; i < this.game_events.length; i++) {
             const game_event = this.game_events[i];
-            if (game_event.StartCriterionMet()) {
+            if (ActManager.IsGoalMet()) {
                 game_event.Run()
             }
         }

@@ -23,6 +23,4 @@ class GameEvent {
         this.curr_stage = 0;
         this.sequence(this)
     }
-
-    StartCriterionMet() { return ActManager.TotalContainerScore() == 2; }
 }
