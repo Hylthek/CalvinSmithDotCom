@@ -3,7 +3,10 @@ class PreloadedImages {
         console.error(": Cant instantiate static class.")
     }
 
-    static background1 = new Image()
+    static intro_background = new Image()
+    static act1_background = new Image()
+    static blank_floor = new Image()
+    static outro_background = new Image()
     static closet = new Image()
     static clothes = new Image()
     static broom = new Image()
@@ -25,7 +28,10 @@ class PreloadedImages {
     static wolfman = new Image()
 
     static PreloadAllImages() {
-        PreloadedImages.background1.src = "Room/Assets/RoomBackground1.jpg"
+        PreloadedImages.intro_background.src = "Room/Assets/introroombackground.png"
+        PreloadedImages.act1_background.src = "Room/Assets/actoneRoomBackground.png"
+        PreloadedImages.blank_floor.src = "Room/Assets/blankfloor.png"
+        PreloadedImages.outro_background.src = "Room/Assets/outroroombackground.png"
         PreloadedImages.closet.src = "Room/Assets/Closet.jpg"
         PreloadedImages.clothes.src = "Room/Assets/Clothes.png"
         PreloadedImages.broom.src = "Room/Assets/Broom.png"

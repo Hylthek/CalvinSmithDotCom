@@ -8,51 +8,6 @@ class DrawingHelperFunctions {
     static DrawBackground() {
         kCtx.save()
         switch (ActManager.current_act) {
-            case "act-1":
-            case "act-2":
-            case "intro":
-            case "outro":
-                // Use the preloaded background image.
-                kCtx.drawImage(PreloadedImages.background1, 0, 0, kW, kH)
-
-                // Draw room edges.
-                const scene_points = ScenePerspective.GetScenePoints()
-                kCtx.strokeStyle = "black";
-                kCtx.lineWidth = kW * 0.0015;
-                kCtx.beginPath();
-                kCtx.moveTo(0, 0);
-                kCtx.lineTo(scene_points[0][0], scene_points[0][1]);
-                kCtx.lineTo(scene_points[1][0], scene_points[1][1]);
-                kCtx.lineTo(kW, 0);
-                kCtx.moveTo(0, kH);
-                kCtx.lineTo(scene_points[2][0], scene_points[2][1]);
-                kCtx.lineTo(scene_points[3][0], scene_points[3][1]);
-                kCtx.lineTo(kW, kH);
-                kCtx.moveTo(scene_points[0][0], scene_points[0][1]);
-                kCtx.lineTo(scene_points[2][0], scene_points[2][1]);
-                kCtx.moveTo(scene_points[1][0], scene_points[1][1]);
-                kCtx.lineTo(scene_points[3][0], scene_points[3][1]);
-                kCtx.stroke();
-
-                kCtx.font = `${kW * 0.02}px Arial`;
-                kCtx.fillStyle = "black";
-                kCtx.textAlign = "center";
-                kCtx.textBaseline = "middle";
-                kCtx.fillText("Placeholder", kW * 0.1, kH * 0.5);
-                kCtx.fillText("Placeholder", kW * 0.9, kH * 0.5);
-                kCtx.fillText("Placeholder", kW * 0.5, kH * 0.4);
-                kCtx.fillText("Placeholder", kW * 0.5, kH * 0.8);
-                kCtx.fillText("Placeholder", kW * 0.5, kH * 0.05);
-
-            // fallthrough
-            case "act-3":
-            case "credits":
-                kCtx.font = `${kW * 0.05}px Arial`;
-                kCtx.fillStyle = "black";
-                kCtx.textAlign = "center";
-                kCtx.textBaseline = "middle";
-                kCtx.fillText(ActManager.current_act, kW / 2, kH / 2);
-                break;
             case "splash-screen":
                 // Draw text.
                 kCtx.font = `${kW * 0.05}px serif`;
@@ -60,6 +15,26 @@ class DrawingHelperFunctions {
                 kCtx.textAlign = "center";
                 kCtx.textBaseline = "middle";
                 kCtx.fillText("For S.", kW / 2, kH * 0.45);
+                break;
+            case "act-1":
+                kCtx.drawImage(PreloadedImages.act1_background, 0, 0, kW, kH)
+                break;
+            case "intro":
+            case "act-2":
+                kCtx.drawImage(PreloadedImages.intro_background, 0, 0, kW, kH)
+                break;
+            case "act-3":
+                kCtx.drawImage(PreloadedImages.blank_floor, 0, 0, kW, kH)
+                break;
+            case "outro":
+                kCtx.drawImage(PreloadedImages.outro_background, 0, 0, kW, kH)
+                break;
+            case "credits":
+                kCtx.font = `${kW * 0.05}px Arial`;
+                kCtx.fillStyle = "black";
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                kCtx.fillText("Made By:\nGod", kW / 2, kH / 2);
                 break;
             default:
                 console.error("Invalid act string.", ActManager.current_act)
@@ -104,7 +79,7 @@ class DrawingHelperFunctions {
                 kCtx.drawImage(draggable.images[draggable.curr_image], draggable.x - draggable.w / 2, draggable.y - draggable.h / 2, draggable.w, draggable.h);
         })
     }
-    
+
     static DrawContainers() {
         ActManager.active_containers.forEach(container => {
             kCtx.drawImage(container.images[container.curr_image], container.x - container.w / 2, container.y - container.h / 2, container.w, container.h);
