@@ -113,9 +113,9 @@ class ActInitializations {
         }
 
         // Add containers.
-        ActManager.active_containers.push(new Container(kW * 0.47, kH * 0.54, kW * 0.1, kH * 0.2, [closet_img]))
-        ActManager.active_containers.push(new Container(kW * 0.76, kH * 0.65, kW * 0.05, kH * 0.1, [trashcan_img]))
-        ActManager.active_containers.push(new Container(kW * 0.675, kH * 0.24, kW * 0.2, kH * 0.3, [cabinet_img]))
+        ActManager.active_containers.push(new Container(kW * 0.385, kH * 0.34, kW * 0.195, kH * 0.45, [closet_img]))
+        ActManager.active_containers.push(new Container(kW * 0.76, kH * 0.62, kW * 0.075, kH * 0.15, [trashcan_img]))
+        ActManager.active_containers.push(new Container(kW * 0.653, kH * 0.253, kW * 0.2, kH * 0.2, [cabinet_img]))
         ActManager.active_containers[0].description = "The Closet"
         ActManager.active_containers[0].compatibilities = ["clothes"]
         ActManager.active_containers[1].description = "The Trashcan"

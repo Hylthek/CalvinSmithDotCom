@@ -32,7 +32,7 @@ class PreloadedImages {
         PreloadedImages.act1_background.src = "Room/Assets/actoneRoomBackground.png"
         PreloadedImages.blank_floor.src = "Room/Assets/blankfloor.png"
         PreloadedImages.outro_background.src = "Room/Assets/outroroombackground.png"
-        PreloadedImages.closet.src = "Room/Assets/Closet.jpg"
+        PreloadedImages.closet.src = "Room/Assets/opencloset.png"
         PreloadedImages.clothes.src = "Room/Assets/Clothes.png"
         PreloadedImages.broom.src = "Room/Assets/Broom.png"
         PreloadedImages.cabinet.src = "Room/Assets/Cabinet.png"
