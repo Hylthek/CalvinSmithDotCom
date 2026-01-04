@@ -11,6 +11,9 @@ class Draggable {
     pickup_location = [null, null]
     falling = false;
     velocity = 0; // A proportion of gH.
+    floating_freq = null // Set randomly at instantiation.
+    floating_phase = null // Set randomly at instantiation.
+    floating_amplitude = 0.001 * kW
 
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images, description = "Description", compatibilities = []) {
@@ -22,6 +25,8 @@ class Draggable {
         this.images = images
         this.description = description
         this.compatibilities = compatibilities
+        this.floating_freq = 1.5 + Math.random()
+        this.floating_phase = Math.random() * Math.PI * 2
     }
 
     Pickup() {
@@ -46,6 +51,11 @@ class Draggable {
         // Handle gravity.
         if (this.y < ScenePerspective.GetScenePoints()[2][1])
             this.falling = true
+    }
+
+    Draw() { // Animates floating too.
+        const floating_y_offset = this.floating_amplitude * Math.sin(performance.now() / 1000 * this.floating_freq + this.floating_phase)
+        kCtx.drawImage(this.images[this.curr_image], this.x - this.w / 2, this.y - this.h / 2 + floating_y_offset, this.w, this.h);
     }
 
     DrawHoverText() {
