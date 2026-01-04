@@ -135,7 +135,7 @@ class ActManager {
                 const _3 = ActManager.container_contents.trashcan >= ActInitializations.total_trashcan_draggables
                 return _1 && _2 && _3
             case "act-2":
-                return false
+                return ActManager.dirt_swept >= ActInitializations.act_2_total_dirt - 10 // -10 for QOL
             case "act-3":
                 return false
             default:

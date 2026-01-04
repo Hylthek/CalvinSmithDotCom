@@ -44,7 +44,7 @@ class ProgressHud {
             this.hud_progress = ActManager.container_contents["cabinet"] / ActInitializations.total_cabinet_draggables
         if (this.hud_type == "trashcan-progress")
             this.hud_progress = ActManager.container_contents["trashcan"] / ActInitializations.total_trashcan_draggables
-        if (this.hud_type == "dirt-progress")
+        if (this.hud_type == "sweeping-progress")
             this.hud_progress = ActManager.dirt_swept / ActInitializations.act_2_total_dirt
     }
 }

@@ -192,7 +192,7 @@ class ActInitializations {
         ActManager.active_draggables[ActManager.active_draggables.length - 1].description = "Broom"
 
         // Add HUD.
-        ActManager.active_decorations.push(new ProgressHud("Cleaning Progress", 0.025 * kW, 0.065 * kW, "act-2"))
+        ActManager.active_decorations.push(new ProgressHud("Sweeping Progress", 0.025 * kW, 0.065 * kW, "sweeping-progress"))
 
         // Add decorations (dirt).
         const dirt_imgs = [PreloadedImages.dirt1, PreloadedImages.dirt2, PreloadedImages.dirt3]
@@ -220,10 +220,10 @@ class ActInitializations {
 
     static ActThree() {
         // Add bed nodes.
-        ActManager.active_draggables.push(new Node(kW * 0.7, kH * 0.1, kW * 0.03))
-        ActManager.active_draggables.push(new Node(kW * 0.9, kH * 0.1, kW * 0.03))
-        ActManager.active_draggables.push(new Node(kW * 0.9, kH * 0.5, kW * 0.03))
-        ActManager.active_draggables.push(new Node(kW * 0.7, kH * 0.5, kW * 0.03))
+        ActManager.active_draggables.push(new Node(kW * 0.585, kH * 0.09, kW * 0.03))
+        ActManager.active_draggables.push(new Node(kW * 0.835, kH * 0.09, kW * 0.03))
+        ActManager.active_draggables.push(new Node(kW * 0.835, kH * 0.6, kW * 0.03))
+        ActManager.active_draggables.push(new Node(kW * 0.585, kH * 0.6, kW * 0.03))
     }
 
     // A bulk push for act1 draggables.

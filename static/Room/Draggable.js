@@ -74,27 +74,31 @@ class Draggable {
             // Draw background.
             kCtx.fillStyle = "white"
             kCtx.fillRect(this.x + this.w / 2, this.y - kW * 0.008, text_width, kW * 0.016)
-            kCtx.fillRect(this.x + this.w / 2, this.y + kW * 0.008, destination_text_width, kW * 0.016)
-            
+            if (this.compatibilities.length > 0)
+                kCtx.fillRect(this.x + this.w / 2, this.y + kW * 0.008, destination_text_width, kW * 0.016)
+
             // Draw text.
             kCtx.fillStyle = "black";
             kCtx.textAlign = "left";
             kCtx.textBaseline = "middle"
             kCtx.fillText(this.description, this.x + this.w / 2, this.y);
-            kCtx.fillText(destination_text, this.x + this.w / 2, this.y + kW * 0.016) // expression uses the arbitrary font size.
+            if (this.compatibilities.length > 0)
+                kCtx.fillText(destination_text, this.x + this.w / 2, this.y + kW * 0.016) // expression uses the arbitrary font size.
         }
         else { // Draw on left hand side.
             // Draw background.
             kCtx.fillStyle = "white"
             kCtx.fillRect(this.x - this.w / 2 - text_width, this.y - kW * 0.008, text_width, kW * 0.016)
-            kCtx.fillRect(this.x - this.w / 2 - destination_text_width, this.y + kW * 0.008, destination_text_width, kW * 0.016)
-            
+            if (this.compatibilities.length > 0)
+                kCtx.fillRect(this.x - this.w / 2 - destination_text_width, this.y + kW * 0.008, destination_text_width, kW * 0.016)
+
             // Draw text.
             kCtx.fillStyle = "black";
             kCtx.textAlign = "right";
             kCtx.textBaseline = "middle"
             kCtx.fillText(this.description, this.x - this.w / 2, this.y);
-            kCtx.fillText(destination_text, this.x - this.w / 2, this.y + kW * 0.016)
+            if (this.compatibilities.length > 0)
+                kCtx.fillText(destination_text, this.x - this.w / 2, this.y + kW * 0.016)
         }
 
         kCtx.restore()
@@ -115,6 +119,7 @@ class Broom extends Draggable {
         w: 1.2,
         h: 10
     }
+    is_broom = true
 
     // Function will draw the broom handle above the bounding box of the object.
     Draw() {
