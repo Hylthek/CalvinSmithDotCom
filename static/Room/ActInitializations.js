@@ -222,9 +222,10 @@ class ActInitializations {
     static bed_dims = [0.835 - 0.585, 0.4 - 0.05] // Width and height in proportions of kW.
     static bed_goal_pos = { // x, y, and rot of the goal position of the bed for act 3.
         x: 0.7, // Proportion of kW
-        y: 0.5, // Proportion of kH
+        y: 0.5, // Proportion of kH <-- very important don't forget.
         rot: 90 // Deg
     }
+    static initial_bed_square_error = null // Will be set upon first access.
     static ActThree() {
         // Add final bed position.
         const goal_bed = new Decoration(kW * this.bed_goal_pos.x, kH * this.bed_goal_pos.y, kW * this.bed_dims[0], kW * this.bed_dims[1], [PreloadedImages.act_3_bed])
@@ -264,6 +265,9 @@ class ActInitializations {
         n2.parent_quad_index = 1
         n3.parent_quad_index = 2
         n4.parent_quad_index = 3
+
+        // Add hud.
+        ActManager.active_decorations.push(new ProgressHud("Bed Positioning Progress", 0.025 * kW, 0.065 * kW, "bed-positioning-progress"))
     }
 
     // A bulk push for act1 draggables.

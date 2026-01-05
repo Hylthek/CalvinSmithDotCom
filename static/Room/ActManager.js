@@ -148,7 +148,7 @@ class ActManager {
             case "act-2":
                 return ActManager.dirt_swept >= ActInitializations.act_2_total_dirt - 10 // -10 for QOL
             case "act-3":
-                return false
+                return ActManager.active_decorations[2].hud_progress > 0.999 // 2 is a magic number.
             default:
             // Do nothing.
         }

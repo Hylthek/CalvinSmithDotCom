@@ -239,7 +239,32 @@ class NodeQuadrilateral {
         this.image = image
     }
 
-    tolerance = 0.02 // Proportion of kW.
+    tolerance = 0.05 // Proportion of kW.
+
+    // Returns current bed position in proportions of kW and degrees
+    GetBedPos() {
+        // Find average of nodes.
+        let avg_point = [0, 0]
+        for (let i = 0; i < 4; i++) {
+            avg_point[0] += this.nodes[i].x
+            avg_point[1] += this.nodes[i].y
+        }
+        avg_point[0] /= 4
+        avg_point[1] /= 4
+
+        // Find rotation.
+        const rotation =
+            Math.atan2(this.nodes[1].y - this.nodes[0].y, this.nodes[1].x - this.nodes[0].x) / 4 +
+            Math.atan2(this.nodes[3].y - this.nodes[2].y, this.nodes[3].x - this.nodes[2].x) / 4 +
+            -Math.atan2(this.nodes[2].x - this.nodes[0].x, this.nodes[2].y - this.nodes[0].y) / 4 +
+            -Math.atan2(this.nodes[3].x - this.nodes[1].x, this.nodes[3].y - this.nodes[1].y) / 4
+        
+        return {
+            x: avg_point[0] / kW,
+            y: avg_point[1] / kH,
+            rot: rotation * 180 / Math.PI
+        }
+    }
 
     DrawBed() {
         // Find average of nodes for center of image.
