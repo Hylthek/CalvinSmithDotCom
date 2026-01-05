@@ -70,8 +70,12 @@ class ActManager {
             const w2 = draggable.w / 2
             const h2 = draggable.h / 2
             if (gMouseX > draggable.x - w2 && gMouseX < draggable.x + w2 &&
-                gMouseY > draggable.y - h2 && gMouseY < draggable.y + h2)
+                gMouseY > draggable.y - h2 && gMouseY < draggable.y + h2) {
+                draggable.is_hovered = true
                 return draggable
+            }
+            else
+                draggable.is_hovered = false
         }
         return null
     }
@@ -96,6 +100,13 @@ class ActManager {
             if (draggable.picked_up) {
                 draggable.x = gMouseX
                 draggable.y = gMouseY
+
+                // Handle node 
+                if (draggable.pickup_offset) {
+                    draggable.x += draggable.pickup_offset[0]
+                    draggable.y += draggable.pickup_offset[1]
+                    draggable.SnapToValidPos()
+                }
             }
             if (gMb1State == false)
                 draggable.Drop()

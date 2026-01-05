@@ -170,6 +170,15 @@ class Node extends Draggable {
         this.diameter = diameter
     }
 
+    parent_quad = null
+    parent_quad_index = null
+
+    // Function override to store pickup_offsets.
+    Pickup() {
+        this.picked_up = true
+        this.pickup_offset = [this.x - gMouseX, this.y - gMouseY]
+    }
+
     // Function override to disable gravity.
     Drop() {
         super.Drop()
@@ -184,7 +193,38 @@ class Node extends Draggable {
         kCtx.fillStyle = "#6BA851";
         kCtx.fill();
 
+        if (this.is_hovered) {
+            kCtx.beginPath()
+            kCtx.arc(this.x, this.y, this.diameter * 0.7, 0, Math.PI * 2);
+            kCtx.fillStyle = "rgba(107, 168, 81, 0.4)"
+            kCtx.fill();
+        }
+        if (this.picked_up) {
+            kCtx.beginPath()
+            kCtx.arc(this.x, this.y, this.diameter * 0.9, 0, Math.PI * 2);
+            kCtx.fillStyle = "rgba(42, 126, 252, 0.25)"
+            kCtx.fill();
+            kCtx.beginPath()
+            kCtx.arc(this.x, this.y, this.diameter * 0.9, 0, Math.PI * 2);
+            kCtx.strokeStyle = "#7EBF19"
+            kCtx.lineWidth = kW * 0.004
+            kCtx.stroke();
+        }
+
         kCtx.restore();
+    }
+
+    SnapToValidPos() {
+        const ideal_point = this.parent_quad.FindIdealBedPoint(this.parent_quad_index)
+        const distance = Math.sqrt((this.x - ideal_point.x) ** 2 + (this.y - ideal_point.y) ** 2)
+        if (distance > this.parent_quad.tolerance * kW) {
+            const direction = {
+                x: (ideal_point.x - this.x) / distance,
+                y: (ideal_point.y - this.y) / distance
+            };
+            this.x = ideal_point.x - direction.x * this.parent_quad.tolerance * kW;
+            this.y = ideal_point.y - direction.y * this.parent_quad.tolerance * kW;
+        }
     }
 
     DrawHoverText() {
@@ -194,12 +234,12 @@ class Node extends Draggable {
 
 // This class currently goes in ActManager.active_decorations. Should be refactored later.
 class NodeQuadrilateral {
-    constructor(ul_node, ur_node, br_node, bl_node, image) {
+    constructor(ul_node, ur_node, bl_node, br_node, image) {
         this.nodes = [ul_node, ur_node, bl_node, br_node]
         this.image = image
     }
 
-    tolerance = 0.01 // Proportion of kW.
+    tolerance = 0.02 // Proportion of kW.
 
     DrawBed() {
         // Find average of nodes for center of image.
@@ -237,44 +277,22 @@ class NodeQuadrilateral {
         const which_picked_up = (this.nodes[0].picked_up << 3) + (this.nodes[1].picked_up << 2) + (this.nodes[2].picked_up << 1) + this.nodes[3].picked_up
         if (which_picked_up) {
             // Find points A and B.
-            let node_a = 0
-            let node_b = 0
+            let node_index = null
             switch (which_picked_up) {
-                case 8: node_a = this.nodes[1]; node_b = this.nodes[2]; break;
-                case 4: node_a = this.nodes[0]; node_b = this.nodes[3]; break;
-                case 2: node_a = this.nodes[3]; node_b = this.nodes[0]; break;
-                case 1: node_a = this.nodes[2]; node_b = this.nodes[1]; break;
+                case 8: node_index = 0; break;
+                case 4: node_index = 1; break;
+                case 2: node_index = 2; break;
+                case 1: node_index = 3; break;
                 default: console.error("More than one point picked up.");
             }
 
-            // Find A' and B', versions of A and B that are the correct distance apart.
-            const midpoint = {
-                x: (node_a.x + node_b.x) / 2,
-                y: (node_a.y + node_b.y) / 2
-            }
-            // Ideal distance is the expected diagonal length of the bed.
-            const ideal_dist = Math.sqrt((ActInitializations.bed_dims[0] * kW) ** 2 + (ActInitializations.bed_dims[1] * kW) ** 2)
-            const a_prime = {
-                x: midpoint.x + (node_a.x - midpoint.x) / Math.sqrt((node_a.x - midpoint.x) ** 2 + (node_a.y - midpoint.y) ** 2) * ideal_dist / 2,
-                y: midpoint.y + (node_a.y - midpoint.y) / Math.sqrt((node_a.x - midpoint.x) ** 2 + (node_a.y - midpoint.y) ** 2) * ideal_dist / 2
-            }
-            const b_prime = {
-                x: midpoint.x + (node_b.x - midpoint.x) / Math.sqrt((node_b.x - midpoint.x) ** 2 + (node_b.y - midpoint.y) ** 2) * ideal_dist / 2,
-                y: midpoint.y + (node_b.y - midpoint.y) / Math.sqrt((node_b.x - midpoint.x) ** 2 + (node_b.y - midpoint.y) ** 2) * ideal_dist / 2
-            }
             // Find a point that is bed_dims[0] from point A' and bed_dims[1] from point B'.
-            const intersections = NodeQuadrilateral.FindIdealBedPoint(
-                a_prime,
-                b_prime
-            )
+            const ideal_point = this.FindIdealBedPoint(node_index)
 
             // Draw the valid locations circle.
             kCtx.save()
             kCtx.beginPath();
-            if (which_picked_up == 2 || which_picked_up == 4)
-                kCtx.arc(intersections[0].x, intersections[0].y, this.tolerance * kW + this.nodes[0].diameter / 2, 0, Math.PI * 2);
-            else
-                kCtx.arc(intersections[1].x, intersections[1].y, this.tolerance * kW + this.nodes[0].diameter / 2, 0, Math.PI * 2);
+            kCtx.arc(ideal_point.x, ideal_point.y, this.tolerance * kW + this.nodes[0].diameter / 2, 0, Math.PI * 2);
             kCtx.fillStyle = "rgba(255,0,0,0.5)";
             kCtx.strokeStyle = "black"
             kCtx.lineWidth = kW * 0.001
@@ -283,43 +301,72 @@ class NodeQuadrilateral {
             kCtx.restore()
         }
     }
-    
-    // Function to find the intersection points of two circles (ai generated)
-    static FindIdealBedPoint(node_a, node_b) {
+
+    // Function to find the intersection points of two circles
+    FindIdealBedPoint(node_index) {
+        let node_a = null
+        let node_b = null
+        switch (node_index) {
+            case 0: node_a = this.nodes[1]; node_b = this.nodes[2]; break;
+            case 1: node_a = this.nodes[0]; node_b = this.nodes[3]; break;
+            case 2: node_a = this.nodes[3]; node_b = this.nodes[0]; break;
+            case 3: node_a = this.nodes[2]; node_b = this.nodes[1]; break;
+            default: console.error("Invalid node_index", node_index);
+        }
+        // Find A' and B', versions of A and B that are the correct distance apart.
+        const midpoint = {
+            x: (node_a.x + node_b.x) / 2,
+            y: (node_a.y + node_b.y) / 2
+        }
+        // Ideal distance is the expected diagonal length of the bed.
+        const ideal_dist = Math.sqrt((ActInitializations.bed_dims[0] * kW) ** 2 + (ActInitializations.bed_dims[1] * kW) ** 2)
+        const a_prime = {
+            x: midpoint.x + (node_a.x - midpoint.x) / Math.sqrt((node_a.x - midpoint.x) ** 2 + (node_a.y - midpoint.y) ** 2) * ideal_dist / 2,
+            y: midpoint.y + (node_a.y - midpoint.y) / Math.sqrt((node_a.x - midpoint.x) ** 2 + (node_a.y - midpoint.y) ** 2) * ideal_dist / 2
+        }
+        const b_prime = {
+            x: midpoint.x + (node_b.x - midpoint.x) / Math.sqrt((node_b.x - midpoint.x) ** 2 + (node_b.y - midpoint.y) ** 2) * ideal_dist / 2,
+            y: midpoint.y + (node_b.y - midpoint.y) / Math.sqrt((node_b.x - midpoint.x) ** 2 + (node_b.y - midpoint.y) ** 2) * ideal_dist / 2
+        }
+
         const d = Math.sqrt((node_b.x - node_a.x) ** 2 + (node_b.y - node_a.y) ** 2);
-        const dist_a =  ActInitializations.bed_dims[0] * kW
-        const dist_b =  ActInitializations.bed_dims[1] * kW
+        const dist_a = ActInitializations.bed_dims[0] * kW
+        const dist_b = ActInitializations.bed_dims[1] * kW
 
         // Check if there are no intersections
         if (d > dist_a + dist_b || d < Math.abs(dist_a - dist_b) || d === 0) {
             return null; // No intersection
         }
-    
+
         // Calculate the distance from node_a to the midpoint of the intersection line
         const a = (dist_a ** 2 - dist_b ** 2 + d ** 2) / (2 * d);
-    
+
         // Calculate the coordinates of the midpoint
         const mid_x = node_a.x + (a / d) * (node_b.x - node_a.x);
         const mid_y = node_a.y + (a / d) * (node_b.y - node_a.y);
-    
+
         // Calculate the height of the intersection points from the midpoint
         const h = Math.sqrt(dist_a ** 2 - a ** 2);
-    
+
         // Calculate the offsets for the intersection points
         const offset_x = (h / d) * (node_b.y - node_a.y);
         const offset_y = (h / d) * (node_b.x - node_a.x);
-    
+
         // Calculate the intersection points
         const intersection1 = {
             x: mid_x + offset_x,
             y: mid_y - offset_y
         };
-    
+
         const intersection2 = {
             x: mid_x - offset_x,
             y: mid_y + offset_y
         };
-    
-        return [intersection1, intersection2];
+
+        // Choose which intersection is on the correct side.
+        if (node_index == 1 || node_index == 2)
+            return intersection1;
+        else
+            return intersection2;
     }
 }

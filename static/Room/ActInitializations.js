@@ -224,13 +224,23 @@ class ActInitializations {
         // Add bed nodes.
         const n1 = new Node(kW * 0.585, kW * 0.05, kW * 0.03)
         const n2 = new Node(kW * 0.835, kW * 0.05, kW * 0.03)
-        const n3 = new Node(kW * 0.835, kW * 0.4, kW * 0.03)
-        const n4 = new Node(kW * 0.585, kW * 0.4, kW * 0.03)
+        const n3 = new Node(kW * 0.585, kW * 0.4, kW * 0.03)
+        const n4 = new Node(kW * 0.835, kW * 0.4, kW * 0.03)
         ActManager.active_draggables.push(n1)
         ActManager.active_draggables.push(n2)
         ActManager.active_draggables.push(n3)
         ActManager.active_draggables.push(n4)
         ActManager.active_decorations.push(new NodeQuadrilateral(n1, n2, n3, n4, PreloadedImages.act_3_bed))
+        const nodes = ActManager.active_draggables.slice(0, 4)
+        const quad = ActManager.active_decorations.slice(-1)[0]
+        n1.parent_quad = quad
+        n2.parent_quad = quad
+        n3.parent_quad = quad
+        n4.parent_quad = quad
+        n1.parent_quad_index = 0
+        n2.parent_quad_index = 1
+        n3.parent_quad_index = 2
+        n4.parent_quad_index = 3
     }
 
     // A bulk push for act1 draggables.
