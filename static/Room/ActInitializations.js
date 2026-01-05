@@ -231,7 +231,8 @@ class ActInitializations {
         goal_bed.is_background = true
         goal_bed.DrawTheBedThatRepresentsTheFinalBedPosition = function () {
             kCtx.save()
-            kCtx.globalAlpha = 0.6 + 0.4 * Math.sin(performance.now() / 1000 * 6)
+            kCtx.filter = "grayscale(100%) contrast(300%)"
+            kCtx.globalAlpha = 0.5 + 0.3 * Math.sin(performance.now() / 1000 * 6)
             kCtx.setTransform(
                 0, 1, -1, 0,
                 this.x, this.y

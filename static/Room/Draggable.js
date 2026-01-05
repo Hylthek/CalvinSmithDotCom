@@ -239,7 +239,7 @@ class NodeQuadrilateral {
         this.image = image
     }
 
-    tolerance = 0.2 // Proportion of kW.
+    tolerance = 0.02 // Proportion of kW.
 
     DrawBed() {
         // Find average of nodes for center of image.
