@@ -199,6 +199,8 @@ class NodeQuadrilateral {
         this.image = image
     }
 
+    tolerance = 0.01 // Proportion of kW.
+
     DrawBed() {
         // Find average of nodes for center of image.
         let avg_point = [0, 0]
@@ -208,10 +210,10 @@ class NodeQuadrilateral {
         }
         avg_point[0] /= 4
         avg_point[1] /= 4
-        
+
         // Find rotation of image.
         const rotation =
-            Math.atan2(this.nodes[1].y - this.nodes[0].y, this.nodes[1].x - this.nodes[0].x) / 4 + 
+            Math.atan2(this.nodes[1].y - this.nodes[0].y, this.nodes[1].x - this.nodes[0].x) / 4 +
             Math.atan2(this.nodes[3].y - this.nodes[2].y, this.nodes[3].x - this.nodes[2].x) / 4 +
             -Math.atan2(this.nodes[2].x - this.nodes[0].x, this.nodes[2].y - this.nodes[0].y) / 4 +
             -Math.atan2(this.nodes[3].x - this.nodes[1].x, this.nodes[3].y - this.nodes[1].y) / 4
@@ -230,5 +232,94 @@ class NodeQuadrilateral {
             ActInitializations.bed_dims[1] * kW
         )
         kCtx.restore()
+
+        // If a point is picked up, draw its valid locations circle, centered at a point that is bed_dims[0] from point A and bed_dims[1] from point B.
+        const which_picked_up = (this.nodes[0].picked_up << 3) + (this.nodes[1].picked_up << 2) + (this.nodes[2].picked_up << 1) + this.nodes[3].picked_up
+        if (which_picked_up) {
+            // Find points A and B.
+            let node_a = 0
+            let node_b = 0
+            switch (which_picked_up) {
+                case 8: node_a = this.nodes[1]; node_b = this.nodes[2]; break;
+                case 4: node_a = this.nodes[0]; node_b = this.nodes[3]; break;
+                case 2: node_a = this.nodes[3]; node_b = this.nodes[0]; break;
+                case 1: node_a = this.nodes[2]; node_b = this.nodes[1]; break;
+                default: console.error("More than one point picked up.");
+            }
+
+            // Find A' and B', versions of A and B that are the correct distance apart.
+            const midpoint = {
+                x: (node_a.x + node_b.x) / 2,
+                y: (node_a.y + node_b.y) / 2
+            }
+            // Ideal distance is the expected diagonal length of the bed.
+            const ideal_dist = Math.sqrt((ActInitializations.bed_dims[0] * kW) ** 2 + (ActInitializations.bed_dims[1] * kW) ** 2)
+            const a_prime = {
+                x: midpoint.x + (node_a.x - midpoint.x) / Math.sqrt((node_a.x - midpoint.x) ** 2 + (node_a.y - midpoint.y) ** 2) * ideal_dist / 2,
+                y: midpoint.y + (node_a.y - midpoint.y) / Math.sqrt((node_a.x - midpoint.x) ** 2 + (node_a.y - midpoint.y) ** 2) * ideal_dist / 2
+            }
+            const b_prime = {
+                x: midpoint.x + (node_b.x - midpoint.x) / Math.sqrt((node_b.x - midpoint.x) ** 2 + (node_b.y - midpoint.y) ** 2) * ideal_dist / 2,
+                y: midpoint.y + (node_b.y - midpoint.y) / Math.sqrt((node_b.x - midpoint.x) ** 2 + (node_b.y - midpoint.y) ** 2) * ideal_dist / 2
+            }
+            // Find a point that is bed_dims[0] from point A' and bed_dims[1] from point B'.
+            const intersections = NodeQuadrilateral.FindIdealBedPoint(
+                a_prime,
+                b_prime
+            )
+
+            // Draw the valid locations circle.
+            kCtx.save()
+            kCtx.beginPath();
+            if (which_picked_up == 2 || which_picked_up == 4)
+                kCtx.arc(intersections[0].x, intersections[0].y, this.tolerance * kW + this.nodes[0].diameter / 2, 0, Math.PI * 2);
+            else
+                kCtx.arc(intersections[1].x, intersections[1].y, this.tolerance * kW + this.nodes[0].diameter / 2, 0, Math.PI * 2);
+            kCtx.fillStyle = "rgba(255,0,0,0.5)";
+            kCtx.strokeStyle = "black"
+            kCtx.lineWidth = kW * 0.001
+            kCtx.fill();
+            kCtx.stroke();
+            kCtx.restore()
+        }
+    }
+    
+    // Function to find the intersection points of two circles (ai generated)
+    static FindIdealBedPoint(node_a, node_b) {
+        const d = Math.sqrt((node_b.x - node_a.x) ** 2 + (node_b.y - node_a.y) ** 2);
+        const dist_a =  ActInitializations.bed_dims[0] * kW
+        const dist_b =  ActInitializations.bed_dims[1] * kW
+
+        // Check if there are no intersections
+        if (d > dist_a + dist_b || d < Math.abs(dist_a - dist_b) || d === 0) {
+            return null; // No intersection
+        }
+    
+        // Calculate the distance from node_a to the midpoint of the intersection line
+        const a = (dist_a ** 2 - dist_b ** 2 + d ** 2) / (2 * d);
+    
+        // Calculate the coordinates of the midpoint
+        const mid_x = node_a.x + (a / d) * (node_b.x - node_a.x);
+        const mid_y = node_a.y + (a / d) * (node_b.y - node_a.y);
+    
+        // Calculate the height of the intersection points from the midpoint
+        const h = Math.sqrt(dist_a ** 2 - a ** 2);
+    
+        // Calculate the offsets for the intersection points
+        const offset_x = (h / d) * (node_b.y - node_a.y);
+        const offset_y = (h / d) * (node_b.x - node_a.x);
+    
+        // Calculate the intersection points
+        const intersection1 = {
+            x: mid_x + offset_x,
+            y: mid_y - offset_y
+        };
+    
+        const intersection2 = {
+            x: mid_x - offset_x,
+            y: mid_y + offset_y
+        };
+    
+        return [intersection1, intersection2];
     }
 }
