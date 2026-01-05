@@ -86,6 +86,7 @@ class DrawingHelperFunctions {
     static DrawDecorations(is_background_pass = false) {
         kCtx.save()
 
+        // Iterate through game_events.
         // Draw GameEvent decorations (characters)
         ActManager.game_events.forEach(game_event => {
             game_event.decorations.forEach(decoration => {
@@ -103,8 +104,9 @@ class DrawingHelperFunctions {
         kCtx.restore()
         kCtx.save()
 
-        // Draw normal decorations.
+        // Iterate through active_decorations.
         ActManager.active_decorations.forEach(decoration => {
+            // Draw normal decorations.
             if (decoration.visible && (is_background_pass == decoration.is_background) && !decoration.DrawHud) {
                 kCtx.setTransform(
                     Math.cos(decoration.rotation * Math.PI / 180), Math.sin(decoration.rotation * Math.PI / 180),
@@ -113,11 +115,18 @@ class DrawingHelperFunctions {
                 )
                 kCtx.drawImage(decoration.images[decoration.curr_image], -decoration.w / 2, -decoration.h / 2, decoration.w, decoration.h);
             }
+            // Draw HUD decorations.
             if (decoration.DrawHud) {
-                // Draw HUD decorations.
                 decoration.DrawHud()
             }
+
+            // Draw act 3 bed.
+            if (decoration.nodes && is_background_pass) {
+                decoration.DrawBed()
+            }
         })
+
+
 
         kCtx.restore()
     }

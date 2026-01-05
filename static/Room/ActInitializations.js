@@ -218,12 +218,19 @@ class ActInitializations {
         const spiderman_img = PreloadedImages.spiderman
     }
 
+    // Magic numbers are derived from background image.
+    static bed_dims = [0.835 - 0.585, 0.4 - 0.05] // Width and height in proportions of kW.
     static ActThree() {
         // Add bed nodes.
-        ActManager.active_draggables.push(new Node(kW * 0.585, kH * 0.09, kW * 0.03))
-        ActManager.active_draggables.push(new Node(kW * 0.835, kH * 0.09, kW * 0.03))
-        ActManager.active_draggables.push(new Node(kW * 0.835, kH * 0.6, kW * 0.03))
-        ActManager.active_draggables.push(new Node(kW * 0.585, kH * 0.6, kW * 0.03))
+        const n1 = new Node(kW * 0.585, kW * 0.05, kW * 0.03)
+        const n2 = new Node(kW * 0.835, kW * 0.05, kW * 0.03)
+        const n3 = new Node(kW * 0.835, kW * 0.4, kW * 0.03)
+        const n4 = new Node(kW * 0.585, kW * 0.4, kW * 0.03)
+        ActManager.active_draggables.push(n1)
+        ActManager.active_draggables.push(n2)
+        ActManager.active_draggables.push(n3)
+        ActManager.active_draggables.push(n4)
+        ActManager.active_decorations.push(new NodeQuadrilateral(n1, n2, n3, n4, PreloadedImages.act_3_bed))
     }
 
     // A bulk push for act1 draggables.

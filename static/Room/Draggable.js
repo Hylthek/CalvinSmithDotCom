@@ -186,4 +186,49 @@ class Node extends Draggable {
 
         kCtx.restore();
     }
+
+    DrawHoverText() {
+        // Do nothing.
+    }
+}
+
+// This class currently goes in ActManager.active_decorations. Should be refactored later.
+class NodeQuadrilateral {
+    constructor(ul_node, ur_node, br_node, bl_node, image) {
+        this.nodes = [ul_node, ur_node, bl_node, br_node]
+        this.image = image
+    }
+
+    DrawBed() {
+        // Find average of nodes for center of image.
+        let avg_point = [0, 0]
+        for (let i = 0; i < 4; i++) {
+            avg_point[0] += this.nodes[i].x
+            avg_point[1] += this.nodes[i].y
+        }
+        avg_point[0] /= 4
+        avg_point[1] /= 4
+        
+        // Find rotation of image.
+        const rotation =
+            Math.atan2(this.nodes[1].y - this.nodes[0].y, this.nodes[1].x - this.nodes[0].x) / 4 + 
+            Math.atan2(this.nodes[3].y - this.nodes[2].y, this.nodes[3].x - this.nodes[2].x) / 4 +
+            -Math.atan2(this.nodes[2].x - this.nodes[0].x, this.nodes[2].y - this.nodes[0].y) / 4 +
+            -Math.atan2(this.nodes[3].x - this.nodes[1].x, this.nodes[3].y - this.nodes[1].y) / 4
+
+        // Draw image.
+        kCtx.save()
+        kCtx.setTransform(
+            Math.cos(rotation), Math.sin(rotation),
+            -Math.sin(rotation), Math.cos(rotation),
+            avg_point[0], avg_point[1]
+        )
+        kCtx.drawImage(this.image,
+            -ActInitializations.bed_dims[0] / 2 * kW,
+            -ActInitializations.bed_dims[1] / 2 * kW,
+            ActInitializations.bed_dims[0] * kW,
+            ActInitializations.bed_dims[1] * kW
+        )
+        kCtx.restore()
+    }
 }

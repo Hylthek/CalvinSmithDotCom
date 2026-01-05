@@ -94,7 +94,8 @@ class PreloadedImages {
     static tissue2 = new Image()
     static tissue3 = new Image()
     static waterbottle = new Image()
-    
+
+    static act_3_bed = new Image()
 
     static PreloadAllImages() {
         PreloadedImages.intro_background.src = "Room/Assets/introroombackground.png"
@@ -178,5 +179,6 @@ class PreloadedImages {
         PreloadedImages.whitetray.src = "Room/Assets/WhiteTray.png"
         PreloadedImages.yellowslug.src = "Room/Assets/YellowSlug.png"
         PreloadedImages.yellowsquish.src = "Room/Assets/YellowSquish.png"
+        PreloadedImages.act_3_bed.src = "Room/Assets/BedTopView.png"
     }
 }
