@@ -21,6 +21,6 @@ class GameEvent {
             return
         this.can_start = false
         this.curr_stage = 0;
-        this.sequence(this)
+        this.sequence()
     }
 }

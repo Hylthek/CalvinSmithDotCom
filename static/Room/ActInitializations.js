@@ -62,10 +62,10 @@ class ActInitializations {
         ])
 
         // GameEvent sequence.
-        const intro_sequence = (game_object) => {
-            const shrimp = game_object.decorations[0]
-            const dialogue = game_object.dialogue
-            const curr_stage = game_object.curr_stage;
+        const intro_sequence = function() {
+            const shrimp = this.decorations[0]
+            const dialogue = this.dialogue
+            const curr_stage = this.curr_stage;
             if (curr_stage != -1) {
                 shrimp.visible = true
                 dialogue.visible = true
@@ -77,7 +77,7 @@ class ActInitializations {
             }
 
             // End of event action.
-            if (curr_stage == -1 && game_object.can_start == false)
+            if (curr_stage == -1 && this.can_start == false)
                 ActManager.NextAct()
         }
 
@@ -145,10 +145,10 @@ class ActInitializations {
         const horse_character = new Decoration(0.1 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [horse_img])
 
         // Initialize game event sequence.
-        const foo_sequence = (game_object) => {
-            let horse = game_object.decorations[0]
-            let poem = game_object.dialogue
-            const curr_stage = game_object.curr_stage
+        const foo_sequence = function() {
+            let horse = this.decorations[0]
+            let poem = this.dialogue
+            const curr_stage = this.curr_stage
             if (curr_stage == -1) { // -1 is deactivated state.
                 horse.visible = false
                 poem.visible = false
@@ -178,7 +178,7 @@ class ActInitializations {
             }
 
             // End of event action.
-            if (curr_stage == -1 && game_object.can_start == false)
+            if (curr_stage == -1 && this.can_start == false)
                 ActManager.NextAct()
         };
         ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_sequence))
@@ -213,9 +213,42 @@ class ActInitializations {
             just_pushed.rotation = Math.random() * 360
             just_pushed.is_background = true
         }
+
+        // Add completion game event.
+        // Dialogue
+        const dialogue = new Dialogue([
+            "You have completed act 2.",
+            "Hooray"
+        ])
         // Characters
-        const leopard_img = PreloadedImages.leopard
-        const spiderman_img = PreloadedImages.spiderman
+        const leopard = new Decoration(kW * 0.2, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.leopard])
+        const spiderman = new Decoration(kW * 0.4, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.spiderman])
+        const shrimp = new Decoration(kW * 0.7, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.shrimp])
+        // Sequence (this = GameEvent-instance)
+        const sequence = function() {
+            const leopard_char = this.decorations[0]
+            const spiderman_char = this.decorations[1]
+            const shrimp_char = this.decorations[2]
+            const dialogue = this.dialogue
+            if (this.curr_stage == -1) {
+                leopard_char.visible = false
+                spiderman_char.visible = false
+                shrimp_char.visible = false
+                dialogue.visible = false
+            }
+            else {
+                leopard_char.visible = true
+                spiderman_char.visible = true
+                shrimp_char.visible = true
+                dialogue.visible = true
+                dialogue.curr_text = this.curr_stage
+            }
+            // End of event action.
+            if (this.curr_stage == -1 && this.can_start == false)
+                ActManager.NextAct()
+        }
+        // Push game event.
+        ActManager.game_events.push(new GameEvent(dialogue, [leopard, spiderman, shrimp], sequence))
     }
 
     // Magic numbers are derived from act 3 background image.
@@ -268,6 +301,53 @@ class ActInitializations {
 
         // Add hud.
         ActManager.active_decorations.push(new ProgressHud("Bed Positioning Progress", 0.025 * kW, 0.065 * kW, "bed-positioning-progress"))
+
+        // Add completion game event.
+        // Sequence
+        const sequence = function() {
+            ActManager.NextAct()
+        }
+        // Push game event.
+        ActManager.game_events.push(new GameEvent([], [], sequence))
+    }
+
+    static Outro() {
+        // GameEvent dialogue.
+        const outro_dialogue = new Dialogue([
+            "You have cleaned your room!",
+            "Congratulations!",
+            "Thank you for playing!"
+        ])
+        // Characters
+        const goob = new Decoration(kW * 0.2, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.goob])
+        const wolfman = new Decoration(kW * 0.4, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.wolfman])
+        const shrimp = new Decoration(kW * 0.7, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.shrimp])
+        // GameEvent sequence.
+        const outro_sequence = function() {
+            const goob_char = this.decorations[0]
+            const wolfman_char = this.decorations[1]
+            const shrimp_char = this.decorations[2]
+            const dialogue = this.dialogue
+            const curr_stage = this.curr_stage;
+            if (curr_stage == -1) {
+                goob_char.visible = false
+                wolfman_char.visible = false
+                shrimp_char.visible = false
+                dialogue.visible = false
+            }
+            else {
+                goob_char.visible = true
+                wolfman_char.visible = true
+                shrimp_char.visible = true
+                dialogue.visible = true
+                dialogue.curr_text = curr_stage
+            }
+            // End of event action.
+            if (curr_stage == -1 && this.can_start == false)
+                ActManager.NextAct()
+        }
+        // Push game event.
+        ActManager.game_events.push(new GameEvent(outro_dialogue, [goob, wolfman, shrimp], outro_sequence))
     }
 
     // A bulk push for act1 draggables.

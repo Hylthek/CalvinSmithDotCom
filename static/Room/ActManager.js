@@ -37,17 +37,15 @@ class ActManager {
                 break;
             case "act-3":
                 ActManager.ClearArrays()
-                // Load.
+                ActInitializations.Outro()
                 this.current_act = "outro"
                 break;
             case "outro":
                 ActManager.ClearArrays()
-                // Load.
+                // Load credits
                 this.current_act = "credits"
                 break;
             case "credits":
-                ActManager.ClearArrays()
-                // Load.
                 console.log("End of game reached.")
                 break;
             default:
@@ -146,9 +144,11 @@ class ActManager {
                 const _3 = ActManager.container_contents.trashcan >= ActInitializations.total_trashcan_draggables
                 return _1 && _2 && _3
             case "act-2":
-                return ActManager.dirt_swept >= ActInitializations.act_2_total_dirt - 10 // -10 for QOL
+                return ActManager.dirt_swept >= ActInitializations.act_2_total_dirt - 10 // -10 for QOL, magic number.
             case "act-3":
-                return ActManager.active_decorations[2].hud_progress > 0.999 // 2 is a magic number.
+                return ActManager.active_decorations[2].hud_progress > 0.999 // magic numbers.
+            case "outro":
+                return true
             default:
             // Do nothing.
         }
