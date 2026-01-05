@@ -154,7 +154,7 @@ class ActManager {
         }
     }
 
-    static container_contents = { closet: 0, cabinet: 0, trashcan: 0 }
+    static container_contents = { closet: 0, cabinet: 0, trashcan: 0 } // Incremented by containers.
 
     static dirt_swept = 0 // Incremented by Broom.CleanDirt().
 

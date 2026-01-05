@@ -218,20 +218,42 @@ class ActInitializations {
         const spiderman_img = PreloadedImages.spiderman
     }
 
-    // Magic numbers are derived from background image.
+    // Magic numbers are derived from act 3 background image.
     static bed_dims = [0.835 - 0.585, 0.4 - 0.05] // Width and height in proportions of kW.
+    static bed_goal_pos = { // x, y, and rot of the goal position of the bed for act 3.
+        x: 0.7, // Proportion of kW
+        y: 0.5, // Proportion of kH
+        rot: 90 // Deg
+    }
     static ActThree() {
+        // Add final bed position.
+        const goal_bed = new Decoration(kW * this.bed_goal_pos.x, kH * this.bed_goal_pos.y, kW * this.bed_dims[0], kW * this.bed_dims[1], [PreloadedImages.act_3_bed])
+        goal_bed.is_background = true
+        goal_bed.DrawTheBedThatRepresentsTheFinalBedPosition = function () {
+            kCtx.save()
+            kCtx.globalAlpha = 0.6 + 0.4 * Math.sin(performance.now() / 1000 * 6)
+            kCtx.setTransform(
+                0, 1, -1, 0,
+                this.x, this.y
+            )
+            kCtx.drawImage(this.images[0], -this.w / 2, -this.h / 2, this.w, this.h)
+            kCtx.globalAlpha = 1
+            kCtx.restore()
+            return
+        }
+        ActManager.active_decorations.push(goal_bed)
+
         // Add bed nodes.
         const n1 = new Node(kW * 0.585, kW * 0.05, kW * 0.03)
         const n2 = new Node(kW * 0.835, kW * 0.05, kW * 0.03)
         const n3 = new Node(kW * 0.585, kW * 0.4, kW * 0.03)
         const n4 = new Node(kW * 0.835, kW * 0.4, kW * 0.03)
+        const bed = new NodeQuadrilateral(n1, n2, n3, n4, PreloadedImages.act_3_bed)
         ActManager.active_draggables.push(n1)
         ActManager.active_draggables.push(n2)
         ActManager.active_draggables.push(n3)
         ActManager.active_draggables.push(n4)
-        ActManager.active_decorations.push(new NodeQuadrilateral(n1, n2, n3, n4, PreloadedImages.act_3_bed))
-        const nodes = ActManager.active_draggables.slice(0, 4)
+        ActManager.active_decorations.push(bed)
         const quad = ActManager.active_decorations.slice(-1)[0]
         n1.parent_quad = quad
         n2.parent_quad = quad

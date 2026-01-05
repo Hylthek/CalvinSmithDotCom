@@ -116,7 +116,7 @@ class DrawingHelperFunctions {
                 kCtx.drawImage(decoration.images[decoration.curr_image], -decoration.w / 2, -decoration.h / 2, decoration.w, decoration.h);
             }
             // Draw HUD decorations.
-            if (decoration.DrawHud) {
+            if (decoration.DrawHud && !is_background_pass) {
                 decoration.DrawHud()
             }
 
@@ -124,6 +124,9 @@ class DrawingHelperFunctions {
             if (decoration.nodes && is_background_pass) {
                 decoration.DrawBed()
             }
+
+            if (decoration.DrawTheBedThatRepresentsTheFinalBedPosition && is_background_pass)
+                decoration.DrawTheBedThatRepresentsTheFinalBedPosition()
         })
 
 
