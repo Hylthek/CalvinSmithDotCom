@@ -55,14 +55,13 @@ class ActInitializations {
 
         // GameEvent dialogue.
         const intro_dialogue = new Dialogue([
-            "My goodness, I need to clean my room.",
-            "It smells like doodoo in here.",
-            ">:(",
-            "// Dialogue WIP."
+            "Shrimpfiya:\nIt's me and Damien's second anniversary today.",
+            "Shrimpfiya:\nHe hasn't said anything yet, but it's still early in the day.",
+            "Shrimpfiya:\nUntil then, I'll kill some time by reorganizing my room."
         ])
 
         // GameEvent sequence.
-        const intro_sequence = function() {
+        const intro_sequence = function () {
             const shrimp = this.decorations[0]
             const dialogue = this.dialogue
             const curr_stage = this.curr_stage;
@@ -127,61 +126,49 @@ class ActInitializations {
 
         // Initialize dialogue.
         const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
-            "O, ever, do the crepances of the small, four-legged mite dote me unnerved.",
-            "For I too once possessed such an abhorration of the mind.",
-            "To live without the slight whisper of a morality is to be consumed by night,\nlosing that which binds us to the body,",
-            "SOUL.",
-            "If this sloth were to ever reach my teeth again, I fear I will not recover.",
-            "The predisposition of my own SOUL is that of air, to be strewn about, ceasing in seconds.",
-            "Alas, the four-legged mite perseveres, taunting me with subjugations of the psyche.",
-            "Will I ever escape this body?",
-            "Will I ever defy my bones?",
-            "My untimely death would bring no more to you than a breath.",
-            "Its time for a bath.",
-            "Goodbye."
+            "???:\n(Knock Knock), Shrimpfiya?",
+            "Shrimpfiya:\nOhh, Mrs. Horse is at the door!",
+            "Shrimpfiya:\nCome in!",
+            "Mrs. Horse:\nShrimpfiya, do you want to go get food with me?",
+            "Shrimpfiya:\nAhhmm...I would, but...I...",
+            "Mrs. Horse:\nYes?",
+            "Shrimpfiya:\nI have to sweep my room!",
+            "Shrimpfiya:\nYea...",
+            "Mrs. Horse:\nOh, okay, I'll go by myself then.",
+            "Mrs. Horse:\nBye!",
+            "Shrimpfiya:\nOkay, Bye.",
+            "Shrimpfiya:\n...",
+            "Shrimpfiya:\nI guess I better get to sweeping.",
+            "Shrimpfiya:\n..."
         ])
 
         // Initialize characters.
-        const horse_character = new Decoration(0.1 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [horse_img])
+        const horse_character = new Decoration(0.2 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [horse_img])
+        const shrimp_character = new Decoration(0.7 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [shrimp_img])
 
         // Initialize game event sequence.
-        const foo_sequence = function() {
-            let horse = this.decorations[0]
+        const foo_sequence = function () {
+            let shrimp = this.decorations[0]
+            let horse = this.decorations[1]
             let poem = this.dialogue
             const curr_stage = this.curr_stage
             if (curr_stage == -1) { // -1 is deactivated state.
+                shrimp.visible = false
                 horse.visible = false
                 poem.visible = false
             }
             else {
+                shrimp.visible = true
                 horse.visible = true
                 poem.visible = true
                 poem.curr_text = curr_stage
-            }
-            switch (curr_stage) {
-                case 0:
-                case 2:
-                case 4:
-                case 6:
-                case 8:
-                case 10:
-                    horse.x = 0.2 * kW
-                    break;
-                case 1:
-                case 3:
-                case 5:
-                case 7:
-                case 9:
-                case 11:
-                    horse.x = 0.15 * kW
-                    break;
             }
 
             // End of event action.
             if (curr_stage == -1 && this.can_start == false)
                 ActManager.NextAct()
         };
-        ActManager.game_events.push(new GameEvent(poem_dialogue, [horse_character], foo_sequence))
+        ActManager.game_events.push(new GameEvent(poem_dialogue, [shrimp_character, horse_character], foo_sequence))
     }
 
     static act_2_total_dirt = 3000
@@ -217,15 +204,32 @@ class ActInitializations {
         // Add completion game event.
         // Dialogue
         const dialogue = new Dialogue([
-            "You have completed act 2.",
-            "Hooray"
+            "???:\n(Knock Knock), Shrimpfiya open up!",
+            "Shrimpfiya:\n(Oh, what are my friends doing here?)",
+            "Shrimpfiya:\nCome in!",
+            "Shrimpfiya:\nHello Amenhotep, Hello Spiderman, sorry for the mess, I-",
+            "Amenhotep & Spiderman:\nWhat mess?",
+            "Shrimpfiya:\nUh, nothing.", 
+            "Shrimpfiya:\nWhat's up?",
+            "Amenhotep:\nDo you wanna go to the library?",
+            "Shrimpfiya:\nOh I would, but I have a thing later today.",
+            "Spiderman:\nWhat're you doing?",
+            "Shrimpfiya:\nUhhh...I'm just hanging around, ya know.",
+            "Amenhotep:\nOh, okay. I guess we'll see you later then!",
+            "Shrimpfiya:\nYup, see you later.",
+            "Shrimpfiya:\nSigh...",
+            "Shrimpfiya:\nMaybe I should find a new spot for my bed.",
+            "Shrimpfiya:\nThat always cheers me up."
         ])
         // Characters
         const leopard = new Decoration(kW * 0.2, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.leopard])
         const spiderman = new Decoration(kW * 0.4, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.spiderman])
         const shrimp = new Decoration(kW * 0.7, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.shrimp])
         // Sequence (this = GameEvent-instance)
-        const sequence = function() {
+        const sequence = function () {
+            // Clear dirt.
+            ActManager.active_decorations = []
+
             const leopard_char = this.decorations[0]
             const spiderman_char = this.decorations[1]
             const shrimp_char = this.decorations[2]
@@ -304,7 +308,7 @@ class ActInitializations {
 
         // Add completion game event.
         // Sequence
-        const sequence = function() {
+        const sequence = function () {
             ActManager.NextAct()
         }
         // Push game event.
@@ -314,16 +318,44 @@ class ActInitializations {
     static Outro() {
         // GameEvent dialogue.
         const outro_dialogue = new Dialogue([
-            "You have cleaned your room!",
-            "Congratulations!",
-            "Thank you for playing!"
+            "???:\nShrimpfiya?",
+            "Shrimpfiya:\nOh Damien is here!",
+            "Shrimpfiya:\nIs that Goob as well?",
+            "Shrimpfiya:\nCome in!",
+            "Damien:\nHey Shri- what happened to your room?",
+            "Shrimpfiya:\nOh...I was just cleaning it, you know...reorganizing.",
+            "Damien:\nMmmmhmmmm...well me and Goob were gonna go to the mall, want to come with?",
+            "Shrimpfiya:\nOh..yea, sure.",
+            "Damien:\nhmm",
+            "Damien:\nGoob, we'll meet you in the car",
+            "Goob:\nBazinga",
+            "Damien:\nShrimpfiya, is everything alright?",
+            "Damien:\nYou only clean your room this much when something's wrong.",
+            "Shrimpfiya:\nWell...I thought we were gonna do something together today",
+            "Shrimpfiya:\nYou know, just us.",
+            "Shrimpfiya:\nI was waiting for you to say something.",
+            "Shrimpfiya:\nI kept my schedule free for you.",
+            "Damien:\nWhy?",
+            "Shrimpfiya:\nWhy?",
+            "Shrimpfiya:\nBecause it's our anniversary.",
+            "Damien:\n.",
+            "Damien:\n..",
+            "Damien:\n...",
+            "Damien:\nIsn't our anniversary next week?",
+            "Shrimpfiya:\n.",
+            "Shrimpfiya:\n..",
+            "Shrimpfiya:\n...",
+            "Shrimpfiya:\n....",
+            "Shrimpfiya:\n.....",
+            "Shrimpfiya:\n......",
+            "Shrimpfiya:\nOh yea."
         ])
         // Characters
         const goob = new Decoration(kW * 0.2, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.goob])
         const wolfman = new Decoration(kW * 0.4, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.wolfman])
         const shrimp = new Decoration(kW * 0.7, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.shrimp])
         // GameEvent sequence.
-        const outro_sequence = function() {
+        const outro_sequence = function () {
             const goob_char = this.decorations[0]
             const wolfman_char = this.decorations[1]
             const shrimp_char = this.decorations[2]
