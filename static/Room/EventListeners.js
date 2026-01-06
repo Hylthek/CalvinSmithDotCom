@@ -32,6 +32,6 @@ document.addEventListener("keydown", (event) => {
         });
     }
     if (event.code === 'KeyN') {
-        ActManager.NextAct()
+        ActManager.game_events[0].Run()
     }
 })

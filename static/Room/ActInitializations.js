@@ -87,9 +87,9 @@ class ActInitializations {
         ActManager.game_events[0].Run()
     }
 
-    static total_closet_draggables = 2
-    static total_cabinet_draggables = 2
-    static total_trashcan_draggables = 2
+    static total_closet_draggables = 20
+    static total_cabinet_draggables = 26
+    static total_trashcan_draggables = 9
     static ActOne() {
         // Images
         // Draggables
@@ -490,6 +490,7 @@ class ActInitializations {
             "A vase",
             ["closet"]
         ))
+        // Tot. 20
 
         // Cabinet draggables. Cabinet draggables. Cabinet draggables. Cabinet draggables.
         // Cabinet draggables. Cabinet draggables. Cabinet draggables. Cabinet draggables.
@@ -625,6 +626,7 @@ class ActInitializations {
             "A squishy guy",
             ["cabinet"]
         ))
+        // Tot. 26
 
         // Trash draggables. Trash draggables. Trash draggables. Trash draggables.
         // Trash draggables. Trash draggables. Trash draggables. Trash draggables.
@@ -675,6 +677,7 @@ class ActInitializations {
             "An empty WinCo-brand water bottle",
             ["trashcan"]
         ))
+        // Tot. 9
 
         // Randomize the array.
         ShuffleArray(ActManager.active_draggables)

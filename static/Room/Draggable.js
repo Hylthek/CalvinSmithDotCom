@@ -239,7 +239,7 @@ class NodeQuadrilateral {
         this.image = image
     }
 
-    tolerance = 0.05 // Proportion of kW.
+    tolerance = 0.02 // Proportion of kW.
 
     // Returns current bed position in proportions of kW and degrees
     GetBedPos() {
