@@ -5,6 +5,8 @@ ActManager.NextAct()
 
 // Preload images.
 PreloadedImages.PreloadAllImages()
+// Preload audio.
+PreloadedAudio.LoadAll()
 
 function main() {
     window.requestAnimationFrame(main);

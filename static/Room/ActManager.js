@@ -18,6 +18,7 @@ class ActManager {
             case "splash-screen":
                 ActManager.ClearArrays()
                 ActInitializations.Intro()
+                PreloadedAudio.background_music.play()
                 this.current_act = "intro"
                 break;
             case "intro":
