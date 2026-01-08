@@ -65,14 +65,26 @@ class ActInitializations {
             const shrimp = this.decorations[0]
             const dialogue = this.dialogue
             const curr_stage = this.curr_stage;
-            if (curr_stage != -1) {
-                shrimp.visible = true
-                dialogue.visible = true
-                dialogue.curr_text = curr_stage
-            }
-            else {
+
+            // Defaults
+            shrimp.visible = true
+            shrimp.SetPosAndScale(0.5, 0.6, 1)
+            dialogue.visible = true
+            dialogue.curr_text = curr_stage
+
+            // Hide if game event deactivated
+            if (curr_stage == -1) {
                 shrimp.visible = false
                 dialogue.visible = false
+            }
+
+            // Blocking
+            switch (curr_stage) {
+                case 1:
+                    shrimp.SetPosAndScale(0.5, 0.6, -1)
+                    break
+                case 2:
+                    shrimp.SetPosAndScale(0.7, 0.6, 1)
             }
 
             // End of event action.
@@ -125,21 +137,21 @@ class ActInitializations {
         ActManager.active_decorations.push(new ProgressHud("Trash Progress", 0.025 * kW, 0.105 * kW, "trashcan-progress"))
 
         // Initialize dialogue.
-        const poem_dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
-            "???:\n(Knock Knock), Shrimpfiya?",
-            "Shrimpfiya:\nOhh, Mrs. Horse is at the door!",
-            "Shrimpfiya:\nCome in!",
-            "Mrs. Horse:\nShrimpfiya, do you want to go get food with me?",
-            "Shrimpfiya:\nAhhmm...I would, but...I...",
-            "Mrs. Horse:\nYes?",
-            "Shrimpfiya:\nI have to sweep my room!",
-            "Shrimpfiya:\nYea...",
-            "Mrs. Horse:\nOh, okay, I'll go by myself then.",
-            "Mrs. Horse:\nBye!",
-            "Shrimpfiya:\nOkay, Bye.",
-            "Shrimpfiya:\n...",
-            "Shrimpfiya:\nI guess I better get to sweeping.",
-            "Shrimpfiya:\n..."
+        const dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
+            "???:\n(Knock Knock), Shrimpfiya?", // 0
+            "Shrimpfiya:\nOhh, Mrs. Horse is at the door!", // 1
+            "Shrimpfiya:\nCome in!", // 2
+            "Mrs. Horse:\nShrimpfiya, do you want to go get food with me?", // 3
+            "Shrimpfiya:\nAhhmm...I would, but...I...", // 4
+            "Mrs. Horse:\nYes?", // 5
+            "Shrimpfiya:\nI have to sweep my room!", // 6
+            "Shrimpfiya:\nYea...", // 7
+            "Mrs. Horse:\nOh, okay, I'll go by myself then.", // 8
+            "Mrs. Horse:\nBye!", // 9
+            "Shrimpfiya:\nOkay, Bye.", // 10
+            "Shrimpfiya:\n...", // 11
+            "Shrimpfiya:\nI guess I better get to sweeping.", // 12
+            "Shrimpfiya:\n..." // 13
         ])
 
         // Initialize characters.
@@ -147,28 +159,80 @@ class ActInitializations {
         const shrimp_character = new Decoration(0.7 * kW, 0.5 * kH, 0.2 * kW, 0.2 * kW, [shrimp_img])
 
         // Initialize game event sequence.
-        const foo_sequence = function () {
+        const sequence = function () {
             let shrimp = this.decorations[0]
             let horse = this.decorations[1]
-            let poem = this.dialogue
+            let dialogue = this.dialogue
             const curr_stage = this.curr_stage
+
+            // Defaults
+            shrimp.visible = true
+            shrimp.SetPosAndScale(0.7, 0.6, 1)
+            horse.visible = true
+            horse.SetPosAndScale(0.3, 0.6, 1)
+            dialogue.visible = true
+            dialogue.curr_text = curr_stage
+
+
+            // Hide if deactivated.
             if (curr_stage == -1) { // -1 is deactivated state.
                 shrimp.visible = false
                 horse.visible = false
-                poem.visible = false
+                dialogue.visible = false
             }
-            else {
-                shrimp.visible = true
-                horse.visible = true
-                poem.visible = true
-                poem.curr_text = curr_stage
+
+            // Staging
+            switch (curr_stage) {
+                case 0:
+                    horse.visible = false
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    break
+                case 1:
+                    horse.visible = false
+                    shrimp.SetPosAndScale(0.7, 0.6, 1)
+                    break
+                case 2:
+                    shrimp.SetPosAndScale(0.6, 0.6, 1)
+                    horse.visible = false
+                    break
+                case 4:
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    break
+                case 5:
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    horse.SetPosAndScale(0.5, 0.6, 1)
+                    break
+                case 7:
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    break
+                case 8:
+                    horse.SetPosAndScale(0.3, 0.6, -1)
+                    break
+                case 9:
+                    horse.SetPosAndScale(0.2, 0.6, -1)
+                    break
+                case 10:
+                    horse.visible = false
+                    break
+                case 11:
+                    horse.visible = false
+                    shrimp.SetPosAndScale(0.5, 0.6, 1)
+                    break
+                case 12:
+                    horse.visible = false
+                    shrimp.SetPosAndScale(0.5, 0.6, -1)
+                    break
+                case 13:
+                    horse.visible = false
+                    shrimp.SetPosAndScale(0.5, 0.6, 1)
+                    break
             }
 
             // End of event action.
             if (curr_stage == -1 && this.can_start == false)
                 ActManager.NextAct()
         };
-        ActManager.game_events.push(new GameEvent(poem_dialogue, [shrimp_character, horse_character], foo_sequence))
+        ActManager.game_events.push(new GameEvent(dialogue, [shrimp_character, horse_character], sequence))
     }
 
     static act_2_total_dirt = 3000
@@ -204,22 +268,22 @@ class ActInitializations {
         // Add completion game event.
         // Dialogue
         const dialogue = new Dialogue([
-            "???:\n(Knock Knock), Shrimpfiya open up!",
-            "Shrimpfiya:\n(Oh, what are my friends doing here?)",
-            "Shrimpfiya:\nCome in!",
-            "Shrimpfiya:\nHello Amenhotep, Hello Spiderman, sorry for the mess, I-",
-            "Amenhotep & Spiderman:\nWhat mess?",
-            "Shrimpfiya:\nUh, nothing.", 
-            "Shrimpfiya:\nWhat's up?",
-            "Amenhotep:\nDo you wanna go to the library?",
-            "Shrimpfiya:\nOh I would, but I have a thing later today.",
-            "Spiderman:\nWhat're you doing?",
-            "Shrimpfiya:\nUhhh...I'm just hanging around, ya know.",
-            "Amenhotep:\nOh, okay. I guess we'll see you later then!",
-            "Shrimpfiya:\nYup, see you later.",
-            "Shrimpfiya:\nSigh...",
-            "Shrimpfiya:\nMaybe I should find a new spot for my bed.",
-            "Shrimpfiya:\nThat always cheers me up."
+            "???:\n(Knock Knock), Shrimpfiya open up!", // 0
+            "Shrimpfiya:\n(Oh, what are my friends doing here?)", // 1
+            "Shrimpfiya:\nCome in!", // 2
+            "Shrimpfiya:\nHello Amenhotep, Hello Spiderman, sorry for the mess, I-", // 3
+            "Amenhotep & Spiderman:\nWhat mess?", // 4
+            "Shrimpfiya:\nUh, nothing.", // 5
+            "Shrimpfiya:\nWhat's up?", // 6
+            "Amenhotep:\nDo you wanna go to the library?", // 7
+            "Shrimpfiya:\nOh I would, but I have a thing later today.", // 8
+            "Spiderman:\nWhat're you doing?", // 9
+            "Shrimpfiya:\nUhhh...I'm just hanging around, ya know.", // 10
+            "Amenhotep:\nOh, okay. I guess we'll see you later then!", // 11
+            "Shrimpfiya:\nYup, see you later.", // 12
+            "Shrimpfiya:\nSigh...", // 13
+            "Shrimpfiya:\nMaybe I should find a new spot for my bed.", // 14
+            "Shrimpfiya:\nThat always cheers me up." // 15
         ])
         // Characters
         const leopard = new Decoration(kW * 0.2, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.leopard])
@@ -227,26 +291,98 @@ class ActInitializations {
         const shrimp = new Decoration(kW * 0.7, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.shrimp])
         // Sequence (this = GameEvent-instance)
         const sequence = function () {
-            // Clear dirt.
+            // Clear dirt and broom.
             ActManager.active_decorations = []
+            ActManager.active_draggables = []
 
-            const leopard_char = this.decorations[0]
-            const spiderman_char = this.decorations[1]
-            const shrimp_char = this.decorations[2]
+            const leopard = this.decorations[0]
+            const spiderman = this.decorations[1]
+            const shrimp = this.decorations[2]
             const dialogue = this.dialogue
+            // Defaults
+            leopard.visible = true
+            spiderman.visible = true
+            shrimp.visible = true
+            leopard.SetPosAndScale(0.2, 0.6, 1)
+            spiderman.SetPosAndScale(0.4, 0.6, 1)
+            shrimp.SetPosAndScale(0.7, 0.6, 1)
+            dialogue.visible = true
+            dialogue.curr_text = this.curr_stage
+            // Deactivated case
             if (this.curr_stage == -1) {
-                leopard_char.visible = false
-                spiderman_char.visible = false
-                shrimp_char.visible = false
+                leopard.visible = false
+                spiderman.visible = false
+                shrimp.visible = false
                 dialogue.visible = false
             }
-            else {
-                leopard_char.visible = true
-                spiderman_char.visible = true
-                shrimp_char.visible = true
-                dialogue.visible = true
-                dialogue.curr_text = this.curr_stage
+
+            // Blocking
+            switch (this.curr_stage) {
+                case 0:
+                    leopard.visible = false
+                    spiderman.visible = false
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    break
+                case 1:
+                    leopard.visible = false
+                    spiderman.visible = false
+                    shrimp.SetPosAndScale(0.7, 0.6, 1)
+                    break
+                case 2:
+                    leopard.visible = false
+                    spiderman.visible = false
+                    shrimp.SetPosAndScale(0.6, 0.6, 1)
+                    break
+                case 3:
+                    break
+                case 4:
+                    leopard.SetPosAndScale(0.2, 0.7, 1)
+                    spiderman.SetPosAndScale(0.4, 0.3, -1)
+                    break
+                case 5:
+                    leopard.SetPosAndScale(0.2, 0.7, 1)
+                    spiderman.SetPosAndScale(0.4, 0.3, 1)
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    break
+                case 6:
+                    break
+                case 7:
+                    leopard.SetPosAndScale(0.25, 0.6, 1)
+                    break
+                case 8:
+                    shrimp.SetPosAndScale(0.6, 0.6, 1)
+                    break
+                case 9:
+                    spiderman.SetPosAndScale(0.45, 0.6, 1)
+                    break
+                case 10:
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    break
+                case 11:
+                    leopard.SetPosAndScale(0.2, 0.6, -1)
+                    spiderman.SetPosAndScale(0.4, 0.6, -1)
+                    break
+                case 12:
+                    leopard.visible = false
+                    spiderman.visible = false
+                    break
+                case 13:
+                    leopard.visible = false
+                    spiderman.visible = false
+                    shrimp.SetPosAndScale(0.5,0.6,1)
+                    break
+                case 14:
+                    leopard.visible = false
+                    spiderman.visible = false
+                    shrimp.SetPosAndScale(0.5,0.6,-1)
+                    break
+                case 15:
+                    leopard.visible = false
+                    spiderman.visible = false
+                    shrimp.SetPosAndScale(0.8,0.7,-1)
+                    break
             }
+
             // End of event action.
             if (this.curr_stage == -1 && this.can_start == false)
                 ActManager.NextAct()

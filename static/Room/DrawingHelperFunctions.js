@@ -96,6 +96,8 @@ class DrawingHelperFunctions {
                         -Math.sin(decoration.rotation * Math.PI / 180), Math.cos(decoration.rotation * Math.PI / 180),
                         decoration.x, decoration.y
                     )
+                    const k = decoration.is_flipped_horizontally ? -1 : 1
+                    kCtx.transform(k, 0, 0, 1, 0, 0)
                     kCtx.drawImage(decoration.images[decoration.curr_image], -decoration.w / 2, -decoration.h / 2, decoration.w, decoration.h);
                 }
             })
@@ -113,6 +115,8 @@ class DrawingHelperFunctions {
                     -Math.sin(decoration.rotation * Math.PI / 180), Math.cos(decoration.rotation * Math.PI / 180),
                     decoration.x, decoration.y
                 )
+                const k = decoration.is_flipped_horizontally ? -1 : 1
+                kCtx.transform(k, 0, 0, 1, 0, 0)
                 kCtx.drawImage(decoration.images[decoration.curr_image], -decoration.w / 2, -decoration.h / 2, decoration.w, decoration.h);
             }
             // Draw HUD decorations.

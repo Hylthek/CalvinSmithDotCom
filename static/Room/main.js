@@ -1,6 +1,6 @@
 // Initialize first act.
 ActManager.current_act = null
-// ActManager.current_act = 'act-2' // A debug line.
+ActManager.current_act = 'act-1' // A debug line.
 ActManager.NextAct()
 
 // Preload images.
