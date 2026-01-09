@@ -1,6 +1,6 @@
 // Initialize first act.
 ActManager.current_act = null
-ActManager.current_act = 'act-1' // A debug line.
+// ActManager.current_act = 'act-3' // A debug line.
 ActManager.NextAct()
 
 // Preload images.
@@ -35,8 +35,9 @@ function main() {
         hovered_container.TryEatDraggable(hovered_draggable)
 
     // Process act 2 dirt removal.
-    if (ActManager.current_act == "act-2")
-        ActManager.active_draggables[0].CleanDirt()
+    if (ActManager.active_draggables[0])
+        if (ActManager.active_draggables[0].CleanDirt)
+            ActManager.active_draggables[0].CleanDirt()
 
     // Hover text.
     if (hovered_draggable)

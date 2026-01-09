@@ -369,17 +369,17 @@ class ActInitializations {
                 case 13:
                     leopard.visible = false
                     spiderman.visible = false
-                    shrimp.SetPosAndScale(0.5,0.6,1)
+                    shrimp.SetPosAndScale(0.5, 0.6, 1)
                     break
                 case 14:
                     leopard.visible = false
                     spiderman.visible = false
-                    shrimp.SetPosAndScale(0.5,0.6,-1)
+                    shrimp.SetPosAndScale(0.5, 0.6, -1)
                     break
                 case 15:
                     leopard.visible = false
                     spiderman.visible = false
-                    shrimp.SetPosAndScale(0.8,0.7,-1)
+                    shrimp.SetPosAndScale(0.8, 0.7, -1)
                     break
             }
 
@@ -454,37 +454,37 @@ class ActInitializations {
     static Outro() {
         // GameEvent dialogue.
         const outro_dialogue = new Dialogue([
-            "???:\nShrimpfiya?",
-            "Shrimpfiya:\nOh Damien is here!",
-            "Shrimpfiya:\nIs that Goob as well?",
-            "Shrimpfiya:\nCome in!",
-            "Damien:\nHey Shri- what happened to your room?",
-            "Shrimpfiya:\nOh...I was just cleaning it, you know...reorganizing.",
-            "Damien:\nMmmmhmmmm...well me and Goob were gonna go to the mall, want to come with?",
-            "Shrimpfiya:\nOh..yea, sure.",
-            "Damien:\nhmm",
-            "Damien:\nGoob, we'll meet you in the car",
-            "Goob:\nBazinga",
-            "Damien:\nShrimpfiya, is everything alright?",
-            "Damien:\nYou only clean your room this much when something's wrong.",
-            "Shrimpfiya:\nWell...I thought we were gonna do something together today",
-            "Shrimpfiya:\nYou know, just us.",
-            "Shrimpfiya:\nI was waiting for you to say something.",
-            "Shrimpfiya:\nI kept my schedule free for you.",
-            "Damien:\nWhy?",
-            "Shrimpfiya:\nWhy?",
-            "Shrimpfiya:\nBecause it's our anniversary.",
-            "Damien:\n.",
-            "Damien:\n..",
-            "Damien:\n...",
-            "Damien:\nIsn't our anniversary next week?",
-            "Shrimpfiya:\n.",
-            "Shrimpfiya:\n..",
-            "Shrimpfiya:\n...",
-            "Shrimpfiya:\n....",
-            "Shrimpfiya:\n.....",
-            "Shrimpfiya:\n......",
-            "Shrimpfiya:\nOh yea."
+            "???:\nShrimpfiya?", // 0
+            "Shrimpfiya:\nOh Damien is here!", // 1
+            "Shrimpfiya:\nIs that Goob as well?", // 2
+            "Shrimpfiya:\nCome in!", // 3
+            "Damien:\nHey Shri- what happened to your room?", // 4
+            "Shrimpfiya:\nOh...I was just cleaning it, you know...reorganizing.", // 5
+            "Damien:\nMmmmhmmmm...well me and Goob were gonna go to the mall, want to come with?", // 6
+            "Shrimpfiya:\nOh..yea, sure.", // 7
+            "Damien:\nhmm", // 8
+            "Damien:\nGoob, we'll meet you in the car", // 9
+            "Goob:\nBazinga", // 10
+            "Damien:\nShrimpfiya, is everything alright?", // 11
+            "Damien:\nYou only clean your room this much when something's wrong.", // 12
+            "Shrimpfiya:\nWell...I thought we were gonna do something together today", // 13
+            "Shrimpfiya:\nYou know, just us.", // 14
+            "Shrimpfiya:\nI was waiting for you to say something.", // 15
+            "Shrimpfiya:\nI kept my schedule free for you.", // 16
+            "Damien:\nWhy?", // 17
+            "Shrimpfiya:\nWhy??", // 18
+            "Shrimpfiya:\nBecause it's our anniversary.", // 19
+            "Damien:\n.", // 20
+            "Damien:\n..", // 21
+            "Damien:\n...", // 22
+            "Damien:\nIsn't our anniversary next week?", // 23
+            "Shrimpfiya:\n.", // 24
+            "Shrimpfiya:\n..", // 25
+            "Shrimpfiya:\n...", // 26
+            "Damien:\n.", // 27
+            "Damien:\n..", // 28
+            "Damien:\n...", // 29
+            "Shrimpfiya:\nOh yea." // 30
         ])
         // Characters
         const goob = new Decoration(kW * 0.2, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.goob])
@@ -492,24 +492,139 @@ class ActInitializations {
         const shrimp = new Decoration(kW * 0.7, kH * 0.5, kW * 0.2, kW * 0.2, [PreloadedImages.shrimp])
         // GameEvent sequence.
         const outro_sequence = function () {
-            const goob_char = this.decorations[0]
-            const wolfman_char = this.decorations[1]
-            const shrimp_char = this.decorations[2]
+            const goob = this.decorations[0]
+            const wolfman = this.decorations[1]
+            const shrimp = this.decorations[2]
             const dialogue = this.dialogue
             const curr_stage = this.curr_stage;
+            // Defaults
+            goob.SetPosAndScale(0.1, 0.8, -1)
+            wolfman.SetPosAndScale(0.4, 0.6, 1)
+            shrimp.SetPosAndScale(0.7, 0.6, 1)
+            goob.visible = true
+            wolfman.visible = true
+            shrimp.visible = true
+            dialogue.visible = true
+            dialogue.curr_text = curr_stage
+            if (curr_stage > 10) goob.visible = false // Saves boilerplate.
+            // Deactivated case
             if (curr_stage == -1) {
-                goob_char.visible = false
-                wolfman_char.visible = false
-                shrimp_char.visible = false
+                goob.visible = false
+                wolfman.visible = false
+                shrimp.visible = false
                 dialogue.visible = false
             }
-            else {
-                goob_char.visible = true
-                wolfman_char.visible = true
-                shrimp_char.visible = true
-                dialogue.visible = true
-                dialogue.curr_text = curr_stage
+
+            // Blocking
+            switch (curr_stage) {
+                case 0:
+                    wolfman.visible = false
+                    goob.visible = false
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    break;
+                case 1:
+                    wolfman.visible = false
+                    goob.visible = false
+                    shrimp.SetPosAndScale(0.7, 0.6, 1)
+                    break;
+                case 2:
+                    wolfman.visible = false
+                    goob.visible = false
+                    shrimp.SetPosAndScale(0.65, 0.6, 1)
+                    break;
+                case 3:
+                    wolfman.visible = false
+                    goob.visible = false
+                    shrimp.SetPosAndScale(0.6, 0.6, 1)
+                    break;
+                case 4:
+                    goob.SetPosAndScale(0.2, 0.6, 1)
+                    break;
+                case 5:
+                    shrimp.SetPosAndScale(0.7, 0.6, -1)
+                    break;
+                case 6:
+                    goob.SetPosAndScale(0.1, 0.8, 1)
+                    wolfman.SetPosAndScale(0.45, 0.6, -1)
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    wolfman.SetPosAndScale(0.45, 0.6, 1)
+                    break;
+                case 9:
+                    wolfman.SetPosAndScale(0.4, 0.65, -1)
+                    goob.SetPosAndScale(0.2, 0.7, 1)
+                    break;
+                case 10:
+                    goob.SetPosAndScale(0.1, 0.7, -1)
+                    break;
+                case 11:
+                    wolfman.SetPosAndScale(0.45, 0.6, 1)
+                    break;
+                case 12:
+                    wolfman.SetPosAndScale(0.5, 0.6, 1)
+                    break;
+                case 13:
+                    shrimp.SetPosAndScale(0.65, 0.6, 1)
+                    break;
+                case 14:
+                    break;
+                case 15:
+                    break;
+                case 16:
+                    shrimp.SetPosAndScale(0.8, 0.6, -1)
+                    break;
+                case 17:
+                    wolfman.SetPosAndScale(0.45, 0.6, 1)
+                    break;
+                case 18:
+                    shrimp.SetPosAndScale(0.5, 0.6, 1)
+                    break;
+                case 19:
+                    shrimp.SetPosAndScale(0.8, 0.6, -1)
+                    break;
+                case 20:
+                    wolfman.SetPosAndScale(0.4, 0.6, -1)
+                    shrimp.SetPosAndScale(0.8, 0.6, -1)
+                    break;
+                case 21:
+                    shrimp.SetPosAndScale(0.8, 0.6, -1)
+                    break;
+                case 22:
+                    wolfman.SetPosAndScale(0.4, 0.6, -1)
+                    shrimp.SetPosAndScale(0.8, 0.6, -1)
+                    break;
+                case 23:
+                    break;
+                case 24:
+                    wolfman.visible = false
+                    shrimp.SetPosAndScale(0.7, 1, 7)
+                    break;
+                case 25:
+                    wolfman.visible = false
+                    shrimp.SetPosAndScale(0.725, 1.075, 8)
+                    break;
+                case 26:
+                    wolfman.visible = false
+                    shrimp.SetPosAndScale(0.75, 1.15, 9)
+                    break;
+                case 27:
+                    shrimp.visible = false
+                    wolfman.SetPosAndScale(0.3, 1.3, 7)
+                    break;
+                case 28:
+                    shrimp.visible = false
+                    wolfman.SetPosAndScale(0.25, 1.425, 8)
+                    break;
+                case 29:
+                    shrimp.visible = false
+                    wolfman.SetPosAndScale(0.2, 1.55, 9)
+                    break;
+                case 30:
+                    break;
             }
+
             // End of event action.
             if (curr_stage == -1 && this.can_start == false)
                 ActManager.NextAct()
