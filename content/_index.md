@@ -103,8 +103,18 @@ toc: false
 
 
 <!-- Inline styles are used here so that js can access them. -->
-<a href="/insect.html" id="fly-id" style="top: 10rem; left: 40px; transform: translate(-50%,-50%) scale(0.06) rotate(30deg);">
+<a href="/insect.html" id="fly-id" style="top: 100px; left: 40px; transform: translate(-50%, -50%) scale(0.06) rotate(30deg);">
     <img src="Fly/fly.png" alt="fly">
 </a>
+<a href="/theroom.html" style="position: absolute; top: 100px; right: 40px;">
+    <canvas id="room-id" style="width: 100px; height: 90px;"></canvas>
+</a>
+
+<!-- glMatrix library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"
+    integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
+    crossorigin="anonymous" defer>
+</script>
 
 <script src="Fly/index_fly.js"></script>
+<script src="Room/index_room.js" type="module"></script>
