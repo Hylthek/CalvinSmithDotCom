@@ -107,7 +107,7 @@ toc: false
     <img src="Fly/fly.png" alt="fly">
 </a>
 <a href="/theroom.html" style="position: absolute; top: 100px; right: 40px;">
-    <canvas id="room-id" style="width: 100px; height: 90px;"></canvas>
+    <canvas id="room-id" style="width: 120px; height: 90px;"></canvas>
 </a>
 
 <!-- glMatrix library -->
