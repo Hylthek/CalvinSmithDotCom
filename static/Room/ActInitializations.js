@@ -643,57 +643,57 @@ class ActInitializations {
         // Closet draggables. Closet draggables. Closet draggables. Closet draggables.
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.blackcanvas],
-            "A shirt",
+            "This jacket makes you look like a cool dude",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.crumpledblackplaid, PreloadedImages.blackplaid],
-            "A shirt",
+            "A black plaid, one of many",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.comb],
-            "A comb",
+            "A paddle hairbrush with soft tines",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.combjar],
-            "A jar",
+            "A makeup jar...with a comb in it?",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.deodorant],
-            "Some deodorant",
+            "\"FOR MEN WHO SWEAT\"",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.earrings],
-            "An earring stand",
+            "A stand with all your fanciest earrings",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.fancycrumpled, PreloadedImages.fancyshirt],
-            "A shirt",
+            "Your go-to when it's time to hit downtown",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.greenfuzzcrumpled, PreloadedImages.greenshirt],
-            "A shirt",
+            "Green and fuzzy",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.patternedcrumpled, PreloadedImages.greypatternedshirt],
-            "A shirt",
+            "A stylish shirt that makes a statement",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.leather],
-            "A leather jacket",
+            "Your trusty leather jacket",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.makeupjar],
-            "A jar",
+            "A makeup jar...with a toothbrush in it?",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
@@ -703,27 +703,27 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.polkacrumpled, PreloadedImages.polka],
-            "A shirt",
+            "This shirt has many little eyeballs on it",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.pinktray],
-            "A tray",
+            "A tray to hold your jewelries",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.redplaidcrumpled, PreloadedImages.redplaid],
-            "A shirt",
+            "A red plaid, one of many",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.strawberry],
-            "A strawberry tray",
+            "A raspberry tray",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.whitetray],
-            "A cat tray",
+            "A cat tray. \"Meow!\"",
             ["closet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
@@ -738,7 +738,7 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.flowervase],
-            "A vase",
+            "A nice little flower vase",
             ["closet"]
         ))
         // Tot. 20
@@ -759,12 +759,12 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.cow],
-            "Rainbow cow",
+            "A rainbowic Cow",
             ["cabinet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.crab],
-            "He will hold your pens",
+            "He will hold your pens!",
             ["cabinet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
@@ -784,7 +784,7 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.gradcane],
-            "Graduated valedogtorian",
+            "Graduated valeDOGtorian",
             ["cabinet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
@@ -799,7 +799,7 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.legored],
-            "A LEGO plant",
+            "A LEGO succulent",
             ["cabinet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
@@ -814,7 +814,7 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.percussionfrog],
-            "Frog instrument",
+            "Frog instrument \"Ribbit!\"",
             ["cabinet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
@@ -829,7 +829,7 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.rainbowturtle],
-            "A rainbow turtle",
+            "A rainbowic turtle",
             ["cabinet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
@@ -854,7 +854,7 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.valentinemonkeyplush],
-            "A cute monkey with no insidious backstory whatsoever",
+            "A cute monkey with a dark past",
             ["cabinet"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
@@ -910,17 +910,17 @@ class ActInitializations {
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.tissue1],
-            "A tissue",
+            "Tissue #1",
             ["trashcan"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.tissue2],
-            "A tissue",
+            "Tissue #2",
             ["trashcan"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
             [PreloadedImages.tissue3],
-            "I rotoscoped these tissues by hand",
+            "Tissue #3",
             ["trashcan"]
         ))
         ActManager.active_draggables.push(new Draggable(0.2 * kW + 0.6 * Math.random() * kW, (0.7 + 0.2 * Math.random()) * kH, default_size, default_size,
