@@ -140,7 +140,7 @@ class Draggable {
     }
 
     DrawHoverText() {
-        if (this.picked_up)
+        if (this.picked_up || this.eaten_animation_start_time)
             return
 
         kCtx.save()
