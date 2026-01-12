@@ -14,6 +14,10 @@ class Draggable {
     floating_freq = null // Set randomly at instantiation.
     floating_phase = null // Set randomly at instantiation.
     floating_amplitude = 0.001 * kW
+    scale = 1
+    // Return animation
+    reject_animation_start_time = null // ms
+    return_animation_duration = 300 // ms
 
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images, description = "Description", compatibilities = []) {
@@ -42,6 +46,9 @@ class Draggable {
         this.pickup_location = [this.x, this.y]
         this.falling = false
         this.velocity = 0
+
+        // Disable current animations.
+        this.reject_animation_start_time = null
     }
 
     Drop() {
@@ -54,8 +61,55 @@ class Draggable {
     }
 
     Draw() { // Animates floating too.
+        kCtx.save()
+
         const floating_y_offset = this.floating_amplitude * Math.sin(performance.now() / 1000 * this.floating_freq + this.floating_phase)
-        kCtx.drawImage(this.images[this.curr_image], this.x - this.w / 2, this.y - this.h / 2 + floating_y_offset, this.w, this.h);
+        kCtx.setTransform(this.scale, 0, 0, this.scale, this.x - this.w / 2, this.y - this.h / 2 + floating_y_offset)
+        kCtx.drawImage(this.images[this.curr_image], 0, 0, this.w, this.h);
+
+        kCtx.restore()
+    }
+
+    Update() {
+        // Handle pickups.
+        if (this.picked_up) {
+            this.x = gMouseX
+            this.y = gMouseY
+
+            // Handle node 
+            if (this.pickup_offset) {
+                this.x += this.pickup_offset[0]
+                this.y += this.pickup_offset[1]
+                this.SnapToValidPos()
+            }
+        }
+
+        // Gravity.
+        if (this.falling) {
+            // Update pos and velo.
+            this.y += kH * this.velocity
+            this.velocity += 0.01;
+            // Fix bugged pickup locations.
+            if (this.pickup_location[1] < ScenePerspective.GetScenePoints()[2][1])
+                this.pickup_location[1] = (ScenePerspective.GetScenePoints()[2][1] + kH) / 2
+            // Stop gravity if object hit pickup height.
+            if (this.y > this.pickup_location[1]) {
+                this.falling = false
+                this.velocity = 0;
+                this.y = this.pickup_location[1]
+            }
+        }
+
+        // Animations
+        const curr_time = performance.now()
+        const curr_anim_time = curr_time - this.reject_animation_start_time
+        if (curr_anim_time > 0 && curr_anim_time < this.return_animation_duration) {
+            // Object has already been teleported to pickup_location.
+            const lerp_t = 1 - (curr_anim_time / this.return_animation_duration)
+            const lerp_cubic_t = EaseInOutCubic(lerp_t)
+            this.x = Lerp(this.pickup_location[0], this.reject_location.x, lerp_cubic_t)
+            this.y = Lerp(this.pickup_location[1], this.reject_location.y, lerp_cubic_t)
+        }
     }
 
     DrawHoverText() {
@@ -105,8 +159,11 @@ class Draggable {
     }
 
     Reject() {
-        this.x = this.pickup_location[0];
-        this.y = this.pickup_location[1];
+        this.reject_location = {
+            x: this.x,
+            y: this.y
+        }
+        this.reject_animation_start_time = performance.now();
     }
 }
 
@@ -258,7 +315,7 @@ class NodeQuadrilateral {
             Math.atan2(this.nodes[3].y - this.nodes[2].y, this.nodes[3].x - this.nodes[2].x) / 4 +
             -Math.atan2(this.nodes[2].x - this.nodes[0].x, this.nodes[2].y - this.nodes[0].y) / 4 +
             -Math.atan2(this.nodes[3].x - this.nodes[1].x, this.nodes[3].y - this.nodes[1].y) / 4
-        
+
         return {
             x: avg_point[0] / kW,
             y: avg_point[1] / kH,
@@ -394,4 +451,8 @@ class NodeQuadrilateral {
         else
             return intersection2;
     }
+}
+
+function EaseInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }

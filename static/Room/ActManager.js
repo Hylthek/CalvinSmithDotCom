@@ -102,8 +102,14 @@ class ActManager {
 
     static UpdateDraggables() {
         for (let i = 0; i < this.active_draggables.length; i++) {
-            // Handle pickups.
             const draggable = this.active_draggables[i];
+
+            if (draggable.Update) {
+                draggable.Update()
+                continue
+            }
+
+            // Handle pickups.
             if (draggable.picked_up) {
                 draggable.x = gMouseX
                 draggable.y = gMouseY
