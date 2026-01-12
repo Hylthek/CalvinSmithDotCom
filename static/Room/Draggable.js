@@ -267,7 +267,10 @@ class Node extends Draggable {
     // Function override to store pickup_offsets.
     Pickup() {
         this.picked_up = true
-        this.pickup_offset = [this.x - gMouseX, this.y - gMouseY]
+        this.pickup_offset = {
+            x: this.x - gMouseX,
+            y: this.y - gMouseY
+        }
     }
 
     // Function override to disable gravity.
