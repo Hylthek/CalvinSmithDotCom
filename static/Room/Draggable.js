@@ -46,6 +46,11 @@ class Draggable {
         if (this.images.length >= 2)
             this.curr_image = 1;
 
+        this.pickup_offset = {
+            x: this.x - gMouseX,
+            y: this.y - gMouseY
+        }
+
         // Make last on draw order.
         const idx = ActManager.active_draggables.indexOf(this)
         ActManager.active_draggables.splice(idx, 1)
@@ -85,15 +90,12 @@ class Draggable {
     Update() {
         // Handle pickups.
         if (this.picked_up) {
-            this.x = gMouseX
-            this.y = gMouseY
+            this.x = gMouseX + this.pickup_offset.x
+            this.y = gMouseY + this.pickup_offset.y
 
-            // Handle node 
-            if (this.pickup_offset) {
-                this.x += this.pickup_offset[0]
-                this.y += this.pickup_offset[1]
+            // Handle node
+            if (this.is_node)
                 this.SnapToValidPos()
-            }
         }
 
         // Gravity.
@@ -113,23 +115,25 @@ class Draggable {
         }
 
         // Animations
-        const curr_time = performance.now()
-        const reject_time = curr_time - this.reject_animation_start_time
-        if (reject_time > 0 && reject_time < this.reject_animation_duration) {
-            // Object has already been teleported to pickup_location.
-            const lerp_t = 1 - reject_time / this.reject_animation_duration
-            const lerp_cubic_t = EaseInOutCubic(lerp_t)
-            this.x = Lerp(this.pickup_location[0], this.reject_location.x, lerp_cubic_t)
-            this.y = Lerp(this.pickup_location[1], this.reject_location.y, lerp_cubic_t)
-        }
-        const eaten_time = curr_time - this.eaten_animation_start_time
-        if (eaten_time > 0 && eaten_time < this.eaten_animation_duration) {
-            const lerp_t = eaten_time / this.eaten_animation_duration
-            const lerp_cubic_t = EaseInCubic(lerp_t)
-            this.scale = 1 - lerp_cubic_t
-        }
-        if (eaten_time > this.eaten_animation_duration) {
-            this.RemoveFromActManager()
+        {
+            const curr_time = performance.now()
+            const reject_time = curr_time - this.reject_animation_start_time
+            if (reject_time > 0 && reject_time < this.reject_animation_duration) {
+                // Object has already been teleported to pickup_location.
+                const lerp_t = 1 - reject_time / this.reject_animation_duration
+                const lerp_cubic_t = EaseInOutCubic(lerp_t)
+                this.x = Lerp(this.pickup_location[0], this.reject_location.x, lerp_cubic_t)
+                this.y = Lerp(this.pickup_location[1], this.reject_location.y, lerp_cubic_t)
+            }
+            const eaten_time = curr_time - this.eaten_animation_start_time
+            if (eaten_time > 0 && eaten_time < this.eaten_animation_duration) {
+                const lerp_t = eaten_time / this.eaten_animation_duration
+                const lerp_cubic_t = EaseInCubic(lerp_t)
+                this.scale = 1 - lerp_cubic_t
+            }
+            if (eaten_time > this.eaten_animation_duration) {
+                this.RemoveFromActManager()
+            }
         }
     }
 
@@ -261,6 +265,8 @@ class Node extends Draggable {
 
     parent_quad = null
     parent_quad_index = null
+
+    is_node = true // As opposed to undefined.
 
     // Function override to store pickup_offsets.
     Pickup() {
