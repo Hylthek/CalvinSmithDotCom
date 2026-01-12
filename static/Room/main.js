@@ -8,6 +8,7 @@ PreloadedImages.PreloadAllImages()
 // Preload audio.
 PreloadedAudio.LoadAll()
 
+let prev_mouse_state = false
 function main() {
     window.requestAnimationFrame(main);
 
@@ -21,16 +22,16 @@ function main() {
 
     // Accept input. (get raw input)
     const mb1_state = gMb1State
-    const state_changed = gMb1StateChanged
-    if (gMb1StateChanged) gMb1StateChanged = false; // gMb1StateChanged is set by eventlistener and reset by main.
+    const state_changed = mb1_state != prev_mouse_state
+    prev_mouse_state = mb1_state
 
     // Process drag and drops.
     const hovered_draggable = ActManager.GetHoveredDraggable()
     const hovered_container = ActManager.GetHoveredContainer()
     if (hovered_draggable && mb1_state && state_changed)
         hovered_draggable.Pickup()
-    if (hovered_draggable && !mb1_state)
-        hovered_draggable.Drop()
+    if (!mb1_state && state_changed)
+        ActManager.DropPickedUp()
     if (hovered_container && hovered_draggable && !mb1_state && state_changed)
         hovered_container.TryEatDraggable(hovered_draggable)
 

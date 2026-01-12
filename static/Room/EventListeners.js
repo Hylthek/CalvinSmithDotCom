@@ -1,15 +1,15 @@
 let gMouseX = 0
 let gMouseY = 0
 let gMb1State = false
-let gMb1StateChanged = false
 
 CanvasWrapper.canvas.addEventListener("mousemove", (event) => {
     gMouseX = (event.clientX - CanvasWrapper.canvas.getBoundingClientRect().left) / CanvasWrapper.pixelation_factor
     gMouseY = (event.clientY - CanvasWrapper.canvas.getBoundingClientRect().top) / CanvasWrapper.pixelation_factor
+    // Update button state
+    gMb1State = (event.buttons & 1) ? true : false
 })
 CanvasWrapper.canvas.addEventListener("mousedown", (event) => {
     gMb1State = true
-    gMb1StateChanged = true // Value is reset by main().
 
     // Continue from splash screen.
     if (ActManager.current_act == "splash-screen")
@@ -17,7 +17,6 @@ CanvasWrapper.canvas.addEventListener("mousedown", (event) => {
 })
 CanvasWrapper.canvas.addEventListener("mouseup", () => {
     gMb1State = false
-    gMb1StateChanged = true // Value is reset by main().
 })
 document.addEventListener("keydown", (event) => {
     // Progress dialogues.

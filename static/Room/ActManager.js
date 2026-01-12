@@ -92,6 +92,14 @@ class ActManager {
         return null
     }
 
+    static DropPickedUp() {
+        for (let i = 0; i < this.active_draggables.length; i++) {
+            const draggable = this.active_draggables[i];
+            if (draggable.picked_up) 
+                draggable.Drop()
+        }
+    }
+
     static UpdateDraggables() {
         for (let i = 0; i < this.active_draggables.length; i++) {
             // Handle pickups.
@@ -107,8 +115,6 @@ class ActManager {
                     draggable.SnapToValidPos()
                 }
             }
-            if (gMb1State == false)
-                draggable.Drop()
 
             // Gravity.
             if (draggable.falling) {
