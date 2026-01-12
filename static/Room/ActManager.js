@@ -47,7 +47,7 @@ class ActManager {
                 this.current_act = "credits"
                 break;
             case "credits":
-                console.log("End of game reached.")
+                console.warn("End of game reached.")
                 break;
             default:
                 console.error("Invalid act string.", this.current_act)
@@ -149,6 +149,7 @@ class ActManager {
         }
     }
 
+    static act_3_goal_met = false
     static IsGoalMet() {
         switch (ActManager.current_act) {
             case "act-1":
@@ -159,7 +160,7 @@ class ActManager {
             case "act-2":
                 return ActManager.dirt_swept >= ActInitializations.act_2_total_dirt
             case "act-3":
-                return ActManager.active_decorations[2].hud_progress > 0.999 // magic numbers.
+                return ActManager.act_three_goal_met
             case "outro":
                 return true
             default:

@@ -49,19 +49,19 @@ class ProgressHud {
         if (this.hud_type == "bed-positioning-progress") {
             const bed_pos = ActManager.active_decorations[1].GetBedPos() // 1 is a magic index.
             const diff = {
-                x: bed_pos.x - ActInitializations.bed_goal_pos.x,
-                y: bed_pos.y - ActInitializations.bed_goal_pos.y,
-                rot: bed_pos.rot - ActInitializations.bed_goal_pos.rot
+                dist: Math.hypot(bed_pos.x - ActInitializations.bed_goal_pos.x, bed_pos.y - ActInitializations.bed_goal_pos.y),
+                rot: Math.abs(bed_pos.rot - ActInitializations.bed_goal_pos.rot) // deg
             }
             if (!this.initial_diff) { // This is a new data member.
                 this.initial_diff = diff
                 this.hud_progress = 0
             }
             else {
-                const initial_dist = Math.hypot(this.initial_diff.x, this.initial_diff.y)
                 // distance will account for half of the progress, rotation for the other.
-                const square_error = (diff.x / initial_dist) ** 2 + (diff.y / initial_dist) ** 2 + (diff.rot / this.initial_diff.rot) ** 2
-                this.hud_progress = Math.max(1 - square_error / 2, 0)
+                const error = diff.dist / this.initial_diff.dist + diff.rot / this.initial_diff.rot
+                this.hud_progress = Math.max(1 - error / 2, 0)
+                if (diff.dist < 0.005 && diff.rot < 1) // If the bed is within 1%kW and 1deg, trigger ActManager.IsGoalMet() to be true.
+                    ActManager.act_three_goal_met = true
             }
         }
     }
