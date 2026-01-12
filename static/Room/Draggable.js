@@ -15,9 +15,13 @@ class Draggable {
     floating_phase = null // Set randomly at instantiation.
     floating_amplitude = 0.001 * kW
     scale = 1
-    // Return animation
-    reject_animation_start_time = null // ms
-    return_animation_duration = 300 // ms
+    // Reject animation
+    reject_animation_start_time = NaN // ms
+    reject_animation_duration = 300 // ms
+
+    // Draggable eaten animation
+    eaten_animation_start_time = NaN
+    eaten_animation_duration = 300
 
     /** images is an array of HTML Image objects. */
     constructor(x, y, w, h, images, description = "Description", compatibilities = []) {
@@ -34,6 +38,10 @@ class Draggable {
     }
 
     Pickup() {
+        // Skip pickup if item is currently being eaten.
+        if (this.eaten_animation_start_time)
+            return
+
         this.picked_up = true
         if (this.images.length >= 2)
             this.curr_image = 1;
@@ -48,10 +56,14 @@ class Draggable {
         this.velocity = 0
 
         // Disable current animations.
-        this.reject_animation_start_time = null
+        this.reject_animation_start_time = NaN
     }
 
     Drop() {
+        // Skip drop if item is currently being eaten.
+        if (this.eaten_animation_start_time)
+            return
+
         this.picked_up = false
         this.curr_image = 0;
 
@@ -64,8 +76,8 @@ class Draggable {
         kCtx.save()
 
         const floating_y_offset = this.floating_amplitude * Math.sin(performance.now() / 1000 * this.floating_freq + this.floating_phase)
-        kCtx.setTransform(this.scale, 0, 0, this.scale, this.x - this.w / 2, this.y - this.h / 2 + floating_y_offset)
-        kCtx.drawImage(this.images[this.curr_image], 0, 0, this.w, this.h);
+        kCtx.setTransform(this.scale, 0, 0, this.scale, this.x, this.y + floating_y_offset)
+        kCtx.drawImage(this.images[this.curr_image], -this.w / 2, -this.h / 2, this.w, this.h);
 
         kCtx.restore()
     }
@@ -102,13 +114,22 @@ class Draggable {
 
         // Animations
         const curr_time = performance.now()
-        const curr_anim_time = curr_time - this.reject_animation_start_time
-        if (curr_anim_time > 0 && curr_anim_time < this.return_animation_duration) {
+        const reject_time = curr_time - this.reject_animation_start_time
+        if (reject_time > 0 && reject_time < this.reject_animation_duration) {
             // Object has already been teleported to pickup_location.
-            const lerp_t = 1 - (curr_anim_time / this.return_animation_duration)
+            const lerp_t = 1 - reject_time / this.reject_animation_duration
             const lerp_cubic_t = EaseInOutCubic(lerp_t)
             this.x = Lerp(this.pickup_location[0], this.reject_location.x, lerp_cubic_t)
             this.y = Lerp(this.pickup_location[1], this.reject_location.y, lerp_cubic_t)
+        }
+        const eaten_time = curr_time - this.eaten_animation_start_time
+        if (eaten_time > 0 && eaten_time < this.eaten_animation_duration) {
+            const lerp_t = eaten_time / this.eaten_animation_duration
+            const lerp_cubic_t = EaseInCubic(lerp_t)
+            this.scale = 1 - lerp_cubic_t
+        }
+        if (eaten_time > this.eaten_animation_duration) {
+            this.RemoveFromActManager()
         }
     }
 
@@ -165,6 +186,17 @@ class Draggable {
         }
         this.reject_animation_start_time = performance.now();
     }
+
+    GetEaten() {
+        this.falling = false
+        this.eaten_animation_start_time = performance.now()
+    }
+
+    RemoveFromActManager() {
+        ActManager.active_draggables.splice(ActManager.active_draggables.indexOf(this), 1)
+    }
+
+    IsBeingEaten() { return this.eaten_animation_start_time ? true : false }
 }
 
 // Broom inherits from Draggable
@@ -455,4 +487,8 @@ class NodeQuadrilateral {
 
 function EaseInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function EaseInCubic(x) {
+    return x * x * x;
 }

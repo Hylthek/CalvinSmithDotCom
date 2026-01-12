@@ -34,8 +34,8 @@ class Container {
         }
 
         // Process successful eat.
+        draggable.GetEaten()
         ActManager.container_contents[draggable.compatibilities[0]]++
-        ActManager.active_draggables.splice(ActManager.active_draggables.indexOf(draggable), 1)
     }
 
     DrawHoverText() {

@@ -33,7 +33,8 @@ function main() {
     if (!mb1_state && state_changed)
         ActManager.DropPickedUp()
     if (hovered_container && hovered_draggable && !mb1_state && state_changed)
-        hovered_container.TryEatDraggable(hovered_draggable)
+        if (hovered_draggable.IsBeingEaten() == false)
+            hovered_container.TryEatDraggable(hovered_draggable)
 
     // Process act 2 dirt removal.
     if (ActManager.active_draggables[0])
