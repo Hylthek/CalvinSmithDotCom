@@ -157,7 +157,7 @@ class ActManager {
                 const _3 = ActManager.container_contents.trashcan >= ActInitializations.total_trashcan_draggables
                 return _1 && _2 && _3
             case "act-2":
-                return ActManager.dirt_swept >= ActInitializations.act_2_total_dirt - 10 // -10 for QOL, magic number.
+                return ActManager.dirt_swept >= ActInitializations.act_2_total_dirt
             case "act-3":
                 return ActManager.active_decorations[2].hud_progress > 0.999 // magic numbers.
             case "outro":

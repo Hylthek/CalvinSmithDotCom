@@ -218,7 +218,7 @@ class Broom extends Draggable {
     }
 
     prev_dirt = [] // Dirt previously inside broom hitbox.
-    chance_of_removal = 0.25
+    chance_of_removal = 0.1
     // Manages dirt removal.
     CleanDirt() {
         // Find all dirt in hitbox.
@@ -239,8 +239,10 @@ class Broom extends Draggable {
         this.prev_dirt = curr_dirt
 
         // Process new dirt.
+        // If chance of removal increases if there are less elements in curr_dirt
+        const altered_removal_chance = Lerp(this.chance_of_removal, 1, Math.exp(-curr_dirt.length / 5))
         new_dirt.forEach((dirt) => {
-            if (Math.random() < this.chance_of_removal) {
+            if (Math.random() < altered_removal_chance) {
                 const idx = ActManager.active_decorations.indexOf(dirt)
                 ActManager.active_decorations.splice(idx, 1)
                 ActManager.dirt_swept++
