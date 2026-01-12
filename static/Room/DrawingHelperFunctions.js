@@ -30,11 +30,13 @@ class DrawingHelperFunctions {
                 kCtx.drawImage(PreloadedImages.outro_background, 0, 0, kW, kH)
                 break;
             case "credits":
-                kCtx.font = `${kW * 0.05}px Arial`;
+                kCtx.font = `${kW * 0.05}px Garamond`;
                 kCtx.fillStyle = "black";
                 kCtx.textAlign = "center";
                 kCtx.textBaseline = "middle";
-                kCtx.fillText("Made By:\nGod", kW / 2, kH / 2);
+                kCtx.fillText("Made By:\nMe", kW / 2, kH / 2);
+                kCtx. font = `${kW * 0.02}px Garamond`;
+                kCtx.fillText("Powered by: CalvinEngine\u2122", kW / 2, kH * 0.6)
                 break;
             default:
                 console.error("Invalid act string.", ActManager.current_act)
