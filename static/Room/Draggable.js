@@ -73,7 +73,7 @@ class Draggable {
         this.curr_image = 0;
 
         // Handle gravity.
-        if (this.y < ScenePerspective.GetScenePoints()[2][1])
+        if (this.y + this.h / 2 < ScenePerspective.GetScenePoints()[2][1])
             this.falling = true
     }
 
@@ -105,10 +105,10 @@ class Draggable {
             // Update pos and velo.
             this.y += kH * this.velocity
             this.velocity += 0.01;
-            // Fix bugged pickup locations.
-            if (this.pickup_location[1] < ScenePerspective.GetScenePoints()[2][1])
-                this.pickup_location[1] = (ScenePerspective.GetScenePoints()[2][1] + kH) / 2
-            // Stop gravity if object hit pickup height.
+            // Fix bugged pickup locations that are above the ground cutoff.
+            if (this.pickup_location[1] < ScenePerspective.GetScenePoints()[2][1] - this.h / 2)
+                this.pickup_location[1] = ScenePerspective.GetScenePoints()[2][1] - this.h / 2
+            // Stop gravity if object below pickup height.
             if (this.y > this.pickup_location[1]) {
                 this.falling = false
                 this.velocity = 0;
@@ -207,22 +207,14 @@ class Draggable {
 
 // Broom inherits from Draggable
 class Broom extends Draggable {
-    // Positional and scale offsets to draw the broom independent from its bounding box.
-    drawing_offsets = {
-        x: 0 * kW,
-        y: -0.22 * kW,
-        w: 1.2,
-        h: 10
-    }
     is_broom = true
 
-    // Function will draw the broom handle above the bounding box of the object.
-    Draw() {
-        const pos = [this.drawing_offsets.x + this.x - this.w / 2, this.drawing_offsets.y + this.y - this.h / 2]
-        const scale = [this.drawing_offsets.w * this.w, this.drawing_offsets.h * this.h]
-        kCtx.drawImage(this.images[this.curr_image], pos[0], pos[1], scale[0], scale[1]);
-        kCtx.strokeStyle = "black";
-        kCtx.lineWidth = kW * 0.002;
+    // Cleaning hitbox coordinates local to object coordinates.
+    hitbox = {
+        x: this.w * 0.035,
+        y: this.h * 0.435,
+        w: this.w * 0.85,
+        h: this.h * 0.11
     }
 
     prev_dirt = [] // Dirt previously inside broom hitbox.
@@ -235,10 +227,10 @@ class Broom extends Draggable {
         ActManager.active_decorations.forEach((dirt) => {
             const w2 = dirt.w / 2
             const h2 = dirt.h / 2
-            if (this.x - this.w / 2 < dirt.x + w2 &&
-                this.x + this.w / 2 > dirt.x - w2 &&
-                this.y - this.h / 2 < dirt.y + h2 &&
-                this.y + this.h / 2 > dirt.y - h2) {
+            if (this.x + this.hitbox.x - this.hitbox.w / 2 < dirt.x + w2 &&
+                this.x + this.hitbox.x + this.hitbox.w / 2 > dirt.x - w2 &&
+                this.y + this.hitbox.y - this.hitbox.h / 2 < dirt.y + h2 &&
+                this.y + this.hitbox.y + this.hitbox.h / 2 > dirt.y - h2) {
                 if (this.prev_dirt.includes(dirt) == false)
                     new_dirt.push(dirt)
                 curr_dirt.push(dirt)

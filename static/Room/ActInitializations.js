@@ -239,7 +239,7 @@ class ActInitializations {
     static ActTwo() {
         // Add draggables
         const broom_img = PreloadedImages.broom
-        ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.8, kW * 0.075, kW * 0.025, [broom_img, broom_img]))
+        ActManager.active_draggables.push(new Broom(kW * 0.5, kH * 0.65, kW * 0.075, kW * 0.25, [broom_img, broom_img]))
         ActManager.active_draggables[ActManager.active_draggables.length - 1].description = "Broom"
 
         // Add HUD.
