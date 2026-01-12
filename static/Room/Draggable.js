@@ -80,7 +80,9 @@ class Draggable {
     Draw() { // Animates floating too.
         kCtx.save()
 
-        const floating_y_offset = this.floating_amplitude * Math.sin(performance.now() / 1000 * this.floating_freq + this.floating_phase)
+        let floating_y_offset = this.floating_amplitude * Math.sin(performance.now() / 1000 * this.floating_freq + this.floating_phase)
+        if (this.picked_up)
+            floating_y_offset = 0
         kCtx.setTransform(this.scale, 0, 0, this.scale, this.x, this.y + floating_y_offset)
         kCtx.drawImage(this.images[this.curr_image], -this.w / 2, -this.h / 2, this.w, this.h);
 
