@@ -143,10 +143,25 @@ class DrawingHelperFunctions {
 
         ActManager.game_events.forEach(game_event => {
             if (game_event.dialogue.visible) {
-                // Process text.
-                const lines = game_event.dialogue.text[game_event.dialogue.curr_text].split("\n")
-                const dialogue_height = lines.length * Dialogue.line_spacing
+                // Alias
+                const curr_text = game_event.dialogue.curr_text
+                
+                // Truncate text for text scrolling.
+                const curr_time = performance.now()
+                let truncated_text = null
+                if (!game_event.dialogue.visible_start_time[curr_text]) {
+                    game_event.dialogue.visible_start_time[curr_text] = curr_time
+                    truncated_text = ""
+                }
+                else {
+                    const num_chars = Math.floor((curr_time - game_event.dialogue.visible_start_time[curr_text]) / 1000 * game_event.dialogue.chars_per_sec)
+                    truncated_text = game_event.dialogue.text[curr_text].slice(0, num_chars)
+                }
 
+                // Process text, both full and truncated.
+                const truncated_lines = truncated_text.split("\n")
+                const lines = game_event.dialogue.text[curr_text].split("\n")
+                const dialogue_height = lines.length * Dialogue.line_spacing
                 // Find maximum text width in lines.
                 kCtx.font = `${kW * 0.02}px Arial`; // Must be called before ctx.measureText().
                 let max_text_width = 0;
@@ -168,10 +183,10 @@ class DrawingHelperFunctions {
 
                 // Draw text.
                 kCtx.fillStyle = "black";
-                kCtx.textAlign = "center";
+                kCtx.textAlign = "left";
                 kCtx.textBaseline = "bottom";
-                lines.forEach((line, index) => {
-                    kCtx.fillText(line, x + w / 2, (y + Dialogue.line_spacing) + Dialogue.inner_margin + Dialogue.line_spacing * index);
+                truncated_lines.forEach((line, index) => {
+                    kCtx.fillText(line, x + w / 2 - kCtx.measureText(lines[index]).width / 2, (y + Dialogue.line_spacing) + Dialogue.inner_margin + Dialogue.line_spacing * index);
                 })
 
                 // Draw instruction text.
@@ -180,6 +195,7 @@ class DrawingHelperFunctions {
                 kCtx.fillRect((kW - w2) / 2, y + h + Dialogue.outer_margin / 2 - Dialogue.line_spacing / 2, w2, Dialogue.line_spacing)
                 kCtx.strokeRect((kW - w2) / 2, y + h + Dialogue.outer_margin / 2 - Dialogue.line_spacing / 2, w2, Dialogue.line_spacing)
                 kCtx.fillStyle = "black"
+                kCtx.textAlign = "center";
                 kCtx.fillText("Press space to continue.", kW / 2, y + h + Dialogue.line_spacing / 2 + Dialogue.outer_margin / 2)
             }
         })
