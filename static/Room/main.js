@@ -5,8 +5,6 @@ ActManager.NextAct()
 
 // Preload images.
 PreloadedImages.PreloadAllImages()
-// Preload audio.
-PreloadedAudio.LoadAll()
 
 let prev_mouse_state = false
 function main() {
@@ -50,9 +48,7 @@ function main() {
     // Draw dialogue on top of hover text.
     DrawingHelperFunctions.DrawDialogues()
 
-    ActManager.UpdateGameEvents()
-    ActManager.UpdateDraggables()
-    ActManager.UpdateHuds()
+    ActManager.UpdateCycle()
 
     DrawingHelperFunctions.DrawForeground()
 }

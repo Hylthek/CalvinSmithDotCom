@@ -18,7 +18,7 @@ class ActManager {
             case "splash-screen":
                 ActManager.ClearArrays()
                 ActInitializations.Intro()
-                PreloadedAudio.background_music.play()
+                PreloadedAudio.background_music.Play()
                 this.current_act = "intro"
                 break;
             case "intro":
@@ -100,6 +100,12 @@ class ActManager {
         }
     }
 
+    static UpdateCycle() {
+        this.UpdateDraggables()
+        this.UpdateHuds()
+        this.UpdateDecorations()
+    }
+
     static UpdateDraggables() {
         for (let i = 0; i < this.active_draggables.length; i++) {
             const draggable = this.active_draggables[i];
@@ -149,6 +155,14 @@ class ActManager {
         }
     }
 
+    static UpdateDecorations() {
+        for (let i = 0; i < this.active_decorations.length; i++) {
+            const decoration = this.active_decorations[i];
+            if (decoration.Update)
+                decoration.Update()
+        }
+    }
+
     static act_3_goal_met = false
     static IsGoalMet() {
         switch (ActManager.current_act) {
@@ -167,6 +181,8 @@ class ActManager {
             // Do nothing.
         }
     }
+
+
 
     static container_contents = { closet: 0, cabinet: 0, trashcan: 0 } // Incremented by containers.
 
