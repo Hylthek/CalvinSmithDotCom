@@ -109,6 +109,7 @@ class ActManager {
         this.UpdateDraggables()
         this.UpdateHuds()
         this.UpdateDecorations()
+        this.UpdateGameEvents()
     }
 
     static UpdateDraggables() {
@@ -186,8 +187,6 @@ class ActManager {
             // Do nothing.
         }
     }
-
-
 
     static container_contents = { closet: 0, cabinet: 0, trashcan: 0 } // Incremented by containers.
 
