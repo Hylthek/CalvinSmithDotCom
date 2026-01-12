@@ -419,10 +419,10 @@ class ActInitializations {
         ActManager.active_decorations.push(goal_bed)
 
         // Add bed nodes.
-        const n1 = new Node(kW * 0.585, kW * 0.05, kW * 0.03)
-        const n2 = new Node(kW * 0.835, kW * 0.05, kW * 0.03)
-        const n3 = new Node(kW * 0.585, kW * 0.4, kW * 0.03)
-        const n4 = new Node(kW * 0.835, kW * 0.4, kW * 0.03)
+        const n1 = new Node(kW * 0.585, kW * 0.05, kW * 0.045)
+        const n2 = new Node(kW * 0.835, kW * 0.05, kW * 0.045)
+        const n3 = new Node(kW * 0.585, kW * 0.4, kW * 0.045)
+        const n4 = new Node(kW * 0.835, kW * 0.4, kW * 0.045)
         const bed = new NodeQuadrilateral(n1, n2, n3, n4, PreloadedImages.act_3_bed)
         ActManager.active_draggables.push(n1)
         ActManager.active_draggables.push(n2)
