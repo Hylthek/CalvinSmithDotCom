@@ -9,6 +9,11 @@ class ActManager {
         console.error(": Cannot instantiate this \"static\" class.")
     }
 
+    static PageLoaded() {
+        this.current_act = null
+        this.NextAct()
+    }
+
     static NextAct() {
         switch (this.current_act) {
             case null:

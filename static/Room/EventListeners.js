@@ -34,3 +34,6 @@ document.addEventListener("keydown", (event) => {
         ActManager.game_events[0].Run()
     }
 })
+window.addEventListener("load", (event) => {
+    ActManager.PageLoaded()
+})

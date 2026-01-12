@@ -8,6 +8,18 @@ class DrawingHelperFunctions {
     static DrawBackground() {
         kCtx.save()
         switch (ActManager.current_act) {
+            case null:
+                // Draw "Page Loading" text.
+                kCtx.font = `${kW * 0.02}px arial`;
+                kCtx.fillStyle = "black";
+                kCtx.textAlign = "center";
+                kCtx.textBaseline = "middle";
+                let text = "Page Loading"
+                const foo_time = (performance.now() / 100) % 10
+                for (let i = 0; i < foo_time; i++)
+                    text = "." + text + "."
+                kCtx.fillText(text, kW / 2, kH / 2);
+                break
             case "splash-screen":
                 // Draw text.
                 kCtx.font = `${kW * 0.05}px serif`;
@@ -35,7 +47,7 @@ class DrawingHelperFunctions {
                 kCtx.textAlign = "center";
                 kCtx.textBaseline = "middle";
                 kCtx.fillText("Made By:\nMe", kW / 2, kH / 2);
-                kCtx. font = `${kW * 0.02}px Garamond`;
+                kCtx.font = `${kW * 0.02}px Garamond`;
                 kCtx.fillText("Powered by: CalvinEngine\u2122", kW / 2, kH * 0.6)
                 break;
             default:
@@ -50,7 +62,9 @@ class DrawingHelperFunctions {
         switch (ActManager.current_act) {
             case "splash-screen":
                 // Draw fading.
-                const curr_time = performance.now()
+                if (!this.splash_screen_start_time)
+                    this.splash_screen_start_time = performance.now()
+                const curr_time = performance.now() - this.splash_screen_start_time
                 const fade_time = 2000
                 const hold_time = 1000
                 kCtx.fillStyle = `rgba(255,255,255,0)`
@@ -147,7 +161,7 @@ class DrawingHelperFunctions {
             if (game_event.dialogue.visible) {
                 // Alias
                 const curr_text = game_event.dialogue.curr_text
-                
+
                 // Truncate text for text scrolling.
                 const curr_time = performance.now()
                 let truncated_text = null

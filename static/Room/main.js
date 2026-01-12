@@ -1,8 +1,3 @@
-// Initialize first act.
-ActManager.current_act = null
-// ActManager.current_act = 'outro' // A debug line, note that NextAct is called once before start of game.
-ActManager.NextAct()
-
 // Preload images.
 PreloadedImages.PreloadAllImages()
 
