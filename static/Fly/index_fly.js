@@ -1,6 +1,21 @@
 function FlyMain() {
     // Globals.
     const fly_obj = document.getElementById("fly-id");
+    const portrait_obj = document.getElementById("portrait-id");
+    const portrait_bb = portrait_obj.getBoundingClientRect();
+
+    // Set size relative to portrait.
+    const portrait_width = portrait_bb.width;
+    const fly_width = portrait_width * 0.15;
+    fly_obj.style.width = `${fly_width}px`;
+    fly_obj.style.height = "auto";
+    
+    // Set position relative to portrait.
+    const absLeft = portrait_bb.left + window.scrollX;
+    const absTop = portrait_bb.top + window.scrollY;
+    fly_obj.style.left = (absLeft + fly_width / 2) + "px";
+    fly_obj.style.top = (absTop + fly_width / 2) + "px";
+    fly_obj.style.display = "block";
 
     // Code execution.
     setInterval(() => {

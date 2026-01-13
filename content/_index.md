@@ -42,7 +42,7 @@ toc: false
 
 <!-- Profile picture and bio div. -->
 <div class="flex-container">
-    <img src="/portrait.webp" alt="portrait" class="portrait">
+    <img src="/portrait.webp" alt="portrait" class="portrait" id="portrait-id">
     </img>
     <div class="BioResumeDiv">
         <div class="bio">
@@ -101,13 +101,12 @@ toc: false
     }
 </style>
 
-
 <!-- Inline styles are used here so that js can access them. -->
-<a href="/insect.html" id="fly-id" style="top: 100px; left: 40px; transform: translate(-50%, -50%) scale(0.06) rotate(30deg);">
-    <img src="Fly/fly.webp" alt="fly">
+<a href="/insect.html" id="fly-id" style="position: absolute; display: none; transform: translate(-50%, -50%) rotate(30deg);">
+    <img src="Fly/fly.webp" alt="fly" style="margin: 0;">
 </a>
-<a href="/theroom.html" style="position: absolute; top: 100px; right: 40px;">
-    <canvas id="room-id" style="width: 120px; height: 90px;"></canvas>
+<a href="/theroom.html" id="room-container-id" style="position: absolute; display: none;">
+    <canvas id="room-id"></canvas>
 </a>
 
 <!-- glMatrix library -->

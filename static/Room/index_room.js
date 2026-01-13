@@ -4,11 +4,31 @@ import { drawScene } from "./draw-scene.js";
 let cubeRotation = 0.0;
 let deltaTime = 0;
 
+function Initial() {
+    const container = document.getElementById("room-container-id")
+    const canvas = document.getElementById("room-id")
+    const portrait = document.getElementById("portrait-id");
+    const portrait_bb = portrait.getBoundingClientRect();
+    const abs_top = portrait_bb.top + window.scrollY;
+    const abs_left = portrait_bb.left + window.scrollX;
+    const portrait_width = portrait_bb.width;
+    const room_width = portrait_width * 0.3;
+
+    container.style.display = "block";
+    container.style.top = abs_top + "px";
+    container.style.left = (abs_left + portrait_width - room_width) + "px";
+    container.style.width = room_width + "px";
+    container.style.height = room_width + "px";
+
+    const aspect_ratio = 12/9
+    canvas.style.width = room_width + "px";
+    canvas.style.height = (room_width / aspect_ratio) + "px";
+    canvas.width = 100; // Resolution
+    canvas.height = 100; // Resolution
+}
+
 function RoomMain() {
     const canvas = document.getElementById("room-id")
-
-    canvas.width = 200
-    canvas.height = canvas.width;
 
     const gl = canvas.getContext("webgl")
 
@@ -108,7 +128,8 @@ function RoomMain() {
     requestAnimationFrame(render);
 }
 
-// Initial call.
+// Initial calls.
+Initial()
 RoomMain()
 
 //
