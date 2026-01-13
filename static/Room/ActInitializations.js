@@ -598,6 +598,7 @@ class ActInitializations {
                 case 23:
                     break;
                 case 24:
+                    PreloadedAudio.background_music.audio.pause() // Manually pause for dramatic effect.
                     wolfman.visible = false
                     shrimp.SetPosAndScale(0.7, 1, 7)
                     break;
@@ -622,6 +623,7 @@ class ActInitializations {
                     wolfman.SetPosAndScale(0.2, 1.55, 9)
                     break;
                 case 30:
+                    PreloadedAudio.background_music.audio.play() // Manually play again.
                     break;
             }
 
