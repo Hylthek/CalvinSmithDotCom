@@ -42,7 +42,7 @@ toc: false
 
 <!-- Profile picture and bio div. -->
 <div class="flex-container">
-    <img src="/portrait.png" alt="portrait" class="portrait">
+    <img src="/portrait.webp" alt="portrait" class="portrait">
     </img>
     <div class="BioResumeDiv">
         <div class="bio">
@@ -65,11 +65,11 @@ toc: false
     In the summer of 2025, I worked alongside Dr. Philip Brown and others to develop a novel VR application for the research and development of in situ laparoscopic bioprinting.
 </p>
 {{< cards cols="2">}}
-  {{< card link="/Abstract" image="abstract/fig1.png" title="Undergraduate Research Abstract" subtitle="Submitted to 2025 BMES annual meeting." >}}
-  {{< card link="/BmesPoster" image="/Poster/PosterPointing.jpg" title="BMES Poster" subtitle="Poster session at BMES 2025 Annual Meeting." >}}
+  {{< card link="/Abstract" image="abstract/fig1.webp" title="Undergraduate Research Abstract" subtitle="Submitted to 2025 BMES annual meeting." >}}
+  {{< card link="/BmesPoster" image="/Poster/PosterPointing.webp" title="BMES Poster" subtitle="Poster session at BMES 2025 Annual Meeting." >}}
 {{< /cards >}}
 {{< cards cols="1">}}
-  {{< card link="/ReuPowerPoint" image="/ReuPowerPoint/slide2.png" title="Research Presentation" subtitle="End-of-internship presentation." >}}
+  {{< card link="/ReuPowerPoint" image="/ReuPowerPoint/slide2.webp" title="Research Presentation" subtitle="End-of-internship presentation." >}}
 {{< /cards >}}
 
 <!-- Mouse project section. -->
@@ -80,7 +80,7 @@ toc: false
     During the fall semester of 2024, I created an open-source project researching a new approach to 6DoF space mice.
 </p>
 {{< cards cols="1">}}
-    {{< card link="/imuspacemouse" image="/ImuMouse/MousePhotos.png" title="Space Mouse Project" subtitle="Overview, Purpose, and Approach">}}
+    {{< card link="/imuspacemouse" image="/ImuMouse/MousePhotos.webp" title="Space Mouse Project" subtitle="Overview, Purpose, and Approach">}}
 {{< /cards >}}
 
 <!-- Mouse project section. -->
@@ -91,7 +91,7 @@ toc: false
     During my third year at Cal Poly Pomona, I was chosen as design captain for our Steel Bridge Club. Over the course of the school year, I was tasked with designing and validating a 20ft steel bridge model for the purposes of competing at AISC’s 2025 Student Steel Bridge Competition (SSBC).
 </p>
 {{< cards cols="1">}}
-    {{< card link="/steelbridgedesign" image="/SteelBridge/GroupPhoto.png" title="Steel Bridge Design" subtitle="Competition objective and design process." >}}
+    {{< card link="/steelbridgedesign" image="/SteelBridge/GroupPhoto.webp" title="Steel Bridge Design" subtitle="Competition objective and design process." >}}
 {{< /cards >}}
 
 <style>
@@ -104,7 +104,7 @@ toc: false
 
 <!-- Inline styles are used here so that js can access them. -->
 <a href="/insect.html" id="fly-id" style="top: 100px; left: 40px; transform: translate(-50%, -50%) scale(0.06) rotate(30deg);">
-    <img src="Fly/fly.png" alt="fly">
+    <img src="Fly/fly.webp" alt="fly">
 </a>
 <a href="/theroom.html" style="position: absolute; top: 100px; right: 40px;">
     <canvas id="room-id" style="width: 120px; height: 90px;"></canvas>

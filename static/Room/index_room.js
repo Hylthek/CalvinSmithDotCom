@@ -77,12 +77,12 @@ function RoomMain() {
 
     // Load texture
     const textures = [
-        loadTexture(gl, "room/assets/frontwall.png"), // Front
-        loadTexture(gl, "room/assets/backwall.png"), // Back
-        loadTexture(gl, "room/assets/ceiling.png"), // Top
-        loadTexture(gl, "room/assets/blankerfloor.png"), // Bottom
-        loadTexture(gl, "room/assets/leftwall.png"), // Right // NOTE: right-left swapped to show interior perspective.
-        loadTexture(gl, "room/assets/rightwall.png"), // Left // NOTE: right-left swapped to show interior perspective.
+        loadTexture(gl, "room/assets/frontwall.webp"), // Front
+        loadTexture(gl, "room/assets/backwall.webp"), // Back
+        loadTexture(gl, "room/assets/ceiling.webp"), // Top
+        loadTexture(gl, "room/assets/blankerfloor.webp"), // Bottom
+        loadTexture(gl, "room/assets/leftwall.webp"), // Right // NOTE: right-left swapped to show interior perspective.
+        loadTexture(gl, "room/assets/rightwall.webp"), // Left // NOTE: right-left swapped to show interior perspective.
     ]
     // Hard code some modifications to the texture orientations.
     // Flip the textures vertically for left, right, back, and front walls.

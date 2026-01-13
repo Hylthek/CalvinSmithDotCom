@@ -33,14 +33,14 @@ A computer application is proposed which will allow a surgeon to generate toolpa
 
 Before generating toolpaths, geometry needs to be created to contain those paths. Basis-surfaces (b-surfaces) were used because of their smoothness and interactive simplicity. B-surfaces are mathematically defined surfaces that maintain continuous curvature at every point. Any toolpath generated across a b-surface will, in turn, be smooth, reducing future algorithmic complexity. Moreover, a b-surface is defined by only a small grid of control points. This allows manipulation of the surface to be clutter-free and intuitive (Fig. 1). Manipulation of the surface was implemented through a virtual reality (VR) user interface (UI) because it is an intuitive way to visualize and modify 3D geometry.
 
-![Fig 1](abstract/fig1.png)
+![Fig 1](abstract/fig1.webp)
 <p class="caption">
 Figure 1: The basis-surface and its 6x6 grid of control points.
 </p>
 
 To maintain workflow simplicity, automatic surface generation is implemented. If a surgeon needs to cover an organic defect quickly, it is desirable to only have to trace a loop around the defect and run an algorithm. Using least-squares optimization, paired with the mathematical nature of b-surfaces, we can instantaneously fit a surface to any closed loop. Additionally, surfaces can be changed and then refit to the loop while retaining their alterations (Fig. 2).
 
-![Fig 2](abstract/fig2.png)
+![Fig 2](abstract/fig2.webp)
 <p class="caption">
 Figure 2: Demonstration of loop-fitting and loop-refitting.
 </p>
@@ -51,21 +51,21 @@ To achieve constant toolpath separation, path generation will be done procedural
 
 The created software demonstrates effortless workflow. Given a virtual tissue defect, a surgeon will only perform a few simple tasks in order to design a toolpath (Fig. 3). This is in contrast to most CAM software, where complex functionality is required to maximize precision, at the cost of simplicity and speed. Moreover, every algorithm except toolpath generation is executed in real-time. A benefit of this is that in the event of a design alteration, a task can be redone without additional delay.
 
-![Fig 3](abstract/fig3.png)
+![Fig 3](abstract/fig3.webp)
 <p class="caption">
 Figure 3: Typical workflow performed by user.
 </p>
 
 For toolpath generation, runtimes were recorded for two toolpath modes as well as two surface sizes. Four tests were conducted: the generation time for small concentric paths, small rectilinear paths, large concentric paths, and large rectilinear paths. Respective times were 18.5s, 13.5s, 151s, & 106s (Fig. 4). These results show that toolpath generation is not only the slowest part of design, but that computation times grow rapidly as the surface size increases. Although this is not ideal, the process can be greatly optimized. The algorithm currently iterates over all vertices of the toolpath, but the surface could instead be split into chunks, meaning that only a fraction of the toolpath is run. Additionally, compute shaders, programs executed on the GPU instead of the CPU, could run multiple algorithms at the same time.
 
-![Fig 4](abstract/fig4.png)
+![Fig 4](abstract/fig4.webp)
 <p class="caption">
 Figure 4: Four toolpathed surfaces and their generation times in the Unity runtime profiler.
 </p>
 
 Separation measurements were sampled for concentric and rectilinear toolpaths. Two types of rectilinear toolpaths were sampled: “self-straightening” and “non-straightening”. The target separation was 0.004 units of length. Measurements were plotted on a binned histogram and a kernel density estimation plot (Fig. 5). Although concentric toolpaths outperform the others in stepover precision, they do not provide as much structural integrity compared to rectilinear toolpaths, with their much stronger, straight lines. This is in contrast to self-straightened toolpaths, which instead sacrifice precision for maximum structural integrity. Finally, non-straightened toolpaths demonstrate a compromise between concentric and straightened rectilinear toolpaths, boasting acceptable stepover precision, as well as suitably robust structure. All three toolpath modes can be used in combination to facilitate design and maximize safety.
 
-![Fig 5](abstract/fig5.png)
+![Fig 5](abstract/fig5.webp)
 <p class="caption">
 Figure 5: Stepover samples plotted in binned-histograms and KDE curves. Notice the difference in the plotted domain between RectStraight and the others.
 </p>

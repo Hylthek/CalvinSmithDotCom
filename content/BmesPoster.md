@@ -32,7 +32,7 @@ img {
 <hr style="margin: 0 0 24px;">
 
 <div class="flex-container">
-    <img style = "flex: 1;" src="/Poster/PosterPointing.jpg" alt="_">
-    <img style = "flex: 3;" src="/Poster/BmesPosterV2.1.png" alt="_">
-    <img style = "flex: 1;" src="/Poster/PosterProfessional.jpg" alt="_">
+    <img style = "flex: 1;" src="/Poster/PosterPointing.webp" alt="_">
+    <img style = "flex: 3;" src="/Poster/BmesPosterV2.1.webp" alt="_">
+    <img style = "flex: 1;" src="/Poster/PosterProfessional.webp" alt="_">
 </div>

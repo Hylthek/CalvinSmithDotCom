@@ -13,10 +13,10 @@ toc: false
 
 <div style="font-style: italic; text-align: center;">
 
-![Slide 1](ReuPowerPoint/slide1.png)
+![Slide 1](ReuPowerPoint/slide1.webp)
 My name is Calvin Smith and today I will be presenting a new software developed for in situ bioprinting.
 
-![Slide 2](ReuPowerPoint/slide2.png)
+![Slide 2](ReuPowerPoint/slide2.webp)
 In situ bioprinting is when you directly deposit tissue into the body, as opposed to in vitro bioprinting, where tissue is deposited in a lab.
 Right now, surgeons are able to do in vitro bioprinting, but this method takes a long time.
 You have to first imaging a wound, then print a tissue, and then transplant it into the body.
@@ -29,7 +29,7 @@ For in situ bioprinting, these toolpaths need to be quickly generated during the
 There are currently no effective ways to do this.
 The goal of this project was to create a simple, accurate, and fast toolpath generation software.
 
-![Slide 4](ReuPowerPoint/slide4.png)
+![Slide 4](ReuPowerPoint/slide4.webp)
 Now, I will discuss the methods used to develop the software.
 
 ![Slide 5](ReuPowerPoint/slide5.gif)
@@ -58,10 +58,10 @@ This creates uneven separation between neighboring toolpaths which can create ga
 To solve this problem, the software’s toolpaths will instead be generated procedurally, point-by-point.
 This approach keeps the toolpaths evenly spaced but has drawbacks that will be discussed later.
 
-![Slide 9](ReuPowerPoint/slide9.png)
+![Slide 9](ReuPowerPoint/slide9.webp)
 Next, I will discuss how our three objectives were met or weren’t quite met.
 
-![Slide 10](ReuPowerPoint/slide10.png)
+![Slide 10](ReuPowerPoint/slide10.webp)
 The developed software demonstrates an intuitive workflow, as a surgeon only needs to perform a few simple tasks in order to design a toolpath.
 This is in contrast with many other toolpathing programs, where simplicity is sacrificed for indiscriminate precision.
 
@@ -71,7 +71,7 @@ The distances between adjacent paths were recorded at each point on a rectilinea
 The data was then visualized with a histogram and kernel density plot.
 Very little of the data reaches a percent error above 1.25%, verifying the software’s accuracy.
 
-![Slide 12](ReuPowerPoint/slide12.png)
+![Slide 12](ReuPowerPoint/slide12.webp)
 While the simplified workflow attributes greatly to overall software speed, it must also be able to computationally generate the designs in a timely manner.
 The main drawback with procedural toolpath generation is that it is slow.
 Runtimes were recorded for generation of a small surface as well as a larger surface.
@@ -87,7 +87,7 @@ This enables multiple algorithms to be run simultaneously, reducing compute time
 
 All-in-all, the software rigorously achieves simplicity and accuracy, with solvable issues in program speed.
 
-![Slide 14](ReuPowerPoint/slide14.png)
+![Slide 14](ReuPowerPoint/slide14.webp)
 Thank you.
 
 </div>
