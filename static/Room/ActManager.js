@@ -110,6 +110,7 @@ class ActManager {
         this.UpdateHuds()
         this.UpdateDecorations()
         this.UpdateGameEvents()
+        PreloadedAudio.UpdatePreloadedAudio()
     }
 
     static UpdateDraggables() {

@@ -154,6 +154,7 @@ class DrawingHelperFunctions {
         kCtx.restore()
     }
 
+    // This function also plays talking sfx, should be refactored.
     static DrawDialogues() {
         kCtx.save()
 
@@ -168,10 +169,13 @@ class DrawingHelperFunctions {
                 if (!game_event.dialogue.visible_start_time[curr_text]) {
                     game_event.dialogue.visible_start_time[curr_text] = curr_time
                     truncated_text = ""
+                    PreloadedAudio.talking.Play() // Will play a random segment.
                 }
                 else {
                     const num_chars = Math.floor((curr_time - game_event.dialogue.visible_start_time[curr_text]) / 1000 * game_event.dialogue.chars_per_sec)
                     truncated_text = game_event.dialogue.text[curr_text].slice(0, num_chars)
+                    if (num_chars >= game_event.dialogue.text[curr_text].length + 10) // Play sound for a little longer MAGIC NUMBER.
+                        PreloadedAudio.talking.audio.pause()
                 }
 
                 // Process text, both full and truncated.
