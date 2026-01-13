@@ -31,7 +31,7 @@ document.addEventListener("keydown", (event) => {
         });
     }
     if (event.code === 'KeyN') {
-        ActManager.game_events[0].Run()
+        // ActManager.game_events[0].Run() // DEBUG FEATURE
     }
 })
 window.addEventListener("load", (event) => {
