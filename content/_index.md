@@ -42,7 +42,7 @@ toc: false
 
 <!-- Profile picture and bio div. -->
 <div class="flex-container">
-    <img src="/portrait.webp" alt="portrait" class="portrait" id="portrait-id">
+    <img src="/photos/portrait.webp" alt="portrait" class="portrait" id="portrait-id">
     </img>
     <div class="BioResumeDiv">
         <div class="bio">
