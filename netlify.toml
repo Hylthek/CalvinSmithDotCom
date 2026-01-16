@@ -31,3 +31,8 @@ Cache-Control = "no-cache"
 for = "*.js"
 [headers.values]
 Cache-Control = "no-cache"
+
+[[headers]]
+for = "*.json"
+[headers.values]
+Cache-Control = "no-cache"

@@ -1,0 +1,28 @@
+<head>
+    <title>Rapid Serial Visual Presentation Reading</title>
+</head>
+
+<style>
+    /* Triggers if vw > vh */
+    @media (min-aspect-ratio: 16/9) {
+        #canvas {
+            height: 90vh;
+            width: calc(90vh * 16 / 9);
+        }
+    }
+
+    /* Triggers if vh > vw */
+    @media (max-aspect-ratio: 16/9) {
+        #canvas {
+            width: 90vw;
+            height: calc(90vw * 9 / 16);
+        }
+    }
+</style>
+
+<canvas id="canvas" style="
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  border: 2px solid black;
+"></canvas>
+
+<script src="RSVP_Reading/src/rsvp-reading.js" type="module"></script>
