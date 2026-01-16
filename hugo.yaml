@@ -45,6 +45,22 @@ menus:
       pageRef: /SteelBridgeDesign
       weight: 5
 
+    - name: Apps
+      identifier: apps
+      weight: 6
+    - name: The Fly
+      pageRef: /insect.html
+      parent: apps
+      weight: 1
+    - name: The Room
+      pageRef: /theroom.html
+      parent: apps
+      weight: 2
+    - name: RSVP Reading
+      pageRef: /rsvp-reading.html
+      parent: apps
+      weight: 3
+
   sidebar:
     - name: Resume
       pageRef: /Resume
@@ -64,6 +80,15 @@ menus:
     - name: Steel Bridge
       pageRef: /SteelBridgeDesign
       weight: 6
+    - name: The Fly
+      pageRef: /insect.html
+      weight: 7
+    - name: The Room
+      pageRef: /theroom.html
+      weight: 8
+    - name: RSVP Reading
+      pageRef: /rsvp-reading.html
+      weight: 9
 
 params:
   navbar:
