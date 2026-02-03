@@ -139,15 +139,15 @@ class ActInitializations {
         // Initialize dialogue.
         const dialogue = new Dialogue([ // Note: newlines in the IDE are part of the string literal.
             "???:\n(Knock Knock), Shrimpfiya?", // 0
-            "Shrimpfiya:\nOhh, Mrs. Horse is at the door!", // 1
+            "Shrimpfiya:\nOhh, Miss Jeans is at the door!", // 1
             "Shrimpfiya:\nCome in!", // 2
-            "Mrs. Horse:\nShrimpfiya, do you want to go get food with me?", // 3
+            "Miss Jeans:\nShrimpfiya, do you want to go get food with me?", // 3
             "Shrimpfiya:\nAhhmm...I would, but...I...", // 4
-            "Mrs. Horse:\nYes?", // 5
+            "Miss Jeans:\nYes?", // 5
             "Shrimpfiya:\nI have to sweep my room!", // 6
             "Shrimpfiya:\nYea...", // 7
-            "Mrs. Horse:\nOh, okay, I'll go by myself then.", // 8
-            "Mrs. Horse:\nBye!", // 9
+            "Miss Jeans:\nOh, okay, I'll go by myself then.", // 8
+            "Miss Jeans:\nBye!", // 9
             "Shrimpfiya:\nOkay, Bye.", // 10
             "Shrimpfiya:\n...", // 11
             "Shrimpfiya:\nI guess I better get to sweeping.", // 12
