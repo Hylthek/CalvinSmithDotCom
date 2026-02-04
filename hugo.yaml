@@ -60,6 +60,10 @@ menus:
       pageRef: /rsvp-reading.html
       parent: apps
       weight: 3
+    - name: WebGL Font Rendering
+      pageRef: /TextRenderingWebGL.html
+      parent: apps
+      weight: 4
 
   sidebar:
     - name: Resume
