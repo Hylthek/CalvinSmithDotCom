@@ -1,0 +1,38 @@
+<head>
+  <title>WebGL Text Rendering</title>
+
+  <!-- glMatrix library -->
+  <script src="TextRenderingWebGL/js-lib/glMatrix.js" defer></script>
+  <!-- opentype lib -->
+  <script src="TextRenderingWebGL/js-lib/opentype.js" defer></script>
+</head>
+
+<style>
+  canvas {
+    border: 1px solid black;
+    width: 90vw;
+    height: calc(90vw * 9 / 16);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  canvas#debug-canvas {
+    left: 5vw;
+    top: calc(5vh * 9/16);
+    width: 20vw;
+    height: calc(20vw * 9/16);
+    transform: translate(0, 0);
+    display: none;
+  }
+</style>
+
+<body>
+  <canvas id="cal-vas"></canvas>
+  <canvas id="debug-canvas"></canvas>
+  <p>Based on the repo by </p> <a href="https://github.com/GreenLightning/gpu-font-rendering" target="_blank" rel="noopener noreferrer">GreenLightning</a>
+</body>
+
+
+<script src="TextRenderingWebGL/cal-vas.js" type="module"></script>
