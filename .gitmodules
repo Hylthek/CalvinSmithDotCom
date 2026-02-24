@@ -1,0 +1,3 @@
+[submodule "static/TextRendingWebGL"]
+	path = static/TextRendingWebGL
+	url = https://github.com/Hylthek/TextRendingWebGL.git
