@@ -61,7 +61,7 @@ menus:
       parent: apps
       weight: 3
     - name: WebGL Font Rendering
-      pageRef: /TextRendingWebGL/TextRenderingWebGL.html
+      pageRef: /TextRendingWebGL
       parent: apps
       weight: 4
 
