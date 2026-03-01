@@ -7,13 +7,6 @@ HUGO_VERSION = "0.147.7"
 GO_VERSION = "1.24.3"
 NODE_VERSION = "22.16.0"
 
-# Redirect rules (optional)
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
-force = false
-
 # Headers for better performance (optional)
 [[headers]]
 for = "/*"
