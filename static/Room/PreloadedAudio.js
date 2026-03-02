@@ -49,11 +49,11 @@ class PreloadedAudio {
         console.error(": Cannot instantiate this \"static\" class.")
     }
 
-    static background_music = new AudioObject("room/assets/KnightAcademy.mp3", {
+    static background_music = new AudioObject("assets/KnightAcademy.mp3", {
         start_time: 1,
         volume: 0.3
     })
-    static talking = new AudioObject("room/assets/IsabelleTalking.mp3", {
+    static talking = new AudioObject("assets/IsabelleTalking.mp3", {
         rand_entry: true
     })
 

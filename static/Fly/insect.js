@@ -285,11 +285,11 @@ function MainLoop() {
 const gFly = new Fly();
 
 // Initialize fly buzzing sfx.
-const buzzing_sfx = new Audio("Fly/buzzing.mp3");
+const buzzing_sfx = new Audio("buzzing.mp3");
 buzzing_sfx.loop = true;
 
 // Initialize fly swatter sfx.
-const fly_swatter_sfx = new Audio("Fly/fly_swatter_sfx.mp3");
+const fly_swatter_sfx = new Audio("fly_swatter_sfx.mp3");
 
 setTimeout(() => {
     document.addEventListener('mousedown', Initial, { once: true });
@@ -320,8 +320,8 @@ function Initial(event) {
     // Make the object with id "fly-container" lerp sinusoidally between two outline styles.
     const fly_container = document.getElementById("fly-container");
     // Initialize new audio objects.
-    const demon_breathe_in = new Audio("Fly/demon_breathe_in.mp3");
-    const demon_breathe_out = new Audio("Fly/demon_breathe_out.mp3");
+    const demon_breathe_in = new Audio("demon_breathe_in.mp3");
+    const demon_breathe_out = new Audio("demon_breathe_out.mp3");
     demon_breathe_in.volume = 0.4;
     demon_breathe_out.volume = 0.6;
     function OutlineAnimation() {

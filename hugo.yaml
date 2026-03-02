@@ -49,15 +49,15 @@ menus:
       identifier: apps
       weight: 6
     - name: The Fly
-      pageRef: /insect.html
+      pageRef: /Fly
       parent: apps
       weight: 1
     - name: The Room
-      pageRef: /theroom.html
+      pageRef: /Room
       parent: apps
       weight: 2
     - name: RSVP Reading
-      pageRef: /rsvp-reading.html
+      pageRef: /RSVP_Reading
       parent: apps
       weight: 3
     - name: WebGL Font Rendering
@@ -85,14 +85,18 @@ menus:
       pageRef: /SteelBridgeDesign
       weight: 6
     - name: The Fly
-      pageRef: /insect.html
+      pageRef: /Fly
       weight: 7
     - name: The Room
-      pageRef: /theroom.html
+      pageRef: /Room
       weight: 8
     - name: RSVP Reading
-      pageRef: /rsvp-reading.html
+      pageRef: /RSVP_Reading
       weight: 9
+    - name: WebGL Font Rendering
+      pageRef: /TextRendingWebGL
+      weight: 10
+
 
 params:
   navbar:

@@ -102,10 +102,10 @@ toc: false
 </style>
 
 <!-- Inline styles are used here so that js can access them. -->
-<a href="/insect.html" id="fly-id" style="position: absolute; display: none; transform: translate(-50%, -50%) rotate(30deg);">
+<a href="/Fly" id="fly-id" style="position: absolute; display: none; transform: translate(-50%, -50%) rotate(30deg);">
     <img src="Fly/fly.webp" alt="fly" style="margin: 0;">
 </a>
-<a href="/theroom.html" id="room-container-id" style="position: absolute; display: none;">
+<a href="/Room" id="room-container-id" style="position: absolute; display: none;">
     <canvas id="room-id"></canvas>
 </a>
 
