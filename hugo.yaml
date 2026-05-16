@@ -45,7 +45,7 @@ menus:
       parent: sdp
       weight: 10
     - name: Project Poster
-      pageRef /SeniorProject/Poster.pdf
+      pageRef: /SeniorProject/Poster.pdf
       parent: sdp
       weight: 20
 
