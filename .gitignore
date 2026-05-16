@@ -1,8 +1,0 @@
-public/
-isable-fast-build/
-i18n/
-.hugo_build.lock
-archetypes/
-.vscode/
-cheatsheet.md
-static/Room/jsconfig.json
