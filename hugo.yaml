@@ -14,88 +14,100 @@ menus:
   main:
     - name: Home
       pageRef: /
-      weight: 1
+      weight: 10
       
     - name: Resume
       pageRef: /Resume
-      weight: 2
+      weight: 20
       
     # Dropdown.
     - name: WFU REU
       identifier: reu
-      weight: 3
+      weight: 30
     - name: Abstract
       pageRef: /Abstract
       parent: reu
-      weight: 1
+      weight: 10
     - name: BMES Poster
       pageRef: /BmesPoster
       parent: reu
-      weight: 2
+      weight: 20
     - name: Presentation
       pageRef: /ReuPowerPoint
       parent: reu
-      weight: 3
+      weight: 30
+
+    - name: Senior Project
+      identifier: sdp
+      weight: 35
+    - name: Technical Report
+      pageRef: /SeniorProject/TechnicalReport.pdf
+      parent: sdp
+      weight: 10
+
 
     - name: Space Mouse
       pageRef: /ImuSpaceMouse
-      weight: 4
+      weight: 40
 
     - name: Steel Bridge
       pageRef: /SteelBridgeDesign
-      weight: 5
+      weight: 50
 
     - name: Apps
       identifier: apps
-      weight: 6
+      weight: 60
     - name: The Fly
       pageRef: /Fly
       parent: apps
-      weight: 1
+      weight: 10
     - name: The Room
       pageRef: /Room
       parent: apps
-      weight: 2
+      weight: 20
     - name: RSVP Reading
       pageRef: /RSVP_Reading
       parent: apps
-      weight: 3
+      weight: 30
     - name: WebGL Font Rendering
       pageRef: /TextRendingWebGL
       parent: apps
-      weight: 4
+      weight: 40
 
   sidebar:
     - name: Resume
       pageRef: /Resume
-      weight: 1
+      weight: 10
     - name: Abstract
       pageRef: /Abstract
-      weight: 2
+      weight: 20
     - name: BMES Poster
       pageRef: /BmesPoster
-      weight: 3
+      weight: 30
     - name: Presentation
       pageRef: /ReuPowerPoint
-      weight: 4
+      weight: 40
+    - name: Senior Project Tech Report
+      pageRef: /SeniorProject/TechnicalReport.pdf
+      weight: 45
     - name: Space Mouse
       pageRef: /ImuSpaceMouse
-      weight: 5
+      weight: 50
     - name: Steel Bridge
       pageRef: /SteelBridgeDesign
-      weight: 6
+      weight: 60
     - name: The Fly
       pageRef: /Fly
-      weight: 7
+      weight: 70
     - name: The Room
       pageRef: /Room
-      weight: 8
+      weight: 80
     - name: RSVP Reading
       pageRef: /RSVP_Reading
-      weight: 9
+      weight: 90
     - name: WebGL Font Rendering
       pageRef: /TextRendingWebGL
-      weight: 10
+      weight: 100
 
 
 params:
