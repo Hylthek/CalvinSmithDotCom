@@ -72,6 +72,18 @@ toc: false
   {{< card link="/ReuPowerPoint" image="/ReuPowerPoint/slide2.webp" title="Research Presentation" subtitle="End-of-internship presentation." >}}
 {{< /cards >}}
 
+<!-- Senior Project Section -->
+<h2 style="text-align:center;">
+    Senior Project
+</h2>
+<p class="subtitle">
+    For our senior project, me and my partner, Nathan Cinco, worked under Dr. James S. Kang as we researched the viability of ai-supported accelerometers as tactile sensors for the purposes of dextrous robotics.
+</p>
+{{< cards cols="2">}}
+    {{< card link="/SeniorProject/TechnicalReport.pdf" image="/SeniorProject/ConfusionMatResults.webp" title="Technical Report" subtitle="\"Trained Classification Of Surfaces Via Imu-Driven Tactile Sensation\" written by me and my partner Nathan Cinco.">}}
+    {{< card link="/SeniorProject/Poster.pdf" image="/SeniorProject/ImuSetup.webp" title="Project Poster" subtitle="This poster, alongside a small demonstration, was presented at Cal Poly Pomona's 2026 Senior Project Symposium.">}}
+{{< /cards >}}
+
 <!-- Mouse project section. -->
 <h2 style="text-align:center;">
     Space Mouse Project
