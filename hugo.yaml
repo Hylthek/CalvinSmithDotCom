@@ -44,6 +44,10 @@ menus:
       pageRef: /SeniorProject/TechnicalReport.pdf
       parent: sdp
       weight: 10
+    - name: Project Poster
+      pageRef /SeniorProject/Poster.pdf
+      parent: sdp
+      weight: 20
 
 
     - name: Space Mouse
@@ -90,6 +94,9 @@ menus:
     - name: Senior Project Tech Report
       pageRef: /SeniorProject/TechnicalReport.pdf
       weight: 45
+    - name: Senior Project Poster
+      pageRef: /SeniorProject/Poster.pdf
+      weight: 46
     - name: Space Mouse
       pageRef: /ImuSpaceMouse
       weight: 50
